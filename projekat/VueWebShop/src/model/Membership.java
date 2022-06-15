@@ -5,7 +5,8 @@ import java.util.Date;
 
 public class Membership {
 	
-	private Membership typeMembership;
+	//private String id;
+	private TypeMembership typeMembership;
 	private Date dayPaying;
 	private double value;
 	private MembershipValidation membershipValidation;
@@ -13,7 +14,7 @@ public class Membership {
 	private int numberOfTerms;
 	//kupac
 	
-	public Membership(Membership typeMembership, Date dayPaying, double value,
+	public Membership(TypeMembership typeMembership, Date dayPaying, double value,
 			MembershipValidation membershipValidation, MembershipStatus membershipStatus, int numberOfTerms) {
 		super();
 		this.typeMembership = typeMembership;
@@ -24,10 +25,10 @@ public class Membership {
 		this.numberOfTerms = numberOfTerms;
 	}
 	
-	public Membership getTypeMembership() {
+	public TypeMembership getTypeMembership() {
 		return typeMembership;
 	}
-	public void setTypeMembership(Membership typeMembership) {
+	public void setTypeMembership(TypeMembership typeMembership) {
 		this.typeMembership = typeMembership;
 	}
 	public Date getDayPaying() {
