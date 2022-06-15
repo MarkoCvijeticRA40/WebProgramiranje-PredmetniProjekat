@@ -7,10 +7,10 @@ public class SportObject {
 	private String content;
 	private Location location;
 	private Double averageGrade;
-	//Slika
+	private String image;
 	private WorkTime workTime;
 	
-	public SportObject(String name, String type, String content, Location location, Double averageGrade,
+	public SportObject(String name, String type, String content, Location location, Double averageGrade, String image,
 			WorkTime workTime) {
 		super();
 		this.name = name;
@@ -18,6 +18,7 @@ public class SportObject {
 		this.content = content;
 		this.location = location;
 		this.averageGrade = averageGrade;
+		this.image = image;
 		this.workTime = workTime;
 	}
 
@@ -61,6 +62,14 @@ public class SportObject {
 		this.averageGrade = averageGrade;
 	}
 
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public WorkTime getWorkTime() {
 		return workTime;
 	}
@@ -68,6 +77,8 @@ public class SportObject {
 	public void setWorkTime(WorkTime workTime) {
 		this.workTime = workTime;
 	}
+
+	
 	
 	
 	
