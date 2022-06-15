@@ -3,6 +3,7 @@
 	<name>FitnessApp</name>
 	<comment></comment>
 	<projects>
+		<project>projekat</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
