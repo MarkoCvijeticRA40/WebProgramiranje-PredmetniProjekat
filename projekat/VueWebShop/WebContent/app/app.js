@@ -1,16 +1,15 @@
-const WebShop = { template: '<web-shop></web-shop>' }
-const ShoppingCart = { template: '<shopping-cart></shopping-cart>' }
+const StartPage = { template: '<start-page></start-page>' }
+
 
 const router = new VueRouter({
 	  mode: 'hash',
 	  routes: [
-	    { path: '/', component: WebShop},
-	    { path: '/sc', component: ShoppingCart }
+	    { path: '/', component: StartPage}
 	  ]
 });
 
 var app = new Vue({
 	router,
-	el: '#webShop'
+	el: '#startPage'
 });
 
