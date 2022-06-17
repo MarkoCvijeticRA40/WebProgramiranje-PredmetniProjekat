@@ -28,6 +28,14 @@ public class Customer extends User {
 		this.customerType = null;
 	}
 	
+	public Customer(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth) {
+		super(username, password, name, lastName, gender, dateOfBirth);
+		this.membership = null;
+		this.visitedObjects = null;
+		this.points = 0;
+		this.customerType = null;
+	}
+	
 	public Customer(String username, String password, String name, String lastName) {
 		super(username, password, name, lastName);
 		this.membership = null;

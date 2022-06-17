@@ -5,7 +5,9 @@ Vue.component("register-page", {
 		      password: "",
 		      name: "",
 		      surname: "",
-		      picked: null
+		      picked: null,
+		      pickedF: null,
+		      date: null
 		    }
 	},
 	template: ` 
@@ -27,7 +29,7 @@ Vue.component("register-page", {
 	
 	<tr>
 		<td><label for="password">Password:</label></td>
-		<td><input type="text" v-model="password" id="password"></td>
+		<td><input type="password" v-model="password" id="password"></td>
 	</tr>
 	
 	<tr>
@@ -44,14 +46,19 @@ Vue.component("register-page", {
 		<td><label for="gender">Gender:</label></td>
 		<td><input type="radio" id="male" name="gender" value="male" v-model="picked">
 			<label for="male">Male</label>
-			<input type="radio" id="female" name="gender" value="female">
+			<input type="radio" id="female" name="gender" value="female" v-model="pickedF">
 			<label for="female">Female</label>
 		</td>
 	</tr>
 	
 	<tr>
+		<td><label for="date">Date of birth:</label></td>
+		<td><input type="date" v-model="date" id="date"></td>
+	</tr>
+	
+	<tr>
 		<td></td>
-		<td><button v-on:click="createCustomerAuto()">Register</button></td>
+		<td><button v-on:click="createCustomer()">Register</button></td>
 	</tr>
 	
 </table>
@@ -60,16 +67,34 @@ Vue.component("register-page", {
 	, 
 	methods : {
 		createCustomer : function() {
-			if (this.picked === true)
+			if (this.username === "" || this.password === "" || this.name === "" || this.surname === "" || (this.picked === null && this.pickedF === null) || this.date === null) {
+				toast("All fields must be filled!")
+				return;
+			}
+		
+			if (this.picked === "male")
 			{
 			axios
     		.post("rest/customers/create", {
     			username: this.username,
 			 	 password: this.password,
 			 	 name: this.name,
-			 	 lastName: this.surname
+			 	 lastName: this.surname,
+			 	 gender: "Male",
+			 	 dateOfBirth: this.date
     		})
-    		.then(response => toast('Customer  created!' ));
+    		.then(response => 
+    		{
+    		if (response.data === '') {
+    			toast("There is already user with same username!")
+    		}
+    		else {
+    			toast("You have successfully registered!")
+    		}
+    		
+    		}
+    		);
+    		
 			}
 			else
 			{
@@ -78,16 +103,23 @@ Vue.component("register-page", {
 				   username: this.username,
 			  password: this.password,
 			  name: this.name,
-			  lastName: this.surname 		
+			  lastName: this.surname,
+			  gender: "Female",
+			  dateOfBirth: this.date		
     		})
-    		.then(response => toast('Customer  created!' ));
+    		.then(response => 
+    		{
+    		if (response.data === '') {
+    			toast("There is already user with same username!")
+    		}
+    		else {
+    			toast("You have successfully registered!")
+    		}
+    		
+    		}
+    		);
+    		
 			}
-    	},
-    	
-    	createCustomerAuto : function() {
-    		axios
-    		.get("rest/customers/createAuto")
-    		.then(response => toast('Customer  created!' ))
     	}
 	},
 	mounted () {

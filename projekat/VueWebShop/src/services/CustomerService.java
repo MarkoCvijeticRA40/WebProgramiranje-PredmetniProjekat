@@ -2,13 +2,10 @@ package services;
 
 
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -34,9 +31,6 @@ public class CustomerService {
 		}
 	}
 	
-	public String getDataDirPath() {
-		return (ctx.getRealPath("") + "WEB-INF" + File.separator + "classes" + File.separator + "data" + File.separator);
-	}
 
 	
 	@POST
@@ -45,28 +39,48 @@ public class CustomerService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Customer createCustomer(Customer customer)
 	{
-		repo.setBasePath(getDataDirPath());
-				
-		Customer newCustomer = new Customer(customer.getUsername(), customer.getPassword(), customer.getName(), customer.getLastName());
-		repo.create(newCustomer);
-		
-		return customer;
+		if (isUsernameUnique(customer)) {
+			
+			repo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+			
+			Customer newCustomer = new Customer(customer.getUsername(), customer.getPassword(), customer.getName(), customer.getLastName(), customer.getGender(), customer.getDateOfBirth());
+			repo.create(newCustomer);
+			
+			return customer;
+		}
+		else {
+			return null;
+		}
 		
 	}
 	
-	@GET
-	@Path("createAuto")	
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Customer createCustomerAuto()
-	{
-		repo.setBasePath(getDataDirPath());
-				
-		Customer newCustomer = new Customer("bilosta", "123", "Nikola", "Nikolic");
-		Map<String, Customer> mapa = new HashMap<String, Customer>();
-		mapa.put(newCustomer.getId(), newCustomer);
-		repo.writeFile(mapa);
+	private boolean isUsernameUnique(Customer customer) {
+		repo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		boolean isUnique = true;
+		ArrayList<Customer> customers = repo.getAll();
+		for (Customer c : customers) {
+			if (c.getUsername().equals(customer.getUsername())) {
+				isUnique = false;
+			}
+		}
 		
-		return newCustomer;
+		return isUnique;
+		
 	}
+	
+//	@GET
+//	@Path("createAuto")	
+//	@Produces(MediaType.TEXT_PLAIN)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public void createCustomerAuto()
+//	{
+//		//repo.setBasePath(getDataDirPath());
+//				
+//		Customer newCustomer = new Customer("bilosta", "123", "Nikola", "Nikolic");
+//		Map<String, Customer> mapa = new HashMap<String, Customer>();
+//		mapa.put(newCustomer.getId(), newCustomer);
+//		repo.writeFile(mapa);
+//		
+//		System.out.println("Created new customer: ");
+//	}
 }

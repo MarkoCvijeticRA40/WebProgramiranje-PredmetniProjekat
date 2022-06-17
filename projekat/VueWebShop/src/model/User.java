@@ -35,6 +35,7 @@ public class User {
 		this.dateOfBirth = null;
 	}
 	
+	
 	public User(String username, String password, String name, String lastName) {
 		super();
 		this.id = LocalDateTime.now().toString();
