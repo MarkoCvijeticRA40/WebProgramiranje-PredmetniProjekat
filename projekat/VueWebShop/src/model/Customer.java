@@ -18,6 +18,33 @@ public class Customer extends User {
 		this.points = points;
 		this.customerType = customerType;
 	}
+	
+	
+	public Customer(String username, String password, String name, String lastName, Gender gender) {
+		super(username, password, name, lastName, gender);
+		this.membership = null;
+		this.visitedObjects = null;
+		this.points = 0;
+		this.customerType = null;
+	}
+	
+	public Customer(String username, String password, String name, String lastName) {
+		super(username, password, name, lastName);
+		this.membership = null;
+		this.visitedObjects = null;
+		this.points = 0;
+		this.customerType = null;
+	}
+
+	public Customer() {
+		super();
+		this.membership = null;
+		this.visitedObjects = null;
+		this.points = 0;
+		this.customerType = null;
+	}
+
+
 
 	public Membership getMembership() {
 		return membership;

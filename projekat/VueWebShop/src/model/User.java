@@ -1,9 +1,11 @@
 package model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class User {
 	
+	private String id;
 	private String username;
 	private String password;
 	private String name;
@@ -13,6 +15,7 @@ public class User {
 	
 	public User(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth) {
 		super();
+		this.id = LocalDateTime.now().toString();
 		this.username = username;
 		this.password = password;
 		this.name = name;
@@ -21,8 +24,31 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
+	public User(String username, String password, String name, String lastName, Gender gender) {
+		super();
+		this.id = LocalDateTime.now().toString();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.dateOfBirth = null;
+	}
+	
+	public User(String username, String password, String name, String lastName) {
+		super();
+		this.id = LocalDateTime.now().toString();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.lastName = lastName;
+		this.gender = gender.Male;
+		this.dateOfBirth = null;
+	}
+	
 	public User() {
 		super();
+		this.id = LocalDateTime.now().toString();
 		this.username = null;
 		this.password = null;
 		this.name = null;
@@ -79,7 +105,9 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
-	
+	public String getId() {
+		return id;
+	}
 	
 	
 	
