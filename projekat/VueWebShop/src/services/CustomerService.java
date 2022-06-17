@@ -2,7 +2,10 @@ package services;
 
 
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -12,7 +15,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import model.Administrator;
 import model.Customer;
+import model.Gender;
 import repository.CustomerRepository;
 
 @Path("customers")
@@ -76,8 +81,8 @@ public class CustomerService {
 //	{
 //		//repo.setBasePath(getDataDirPath());
 //				
-//		Customer newCustomer = new Customer("bilosta", "123", "Nikola", "Nikolic");
-//		Map<String, Customer> mapa = new HashMap<String, Customer>();
+//		Administrator newCustomer = new Administrator("Nidzo", "nesto", "Nikola", "Nikolic", Gender.Male, new Date(1995,6,25));
+//		Map<String, Administrator> mapa = new HashMap<String, Administrator>();
 //		mapa.put(newCustomer.getId(), newCustomer);
 //		repo.writeFile(mapa);
 //		

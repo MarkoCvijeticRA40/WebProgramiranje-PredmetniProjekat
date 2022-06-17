@@ -38,7 +38,7 @@ public class CustomerRepository extends GenericRepository<Customer, CustomerRepo
 
 		String json = "";
 		try {
-			json = new String(Files.readAllBytes(Paths.get(getPath()))); //bilo getPath()
+			json = new String(Files.readAllBytes(Paths.get(getPath()))); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

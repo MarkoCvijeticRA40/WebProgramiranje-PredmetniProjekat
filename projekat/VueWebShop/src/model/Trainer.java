@@ -11,6 +11,11 @@ public class Trainer extends User{
 		super(username, password, name, lastName, gender, dateOfBirth);
 		this.trainingHistory = trainingHistory;
 	}
+	
+	public Trainer(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth) {
+		super(username, password, name, lastName, gender, dateOfBirth);
+		this.trainingHistory = null;
+	}
 
 	public TrainingHistory getTrainingHistory() {
 		return trainingHistory;

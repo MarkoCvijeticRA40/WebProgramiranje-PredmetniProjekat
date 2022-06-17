@@ -11,6 +11,11 @@ public class Manager extends User {
 		super(username, password, name, lastName, gender, dateOfBirth);
 		this.sportObject = sportObject;
 	}
+	
+	public Manager(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth) {
+		super(username, password, name, lastName, gender, dateOfBirth);
+		this.sportObject = null;
+	}
 
 	public SportObject getSportObject() {
 		return sportObject;
