@@ -21,6 +21,7 @@ Vue.component("start-page", {
     <th style="width:80px">Average Grade</th>
 	<th style="width:260px">Image</th>
 	<th style="width:90px">Work Time</th>
+	<th>Status</th>
   </tr>
   <tr v-for="s in sportObjects">
   <td>{{s.name}}</td>
@@ -30,6 +31,7 @@ Vue.component("start-page", {
   <td>{{s.averageGrade}}</td>
   <td><img v-bind:src="s.image" width="260px" Height="160px" alt="bilo sta"></td>
   <td>{{s.workTime}}</td>
+  <td>{{s.status}}</td>
   </tr>
 </table>
 </div>`

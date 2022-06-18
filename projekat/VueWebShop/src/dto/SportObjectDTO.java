@@ -1,5 +1,8 @@
 package dto;
 
+import model.SportObjectStatus;
+import model.WorkTime;
+
 public class SportObjectDTO {
 	
 	private String id;
@@ -10,9 +13,10 @@ public class SportObjectDTO {
 	private Double averageGrade;
 	private String image;
 	private String workTime;
+	private String status;
 	
 	public SportObjectDTO(String id, String name, String type, String content, String location, Double averageGrade,
-			String image, String workTime) {
+			String image, String workTime,String status) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -22,14 +26,23 @@ public class SportObjectDTO {
 		this.averageGrade = averageGrade;
 		this.image = image;
 		this.workTime = workTime;
+		this.status = status;
 	}
-
+	
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+	
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	public String getName() {
@@ -87,6 +100,7 @@ public class SportObjectDTO {
 	public void setWorkTime(String workTime) {
 		this.workTime = workTime;
 	}
+	
 	
 	
 	

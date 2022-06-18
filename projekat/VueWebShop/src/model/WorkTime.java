@@ -7,6 +7,7 @@ public class WorkTime {
 	private LocalTime startTime;
 	private LocalTime endTime;
 	
+	
 	public WorkTime(LocalTime startTime, LocalTime endTime) {
 		super();
 		this.startTime = startTime;

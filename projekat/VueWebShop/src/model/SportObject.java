@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalTime;
+
 public class SportObject {
 
 	private String id;
@@ -10,6 +12,7 @@ public class SportObject {
 	private Double averageGrade;
 	private String image;
 	private WorkTime workTime;
+	private SportObjectStatus status;
 	
 	public SportObject(String id,String name, String type, String content, Location location, Double averageGrade, String image,
 			WorkTime workTime) {
@@ -22,6 +25,21 @@ public class SportObject {
 		this.averageGrade = averageGrade;
 		this.image = image;
 		this.workTime = workTime;
+		setStatus();
+	}
+
+	public void setStatus() {
+		if(this.workTime.getStartTime().compareTo(LocalTime.now())<=0 && this.workTime.getEndTime().compareTo(LocalTime.now())>=0)
+		{
+			this.status = status.Open;
+		}
+		else {
+			this.status = status.Close;
+		}
+	}
+	
+	public SportObjectStatus getStatus() {
+		return status;
 	}
 
 	public String getName() {

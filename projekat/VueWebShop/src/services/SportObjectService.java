@@ -18,6 +18,7 @@ import dto.SportObjectDTO;
 import model.Address;
 import model.Location;
 import model.SportObject;
+import model.SportObjectStatus;
 import model.WorkTime;
 import repository.SportObjectRepository;
 
@@ -43,12 +44,12 @@ SportObjectRepository repo = new SportObjectRepository();
 	@Consumes(MediaType.APPLICATION_JSON)
 	public void createAdministratorAuto()
 	{
-		repo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		repo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 				
-		Address adr = new Address("Beogradska 15","Beograd","21000");
-		Location loc = new Location(100.6,78.7,adr);
-		WorkTime work = new WorkTime(LocalTime.of(10,0,0),LocalTime.of(20,0,0));
-		SportObject newCustomer = new SportObject("4","Kombank arena","Sportska hala","Bina",loc, 3.0,"C:" + File.separator + "Users" + File.separator + "KORISNIK" + File.separator + "Desktop" + File.separator+ "WebProgramiranje-PredmetniProjekat" + File.separator + "projekat" + File.separator + "VueWebShop" + File.separator + "WebContent" + File.separator + "images" + File.separator + "kombankArena.png", work);
+		Address adr = new Address("Spens","Novi Sad","22000");
+		Location loc = new Location(101.1,55.9,adr);
+		WorkTime work = new WorkTime(LocalTime.of(15,0,0),LocalTime.of(23,0,0));
+		SportObject newCustomer = new SportObject("6","Spens","Hala","Grupni treninzi",loc, 4.9,"images" + File.separator + "spens.png", work);
 //		Map<String, SportObject> mapa = new HashMap<String, SportObject>();
 //		mapa.put(newCustomer.getId(), newCustomer);
 //		repo.writeFile(mapa);
@@ -61,13 +62,24 @@ SportObjectRepository repo = new SportObjectRepository();
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<SportObjectDTO> getAll() {
-		repo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		repo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<SportObject> sportObjects = repo.getAll();
 		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
-		for (SportObject s : sportObjects) {
-			retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString() ));
+		for (SportObject s : sportObjects) 
+		{			
+			s.setStatus();
+			if(s.getStatus() == SportObjectStatus.Open) {
+				retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+			}
 		}
-		
-		return retVal;
-	}
+			for (SportObject s1 : sportObjects) 
+			{			
+				s1.setStatus();
+				if(s1.getStatus() == SportObjectStatus.Close) {
+					retVal.add(new SportObjectDTO(s1.getId(), s1.getName(), s1.getType(), s1.getContent(), s1.getLocation().toString(), s1.getAverageGrade(), s1.getImage(), s1.getWorkTime().toString(),"CLOSE"));	
+															   }
+		}
+			return retVal;
+	}  
 }
+	
