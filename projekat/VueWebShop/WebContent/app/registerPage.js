@@ -14,7 +14,7 @@ Vue.component("register-page", {
 <div>
 <ul>
   <li><a class="active" href="#/">Home</a></li>
-  <li><a href="#news">News</a></li>
+  <li><a href="#/lu">Log in</a></li>
   <li><a href="#/ru">Register</a></li>
   <li><a href="#about">About</a></li>
 </ul>
@@ -89,7 +89,8 @@ Vue.component("register-page", {
     			toast("There is already user with same username!")
     		}
     		else {
-    			toast("You have successfully registered!")
+    			toast("You have successfully registered!");
+    			router.push("/");
     		}
     		
     		}
@@ -113,7 +114,8 @@ Vue.component("register-page", {
     			toast("There is already user with same username!")
     		}
     		else {
-    			toast("You have successfully registered!")
+    			toast("You have successfully registered!");
+    			router.push("/");
     		}
     		
     		}

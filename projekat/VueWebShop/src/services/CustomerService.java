@@ -2,10 +2,7 @@ package services;
 
 
 
-import java.sql.Date;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -17,13 +14,20 @@ import javax.ws.rs.core.MediaType;
 
 import model.Administrator;
 import model.Customer;
-import model.Gender;
+import model.Manager;
+import model.Trainer;
+import repository.AdministratorRepository;
 import repository.CustomerRepository;
+import repository.ManagerRepository;
+import repository.TrainerRepository;
 
 @Path("customers")
 public class CustomerService {
 	
-	CustomerRepository repo = new CustomerRepository();
+	CustomerRepository customerRepo = new CustomerRepository();
+	AdministratorRepository administratorRepo = new AdministratorRepository();
+	ManagerRepository managerRepo = new ManagerRepository();
+	TrainerRepository trainerRepo = new TrainerRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -46,10 +50,10 @@ public class CustomerService {
 	{
 		if (isUsernameUnique(customer)) {
 			
-			repo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+			customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 			
 			Customer newCustomer = new Customer(customer.getUsername(), customer.getPassword(), customer.getName(), customer.getLastName(), customer.getGender(), customer.getDateOfBirth());
-			repo.create(newCustomer);
+			customerRepo.create(newCustomer);
 			
 			return customer;
 		}
@@ -60,11 +64,37 @@ public class CustomerService {
 	}
 	
 	private boolean isUsernameUnique(Customer customer) {
-		repo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		administratorRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		managerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
 		boolean isUnique = true;
-		ArrayList<Customer> customers = repo.getAll();
+		
+		ArrayList<Customer> customers = customerRepo.getAll();
 		for (Customer c : customers) {
 			if (c.getUsername().equals(customer.getUsername())) {
+				isUnique = false;
+			}
+		}
+		
+		ArrayList<Administrator> administrators = administratorRepo.getAll();
+		for (Administrator a : administrators) {
+			if (a.getUsername().equals(customer.getUsername())) {
+				isUnique = false;
+			}
+		}
+		
+		ArrayList<Manager> managers = managerRepo.getAll();
+		for (Manager m : managers) {
+			if (m.getUsername().equals(customer.getUsername())) {
+				isUnique = false;
+			}
+		}
+		
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		for (Trainer t : trainers) {
+			if (t.getUsername().equals(customer.getUsername())) {
 				isUnique = false;
 			}
 		}
