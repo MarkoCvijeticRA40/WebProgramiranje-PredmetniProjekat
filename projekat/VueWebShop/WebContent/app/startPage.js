@@ -12,15 +12,15 @@ Vue.component("start-page", {
   <li><a href="#/ru">Register</a></li>
   <li><a href="#about">About</a></li>
 </ul>
-<table style="width:100%">
+<table style="width:100%" border="1px">
  <tr>
 	<th>Name</th>
     <th>Type</th>
 	<th>Content</th>
     <th>Location</th>
-    <th>Avreage Grade</th>
-	<th>Image</th>
-	<th>WorkTime</th>
+    <th style="width:80px">Average Grade</th>
+	<th style="width:260px">Image</th>
+	<th style="width:90px">Work Time</th>
   </tr>
   <tr v-for="s in sportObjects">
   <td>{{s.name}}</td>
@@ -28,8 +28,8 @@ Vue.component("start-page", {
   <td>{{s.content}}</td>
   <td>{{s.location}}</td>
   <td>{{s.averageGrade}}</td>
-  <td>{{s.image}}</td>
-  <td>{{s.workTime.startTime}}</td>
+  <td><img v-bind:src="s.image" width="260px" Height="160px" alt="bilo sta"></td>
+  <td>{{s.workTime}}</td>
   </tr>
 </table>
 </div>`
