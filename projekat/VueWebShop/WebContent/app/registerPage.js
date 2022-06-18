@@ -122,7 +122,12 @@ Vue.component("register-page", {
     		);
     		
 			}
-    	}
+    	},
+	CreateAuto:function(){
+		axios
+		.get("rest/sportobject/createAuto")
+		.then(response => toast("Uspesno kreirano!"));
+						  }
 	},
 	mounted () {
          

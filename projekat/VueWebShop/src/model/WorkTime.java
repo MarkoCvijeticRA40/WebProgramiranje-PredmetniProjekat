@@ -28,5 +28,9 @@ public class WorkTime {
 	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
-	
+
+	@Override
+	public String toString() {
+		return this.startTime.toString() + "-" + this.endTime.toString();
+	}
 }

@@ -2,6 +2,7 @@ package model;
 
 public class SportObject {
 
+	private String id;
 	private String name;
 	private String type;
 	private String content;
@@ -10,9 +11,10 @@ public class SportObject {
 	private String image;
 	private WorkTime workTime;
 	
-	public SportObject(String name, String type, String content, Location location, Double averageGrade, String image,
+	public SportObject(String id,String name, String type, String content, Location location, Double averageGrade, String image,
 			WorkTime workTime) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.content = content;
@@ -24,6 +26,10 @@ public class SportObject {
 
 	public String getName() {
 		return name;
+	}
+	
+	public String getId() {
+		return id;
 	}
 
 	public void setName(String name) {
@@ -78,9 +84,7 @@ public class SportObject {
 		this.workTime = workTime;
 	}
 
-	
-	
-	
-	
-	
+	public void setId(String id) {
+		this.id = id;
+	}
 }

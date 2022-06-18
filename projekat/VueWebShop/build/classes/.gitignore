@@ -1,5 +1,5 @@
-/services/
 /data/
-/repository/
-/model/
 /dto/
+/model/
+/repository/
+/services/
