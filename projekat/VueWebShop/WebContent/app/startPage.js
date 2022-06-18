@@ -16,8 +16,8 @@ Vue.component("start-page", {
 <br>
 <table>
 	<tr>
-		<td><input type="text" v-model="searchText"></td>
-		<td><button v-on:click="search">Search</button></td>
+		<td><input type="text" v-model="searchText" v-on:keyup="search"></td>
+		<td>&#128269</td>
 	</tr>
 </table>
 <br>

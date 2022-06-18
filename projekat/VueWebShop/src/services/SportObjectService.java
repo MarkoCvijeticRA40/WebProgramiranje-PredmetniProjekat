@@ -1,6 +1,8 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -108,10 +110,22 @@ SportObjectRepository repo = new SportObjectRepository();
 			if (s.getType().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
 				s.setStatus();
 				if(s.getStatus() == SportObjectStatus.Open) {
-					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
 				}
 				else {
-					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
 				}
 			}
 		}
@@ -120,10 +134,22 @@ SportObjectRepository repo = new SportObjectRepository();
 			if (s.getLocation().getAddress().getCity().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
 				s.setStatus();
 				if(s.getStatus() == SportObjectStatus.Open) {
-					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
 				}
 				else {
-					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
 				}
 			}
 		}
@@ -132,10 +158,22 @@ SportObjectRepository repo = new SportObjectRepository();
 			if (Double.toString(s.getAverageGrade()).toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
 				s.setStatus();
 				if(s.getStatus() == SportObjectStatus.Open) {
-					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
 				}
 				else {
-					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.getContent(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
 				}
 			}
 		}
