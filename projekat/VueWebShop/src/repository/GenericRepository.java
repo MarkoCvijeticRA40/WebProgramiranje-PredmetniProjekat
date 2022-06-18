@@ -40,7 +40,7 @@ public abstract class GenericRepository<Entity, StorageType extends GenericRepos
 		FileOutputStream outputStream = null;
 		try {
 			//outputStream = new FileOutputStream(getPath());
-			outputStream = new FileOutputStream("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\sportObject.json");
+			outputStream = new FileOutputStream(getPath());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

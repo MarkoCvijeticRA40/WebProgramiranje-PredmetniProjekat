@@ -127,7 +127,7 @@ Vue.component("register-page", {
 		axios
 		.get("rest/sportobject/createAuto")
 		.then(response => toast("Uspesno kreirano!"));
-						  }
+		}
 	},
 	mounted () {
          

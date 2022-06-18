@@ -36,7 +36,7 @@ public class SportObjectRepository extends GenericRepository<SportObject, SportO
 
 		String json = "";
 		try {
-			json = new String(Files.readAllBytes(Paths.get(getPath()))); //bilo getPath()
+			json = new String(Files.readAllBytes(Paths.get(getPath()))); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
