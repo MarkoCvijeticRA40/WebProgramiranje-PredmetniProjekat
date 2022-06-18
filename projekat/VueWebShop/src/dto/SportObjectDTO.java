@@ -1,8 +1,5 @@
 package dto;
 
-import model.SportObjectStatus;
-import model.WorkTime;
-
 public class SportObjectDTO {
 	
 	private String id;

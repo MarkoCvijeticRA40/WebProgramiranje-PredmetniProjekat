@@ -1,7 +1,8 @@
 Vue.component("start-page", {
 	data: function () {
 		    return {
-			  sportObjects : null
+			  sportObjects : null,
+			  searchText : ""
 		    }
 	},
 	template: ` 
@@ -12,6 +13,16 @@ Vue.component("start-page", {
   <li><a href="#/ru">Register</a></li>
   <li><a href="#about">About</a></li>
 </ul>
+<br>
+<table>
+	<tr>
+		<td><input type="text" v-model="searchText"></td>
+		<td><button v-on:click="search">Search</button></td>
+	</tr>
+</table>
+<br>
+
+
 <table style="width:100%" border="1px">
  <tr>
 	<th>Name</th>
@@ -37,7 +48,11 @@ Vue.component("start-page", {
 </div>`
 	, 
 	methods : {
-		
+		search : function() {
+		axios 
+		.post('rest/sportobject/search', { searchText : this.searchText })
+		.then(response => (this.sportObjects = response.data))
+		}
 	},
 	mounted () {
         axios 
