@@ -43,7 +43,7 @@ Vue.component("customerStart-page", {
 	},
 	mounted () {
          axios
-         .get('rest/users/activeUser')
+         .get('rest/users/activeCustomer')
          .then(response => this.customer = response.data);
     },
     filters: {

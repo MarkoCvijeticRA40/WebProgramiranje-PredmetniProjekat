@@ -91,7 +91,7 @@ public class UserService {
 	
 	
 	@GET
-	@Path("activeUser")
+	@Path("activeCustomer")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Customer getActiveCustomer() {
@@ -99,5 +99,34 @@ public class UserService {
 		String id = (String)ctx.getAttribute("id");
 		return customerRepo.read(id);
 	}
-
+	
+	@GET
+	@Path("activeAdministrator")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Administrator getActiveAdministrator() {
+		administratorRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		String id = (String)ctx.getAttribute("id");
+		return administratorRepo.read(id);
+	}
+	
+	@GET
+	@Path("activeManager")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Manager getActiveManager() {
+		managerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		String id = (String)ctx.getAttribute("id");
+		return managerRepo.read(id);
+	}
+	
+	@GET
+	@Path("activeTrainer")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Trainer getActiveTrainer() {
+		trainerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		String id = (String)ctx.getAttribute("id");
+		return trainerRepo.read(id);
+	}
 }
