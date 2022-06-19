@@ -58,7 +58,7 @@ Vue.component("register-page", {
 	
 	<tr>
 		<td></td>
-		<td><button v-on:click="CreateAuto()">Register</button></td>
+		<td><button v-on:click="createCustomer()">Register</button></td>
 	</tr>
 	
 </table>
