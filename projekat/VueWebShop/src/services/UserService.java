@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -33,10 +34,14 @@ public class UserService {
 	
 	@SuppressWarnings("unused")
 	public void init() {
-		if (ctx.getAttribute("users") == null) {
+		if (ctx.getAttribute("id") == null) {
 			String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("users", new UserService());
+			ctx.setAttribute("id", "");
 		}
+	}
+	
+	private void setLoggedInUser(String id) {
+		ctx.setAttribute("id", id);
 	}
 	
 	@POST
@@ -52,6 +57,7 @@ public class UserService {
 		ArrayList<Administrator> administrators = administratorRepo.getAll();
 		for (Administrator a : administrators) {
 			if (a.getUsername().equals(user.getUsername()) && a.getPassword().equals(user.getPassword())) {
+				setLoggedInUser(a.getId());
 				return "administrator";
 			}
 		}
@@ -59,6 +65,7 @@ public class UserService {
 		ArrayList<Customer> customers = customerRepo.getAll();
 		for (Customer c : customers) {
 			if (c.getUsername().equals(user.getUsername()) && c.getPassword().equals(user.getPassword())) {
+				setLoggedInUser(c.getId());
 				return "customer";
 			}
 		}
@@ -66,6 +73,7 @@ public class UserService {
 		ArrayList<Manager> managers = managerRepo.getAll();
 		for (Manager m : managers) {
 			if (m.getUsername().equals(user.getUsername()) && m.getPassword().equals(user.getPassword())) {
+				setLoggedInUser(m.getId());
 				return "manager";
 			}
 		}
@@ -73,11 +81,23 @@ public class UserService {
 		ArrayList<Trainer> trainers = trainerRepo.getAll();
 		for (Trainer t : trainers) {
 			if (t.getUsername().equals(user.getUsername()) && t.getPassword().equals(user.getPassword())) {
+				setLoggedInUser(t.getId());
 				return "trainer";
 			}
 		}
 		
 		return "none";
+	}
+	
+	
+	@GET
+	@Path("activeUser")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Customer getActiveCustomer() {
+		customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		String id = (String)ctx.getAttribute("id");
+		return customerRepo.read(id);
 	}
 
 }
