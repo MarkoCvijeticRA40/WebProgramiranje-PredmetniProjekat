@@ -103,6 +103,17 @@ public class CustomerService {
 		
 	}
 	
+	
+	@POST
+	@Path("update")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Customer updateCustomer(Customer customer) {
+		customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.update(customer);
+		return customer;
+	}
+	
 //	@GET
 //	@Path("createAuto")	
 //	@Produces(MediaType.TEXT_PLAIN)

@@ -33,12 +33,21 @@ Vue.component("customerStart-page", {
 		<td><label for="date">Date of birth:</label></td>
 		<td>&ensp;{{customer.dateOfBirth | dateFormat('DD.MM.YYYY')}}</td>
 	</tr>
+	
+	<tr>
+		<td></td>
+		<td><button v-on:click="editCustomer()">Edit</button></td>
+	</tr>
 </table>
 
 </div>
 `
 	, 
 	methods : {
+	
+		editCustomer : function() {
+			router.push("/ecp");
+		}
 		
 	},
 	mounted () {

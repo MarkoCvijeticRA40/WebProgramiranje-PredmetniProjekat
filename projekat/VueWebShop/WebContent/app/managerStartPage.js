@@ -33,6 +33,12 @@ Vue.component("managerStart-page", {
 		<td><label for="date">Date of birth:</label></td>
 		<td>&ensp;{{manager.dateOfBirth | dateFormat('DD.MM.YYYY')}}</td>
 	</tr>
+	
+	<tr>
+		<td></td>
+		<td><button v-on:click="editManager()">Edit</button></td>
+	</tr>
+	
 </table>
 
 </div>
@@ -40,16 +46,19 @@ Vue.component("managerStart-page", {
 	, 
 	methods : {
 		 
+		 editManager : function() {
+			router.push("/emp");
+		}
 	},
-	filters: {
-    	dateFormat: function (value, format) {
-    		var parsed = moment(value);
-    		return parsed.format(format);
-    	}
-   	},
 	mounted () {
          axios
          .get('rest/users/activeManager')
          .then(response => this.manager = response.data);
     },
+	filters: {
+    	dateFormat: function (value, format) {
+    		var parsed = moment(value);
+    		return parsed.format(format);
+    	}
+   	}
 });

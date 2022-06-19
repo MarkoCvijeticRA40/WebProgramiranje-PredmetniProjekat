@@ -33,6 +33,11 @@ Vue.component("administratorStart-page", {
 		<td><label for="date">Date of birth:</label></td>
 		<td>&ensp;{{administrator.dateOfBirth | dateFormat('DD.MM.YYYY')}}</td>
 	</tr>
+	
+	<tr>
+		<td></td>
+		<td><button v-on:click="editAdministrator()">Edit</button></td>
+	</tr>
 </table>
 
 </div>
@@ -40,6 +45,9 @@ Vue.component("administratorStart-page", {
 	, 
 	methods : {
 		 
+		 editAdministrator : function() {
+			router.push("/eap");
+		}
 	},
 	filters: {
     	dateFormat: function (value, format) {

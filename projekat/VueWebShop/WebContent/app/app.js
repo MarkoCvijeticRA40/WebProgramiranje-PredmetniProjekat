@@ -5,6 +5,9 @@ const AdministratorStartPage = { template: '<administratorStart-page></administr
 const CustomerStartPage = { template: '<customerStart-page></customerStart-page>' }
 const ManagerStartPage = { template: '<managerStart-page></managerStart-page>' }
 const TrainerStartPage = { template: '<trainerStart-page></trainerStart-page>' }
+const EditCustomerProfilePage = { template: '<editCustomerProfile-page></editCustomerProfile-page>' }
+const EditAdministratorProfilePage = { template: '<editAdministratorProfile-page></editAdministratorProfile-page>' }
+const EditManagerProfilePage = { template: '<editManagerProfile-page></editManagerProfile-page>' }
 
 
 
@@ -17,7 +20,10 @@ const router = new VueRouter({
 	    { path: '/asp', component: AdministratorStartPage },
 	    { path: '/csp', component: CustomerStartPage },
 	    { path: '/msp', component: ManagerStartPage },
-	    { path: '/tsp', component: TrainerStartPage }
+	    { path: '/tsp', component: TrainerStartPage },
+	    { path: '/ecp', component: EditCustomerProfilePage },
+	    { path: '/eap', component: EditAdministratorProfilePage },
+	    { path: '/emp', component: EditManagerProfilePage }
 	  ]
 });
 
