@@ -40,7 +40,7 @@ public abstract class GenericRepository<Entity, StorageType extends GenericRepos
 		FileOutputStream outputStream = null;
 		try {
 			//outputStream = new FileOutputStream(getPath());
-			outputStream = new FileOutputStream(getPath());
+			outputStream = new FileOutputStream("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\comments.json");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

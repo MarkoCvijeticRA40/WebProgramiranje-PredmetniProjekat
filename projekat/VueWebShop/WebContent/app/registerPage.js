@@ -58,7 +58,7 @@ Vue.component("register-page", {
 	
 	<tr>
 		<td></td>
-		<td><button v-on:click="createCustomer()">Register</button></td>
+		<td><button v-on:click="CreateAuto()">Register</button></td>
 	</tr>
 	
 </table>
@@ -125,7 +125,7 @@ Vue.component("register-page", {
     	},
 	CreateAuto:function(){
 		axios
-		.get("rest/sportobject/createAuto")
+		.get("rest/comments/createAuto")
 		.then(response => toast("Uspesno kreirano!"));
 		}
 	},
