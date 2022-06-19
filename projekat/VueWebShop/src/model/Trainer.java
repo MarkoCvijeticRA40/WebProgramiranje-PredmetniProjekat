@@ -5,7 +5,7 @@ import java.util.Date;
 public class Trainer extends User{
 
 	private TrainingHistory trainingHistory;
-
+	
 	public Trainer() {
 		
 	}
