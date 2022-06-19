@@ -5,6 +5,10 @@ import java.util.Date;
 public class Trainer extends User{
 
 	private TrainingHistory trainingHistory;
+	
+	public Trainer() {
+		
+	}
 
 	public Trainer(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth,
 			TrainingHistory trainingHistory) {

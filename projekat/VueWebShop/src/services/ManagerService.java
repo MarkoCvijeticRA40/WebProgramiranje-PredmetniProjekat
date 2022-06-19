@@ -1,6 +1,7 @@
 package services;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,15 +14,23 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import model.Administrator;
 import model.Customer;
 import model.Gender;
 import model.Manager;
+import model.Trainer;
+import repository.AdministratorRepository;
+import repository.CustomerRepository;
 import repository.ManagerRepository;
+import repository.TrainerRepository;
 
 @Path("managers")
 public class ManagerService {
-
-	ManagerRepository repo = new ManagerRepository();
+	
+	CustomerRepository customerRepo = new CustomerRepository();
+	AdministratorRepository administratorRepo = new AdministratorRepository();
+	ManagerRepository managerRepo = new ManagerRepository();
+	TrainerRepository trainerRepo = new TrainerRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -34,16 +43,75 @@ public class ManagerService {
 		}
 	}
 	
+	
+	@POST
+	@Path("createManager")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Manager createManager(Manager manager)
+	{
+		if (isUsernameUnique(manager)) {
+			
+			managerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+			Manager newManager = new Manager(manager.getUsername(), manager.getPassword(), manager.getName(), manager.getLastName(), manager.getGender(), manager.getDateOfBirth());
+			managerRepo.create(newManager);
+			
+			return manager;
+		}
+		else {
+			return null;
+		}
+		
+	}
+	
 	@POST
 	@Path("update")	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Manager updateManager(Manager manager) {
-		repo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		repo.update(manager);
+		managerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		managerRepo.update(manager);
 		return manager;
 	}
 	
+	private boolean isUsernameUnique(Manager manager) {
+		administratorRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		managerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		boolean isUnique = true;
+		
+		ArrayList<Customer> customers = customerRepo.getAll();
+		for (Customer c : customers) {
+			if (c.getUsername().equals(manager.getUsername())) {
+				isUnique = false;
+			}
+		}
+		
+		ArrayList<Administrator> administrators = administratorRepo.getAll();
+		for (Administrator a : administrators) {
+			if (a.getUsername().equals(manager.getUsername())) {
+				isUnique = false;
+			}
+		}
+		
+		ArrayList<Manager> managers = managerRepo.getAll();
+		for (Manager m : managers) {
+			if (m.getUsername().equals(manager.getUsername())) {
+				isUnique = false;
+			}
+		}
+		
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		for (Trainer t : trainers) {
+			if (t.getUsername().equals(manager.getUsername())) {
+				isUnique = false;
+			}
+		}
+		return isUnique;
+	}
+}
 //	@GET
 //	@Path("createAuto")	
 //	@Produces(MediaType.TEXT_PLAIN)
@@ -59,4 +127,3 @@ public class ManagerService {
 //		
 //		System.out.println("Created new customer: ");
 //	}
-}
