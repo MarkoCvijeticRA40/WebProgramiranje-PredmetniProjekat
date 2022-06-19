@@ -10,6 +10,8 @@ const EditAdministratorProfilePage = { template: '<editAdministratorProfile-page
 const EditManagerProfilePage = { template: '<editManagerProfile-page></editManagerProfile-page>' }
 const administratorCreateManager = {template:'<administratorCreateManager-page></administratorCreateManager-page>'}
 const administratorCreateTrainer = {template:'<administratorCreateTrainer-page></administratorCreateTrainer-page>'}
+const EditTrainerProfilePage = { template: '<editTrainerProfile-page></editTrainerProfile-page>' }
+
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -25,7 +27,8 @@ const router = new VueRouter({
 	    { path: '/eap', component: EditAdministratorProfilePage },
 	    { path: '/emp', component: EditManagerProfilePage },
 		{ path: '/acm', component: administratorCreateManager },
-		{ path: '/act', component: administratorCreateTrainer }
+		{ path: '/act', component: administratorCreateTrainer },
+	    { path: '/etp', component: EditTrainerProfilePage }
 	  ]
 });
 

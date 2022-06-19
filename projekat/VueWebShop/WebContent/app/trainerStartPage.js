@@ -33,6 +33,11 @@ Vue.component("trainerStart-page", {
 		<td><label for="date">Date of birth:</label></td>
 		<td>&ensp;{{trainer.dateOfBirth | dateFormat('DD.MM.YYYY')}}</td>
 	</tr>
+	
+	<tr>
+		<td></td>
+		<td><button v-on:click="editTrainer()">Edit</button></td>
+	</tr>
 </table>
 
 </div>
@@ -40,6 +45,9 @@ Vue.component("trainerStart-page", {
 	, 
 	methods : {
 		 
+		 editTrainer : function() {
+			router.push("/etp");
+		}
 	},
 	filters: {
     	dateFormat: function (value, format) {
