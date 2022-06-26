@@ -59,7 +59,7 @@ SportObjectRepository repo = new SportObjectRepository();
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<SportObjectDTO> getAll() {
-		repo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<SportObject> sportObjects = repo.getAll();
 		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
 		
@@ -90,7 +90,7 @@ SportObjectRepository repo = new SportObjectRepository();
 			return getAll();
 		}
 		
-		repo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
 		ArrayList<SportObject> sportObjects = repo.getAll();
 		

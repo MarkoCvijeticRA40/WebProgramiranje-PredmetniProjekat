@@ -38,7 +38,7 @@ AdministratorRepository repo = new AdministratorRepository();
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<AdministratorDTO> getAll() {
-		repo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<Administrator> administrators = repo.getAll();
 		ArrayList<AdministratorDTO> retVal = new ArrayList<AdministratorDTO>();
 		for (Administrator s : administrators) {			
@@ -52,7 +52,7 @@ AdministratorRepository repo = new AdministratorRepository();
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Administrator updateAdministrator(Administrator administrator) {
-		repo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		repo.update(administrator);
 		return administrator;
 	}
