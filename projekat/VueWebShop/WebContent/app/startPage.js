@@ -2,7 +2,7 @@ Vue.component("start-page", {
 	data: function () {
 		    return {
 			  sportObjects : null,
-			  searchText : ""
+			  searchText : "",
 		    }
 	},
 	template: ` 
@@ -35,16 +35,20 @@ Vue.component("start-page", {
 	<th>Status</th>
   </tr>
   <tr v-for="s in sportObjects">
-  <td>{{s.name}}</td>
-  <td>{{s.type}}</td>
-  <td>{{s.content}}</td>
-  <td>{{s.location}}</td>
-  <td>{{s.averageGrade}}</td>
-  <td><img v-bind:src="s.image" width="260px" Height="160px" alt="bilo sta"></td>
-  <td>{{s.workTime}}</td>
-  <td>{{s.status}}</td>
+  <td v-on:click="selectSportObject()" id="name">{{s.name}}</td>
+  <td v-on:click="selectSportObject()">{{s.type}}</td>
+  <td v-on:click="selectSportObject()">{{s.content}}</td>
+  <td v-on:click="selectSportObject()">{{s.location}}</td>
+  <td v-on:click="selectSportObject()">{{s.averageGrade}}</td>
+  <td v-on:click="selectSportObject()"><img v-bind:src="s.image" width="260px" Height="160px" alt="bilo sta"></td>
+  <td v-on:click="selectSportObject()">{{s.workTime}}</td>
+  <td v-on:click="selectSportObject()">{{s.status}}</td>
   </tr>
 </table>
+
+
+
+	
 </div>`
 	, 
 	methods : {
@@ -52,6 +56,9 @@ Vue.component("start-page", {
 		axios 
 		.post('rest/sportobject/search', { searchText : this.searchText })
 		.then(response => (this.sportObjects = response.data))
+		},
+		 selectSportObject : function() {
+			router.push("/spo");
 		}
 	},
 	mounted () {

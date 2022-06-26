@@ -6,15 +6,20 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import dto.CustomerDTO;
+import dto.SportObjectDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;
+import model.SportObject;
+import model.SportObjectStatus;
 import model.Trainer;
 import repository.AdministratorRepository;
 import repository.CustomerRepository;
@@ -39,9 +44,23 @@ public class CustomerService {
 			ctx.setAttribute("customers", new CustomerService());
 		}
 	}
+	//
 	
-
+	@GET
+	@Path("getAll")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getAll() {
+		customerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Customer> customers = customerRepo.getAll();
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer s : customers) {			
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+		}
+		return retVal;
+	}
 	
+	//
 	@POST
 	@Path("create")	
 	@Produces(MediaType.APPLICATION_JSON)
@@ -50,7 +69,7 @@ public class CustomerService {
 	{
 		if (isUsernameUnique(customer)) {
 			
-			customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+			customerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 			
 			Customer newCustomer = new Customer(customer.getUsername(), customer.getPassword(), customer.getName(), customer.getLastName(), customer.getGender(), customer.getDateOfBirth());
 			customerRepo.create(newCustomer);
@@ -64,10 +83,10 @@ public class CustomerService {
 	}
 	
 	private boolean isUsernameUnique(Customer customer) {
-		administratorRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		managerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		trainerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		administratorRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		managerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		boolean isUnique = true;
 		
@@ -103,13 +122,12 @@ public class CustomerService {
 		
 	}
 	
-	
 	@POST
 	@Path("update")	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Customer updateCustomer(Customer customer) {
-		customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		customerRepo.update(customer);
 		return customer;
 	}

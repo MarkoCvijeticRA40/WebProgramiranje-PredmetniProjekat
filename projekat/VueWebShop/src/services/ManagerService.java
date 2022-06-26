@@ -3,12 +3,15 @@ package services;
 import java.util.ArrayList;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import dto.CustomerDTO;
+import dto.ManagerDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;
@@ -37,6 +40,19 @@ public class ManagerService {
 		}
 	}
 	
+	@GET
+	@Path("getAll")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<ManagerDTO> getAll() {
+		managerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Manager> managers = managerRepo.getAll();
+		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
+		for (Manager m : managers) {			
+			retVal.add(new ManagerDTO(m.getUsername(), m.getName(), m.getLastName(),m.getGender(),m.getDateOfBirth()));	
+		}
+		return retVal;
+	}
 	
 	@POST
 	@Path("createManager")	
@@ -46,7 +62,7 @@ public class ManagerService {
 	{
 		if (isUsernameUnique(manager)) {
 			
-			managerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+			managerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 			Manager newManager = new Manager(manager.getUsername(), manager.getPassword(), manager.getName(), manager.getLastName(), manager.getGender(), manager.getDateOfBirth());
 			managerRepo.create(newManager);
 			
@@ -69,10 +85,10 @@ public class ManagerService {
 	}
 	
 	private boolean isUsernameUnique(Manager manager) {
-		administratorRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		managerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		trainerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		administratorRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		managerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		boolean isUnique = true;
 		

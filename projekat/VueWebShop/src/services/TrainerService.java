@@ -4,12 +4,15 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import dto.ManagerDTO;
+import dto.TrainerDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;
@@ -39,6 +42,20 @@ public class TrainerService {
 		}
 	}
 	
+	@GET
+	@Path("getAll")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<TrainerDTO> getAll() {
+		trainerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
+		for (Trainer s : trainers) {			
+			retVal.add(new TrainerDTO(s.getUsername(),s.getName(), s.getLastName(), s.getGender(),s.getDateOfBirth()));	
+		}
+		return retVal;
+	}
+	
 	@POST
 	@Path("createTrainer")	
 	@Produces(MediaType.APPLICATION_JSON)
@@ -47,7 +64,7 @@ public class TrainerService {
 	{
 		if (isUsernameUnique(trainer)) {
 			
-			trainerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+			trainerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 			Trainer newTrainer = new Trainer(trainer.getUsername(), trainer.getPassword(), trainer.getName(), trainer.getLastName(), trainer.getGender(), trainer.getDateOfBirth());
 			trainerRepo.create(newTrainer);
 			
@@ -64,16 +81,16 @@ public class TrainerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Trainer updateTrainer(Trainer trainer) {
-		trainerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		trainerRepo.update(trainer);
 		return trainer;
 	}
 	
 	private boolean isUsernameUnique(Trainer trainer) {
-		administratorRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		managerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		trainerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		administratorRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		managerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		boolean isUnique = true;
 		

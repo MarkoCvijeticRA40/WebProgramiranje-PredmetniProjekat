@@ -11,7 +11,11 @@ const EditManagerProfilePage = { template: '<editManagerProfile-page></editManag
 const administratorCreateManager = {template:'<administratorCreateManager-page></administratorCreateManager-page>'}
 const administratorCreateTrainer = {template:'<administratorCreateTrainer-page></administratorCreateTrainer-page>'}
 const EditTrainerProfilePage = { template: '<editTrainerProfile-page></editTrainerProfile-page>' }
-
+const ListCustomers = { template: '<listCustomers-page></listCustomers-page>' }
+const administratorListManager = { template: '<listManager-page></listManager-page>' }
+const administratorListTrainer = { template: '<listTrainer-page></listTrainer-page>' }
+const administratorListAdministrator = { template: '<listAdministrator-page></listAdministrator-page>' }
+const selectedSportObject = { template: '<selected-page></selected-page>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -28,7 +32,12 @@ const router = new VueRouter({
 	    { path: '/emp', component: EditManagerProfilePage },
 		{ path: '/acm', component: administratorCreateManager },
 		{ path: '/act', component: administratorCreateTrainer },
-	    { path: '/etp', component: EditTrainerProfilePage }
+	    { path: '/etp', component: EditTrainerProfilePage },
+		{ path: '/lic', component: ListCustomers },
+		{ path: '/lim', component: administratorListManager },
+		{ path: '/lit', component: administratorListTrainer },
+		{ path: '/lia', component: administratorListAdministrator },
+		{ path: '/spo', component: selectedSportObject }	
 	  ]
 });
 

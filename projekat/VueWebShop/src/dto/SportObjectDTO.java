@@ -97,10 +97,4 @@ public class SportObjectDTO {
 	public void setWorkTime(String workTime) {
 		this.workTime = workTime;
 	}
-	
-	
-	
-	
-	
-
 }

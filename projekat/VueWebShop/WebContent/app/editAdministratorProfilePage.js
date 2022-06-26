@@ -14,6 +14,9 @@ Vue.component("editAdministratorProfile-page", {
   <li><a class="active" href="#/asp">Profile</a></li>
   <li><a class="active" href="#/act">Create Trainer</a></li>
   <li><a class="active" href="#/acm">Create Manager</a></li>
+  <li><a class="active" href="#/lic">ListCustomers</a></li>
+  <li><a class="active" href="#/lim">ListManagers</a></li>
+  <li><a class="active" href="#/lit">ListTrainers</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>
