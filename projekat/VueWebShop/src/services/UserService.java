@@ -89,9 +89,9 @@ public class UserService {
 				return "trainer";
 			}
 		}
-		
 		return "none";
 	}
+	
 	
 	
 	@GET
@@ -132,15 +132,5 @@ public class UserService {
 		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		String id = (String)ctx.getAttribute("id");
 		return trainerRepo.read(id);
-	}
-	
-	@GET
-	@Path("activeSportObject")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public SportObject getActiveSportObject() {
-		sportRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		String id = (String)ctx.getAttribute("id");
-		return sportRepo.read(id);
 	}
 }

@@ -16,6 +16,7 @@ const administratorListManager = { template: '<listManager-page></listManager-pa
 const administratorListTrainer = { template: '<listTrainer-page></listTrainer-page>' }
 const administratorListAdministrator = { template: '<listAdministrator-page></listAdministrator-page>' }
 const selectedSportObject = { template: '<selected-page></selected-page>' }
+const managerContent = { template: '<managerContent-page></managerContent-page>' }
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -37,7 +38,8 @@ const router = new VueRouter({
 		{ path: '/lim', component: administratorListManager },
 		{ path: '/lit', component: administratorListTrainer },
 		{ path: '/lia', component: administratorListAdministrator },
-		{ path: '/spo', component: selectedSportObject }	
+		{ path: '/spo', component: selectedSportObject },
+		{ path: '/mcp', component: managerContent }
 	  ]
 });
 

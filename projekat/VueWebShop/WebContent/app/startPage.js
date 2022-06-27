@@ -2,6 +2,7 @@ Vue.component("start-page", {
 	data: function () {
 		    return {
 			  sportObjects : null,
+			  sportObject : {},
 			  searchText : "",
 		    }
 	},
@@ -57,7 +58,10 @@ Vue.component("start-page", {
 		.post('rest/sportobject/search', { searchText : this.searchText })
 		.then(response => (this.sportObjects = response.data))
 		},
-		 selectSportObject : function() {
+		selectSportObject : function() {
+			axios
+			.post('rest/sportobject/setActiveSportObject', {sportObject : this.sportObject})
+			.then(response => toast("You have successfully changed your password!"));
 			router.push("/spo");
 		}
 	},

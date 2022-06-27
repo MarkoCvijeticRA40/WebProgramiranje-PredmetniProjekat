@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import dto.SearchDTO;
 import dto.SportObjectDTO;
+import dto.SportObjectViewDTO;
 import model.SportObject;
 import model.SportObjectStatus;
 import repository.SportObjectRepository;
@@ -74,7 +75,7 @@ SportObjectRepository repo = new SportObjectRepository();
 			s1.setStatus();
 			if(s1.getStatus() == SportObjectStatus.Close) {
 				retVal.add(new SportObjectDTO(s1.getId(), s1.getName(), s1.getType(), s1.getContent(), s1.getLocation().toString(), s1.getAverageGrade(), s1.getImage(), s1.getWorkTime().toString(),"CLOSE"));	
-														   }
+												   }
 		}
 		
 			return retVal;
@@ -181,6 +182,21 @@ SportObjectRepository repo = new SportObjectRepository();
 		return retVal;
 	}
 	
+	@POST
+	@Path("setActiveSportObject")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void setActiveSportObject(SportObject sportObject) {
+		ctx.setAttribute("sportobject", sportObject.getId());
+	}
 	
+	@GET
+	@Path("getActiveSportObject")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public SportObject getActiveSportObject() {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		String id = (String)ctx.getAttribute("id");
+		return repo.read(id);
+	}
 }
-	
