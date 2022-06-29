@@ -60,7 +60,7 @@ public class CustomerService {
 		return retVal;
 	}
 	
-	//
+	
 	@POST
 	@Path("create")	
 	@Produces(MediaType.APPLICATION_JSON)

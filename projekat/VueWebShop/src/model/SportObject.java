@@ -27,14 +27,44 @@ public class SportObject {
 		this.workTime = workTime;
 		setStatus();
 	}
+	
+	public SportObject(String id,String name, String type, Location location, WorkTime workTime, String image) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.location = location;
+		this.averageGrade = 0.0;
+		this.workTime = workTime;
+		this.image = image;
+		setStatus();
+	}
 
 	public void setStatus() {
-		if(this.workTime.getStartTime().compareTo(LocalTime.now())<=0 && this.workTime.getEndTime().compareTo(LocalTime.now())>=0)
-		{
-			this.status = status.Open;
+		if (this.workTime.getEndTime().getHour() == 0 && this.workTime.getEndTime().getMinute() == 0) {
+			if (this.workTime.getStartTime().compareTo(LocalTime.now()) <= 0 && LocalTime.MAX.compareTo(LocalTime.now()) >= 0) {
+				this.status = status.Open;
+			}
+			else {
+				this.status = status.Close;
+			}
+			
+		}
+		else if (this.workTime.getStartTime().compareTo(this.workTime.getEndTime()) >= 0) {
+			if (this.workTime.getEndTime().compareTo(LocalTime.now()) <= 0 && this.workTime.getStartTime().compareTo(LocalTime.now()) >= 0) {
+				this.status = status.Close;
+			}
+			else {
+				this.status = status.Open;
+			}
 		}
 		else {
-			this.status = status.Close;
+			if (this.workTime.getStartTime().compareTo(LocalTime.now()) <= 0 && this.workTime.getEndTime().compareTo(LocalTime.now()) >= 0) {
+				this.status = status.Open;
+			}
+			else {
+				this.status = status.Close;
+			}
 		}
 	}
 	

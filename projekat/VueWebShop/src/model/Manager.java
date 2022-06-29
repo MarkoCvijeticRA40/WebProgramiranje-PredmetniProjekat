@@ -16,8 +16,19 @@ public class Manager extends User {
 		this.sportObject = sportObject;
 	}
 	
+	public Manager(String id, String username, String password, String name, String lastName, Gender gender, Date dateOfBirth,
+			SportObject sportObject) {
+		super(id, username, password, name, lastName, gender, dateOfBirth);
+		this.sportObject = sportObject;
+	}
+	
 	public Manager(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth) {
 		super(username, password, name, lastName, gender, dateOfBirth);
+		this.sportObject = null;
+	}
+	
+	public Manager(String id, String username, String password, String name, String lastName, Gender gender, Date dateOfBirth) {
+		super(id, username, password, name, lastName, gender, dateOfBirth);
 		this.sportObject = null;
 	}
 

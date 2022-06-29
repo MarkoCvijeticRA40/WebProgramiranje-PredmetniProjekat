@@ -15,12 +15,13 @@ Vue.component("administratorStart-page", {
 <div>
 <ul>
   <li><a class="active" href="#/asp">Profile</a></li>
-  <li><a class="active" href="#/act">Create Trainer</a></li>
-  <li><a class="active" href="#/acm">Create Manager</a></li>
-  <li><a class="active" href="#/lic">List Customers</a></li>
-  <li><a class="active" href="#/lim">List Manages</a></li>
-  <li><a class="active" href="#/lit">List Trainers</a></li>
-<li><a class="active" href="#/lia">List Administrators</a></li>
+  <li><a class="active" href="#/act">Add Trainer</a></li>
+  <li><a class="active" href="#/acm">Add Manager</a></li>
+   <li><a class="active" href="#/aso">Add Sport Object</a></li>
+  <li><a class="active" href="#/lic">Customers</a></li>
+  <li><a class="active" href="#/lim">Managers</a></li>
+  <li><a class="active" href="#/lit">Trainers</a></li>
+<li><a class="active" href="#/lia">Administrators</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>

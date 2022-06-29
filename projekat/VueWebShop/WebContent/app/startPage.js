@@ -41,7 +41,7 @@ Vue.component("start-page", {
   <td v-on:click="selectSportObject()">{{s.content}}</td>
   <td v-on:click="selectSportObject()">{{s.location}}</td>
   <td v-on:click="selectSportObject()">{{s.averageGrade}}</td>
-  <td v-on:click="selectSportObject()"><img v-bind:src="s.image" width="260px" Height="160px" alt="bilo sta"></td>
+  <td v-on:click="selectSportObject()"><img v-bind:src="s.image" width="260px" Height="160px" alt="Logo is not posted."></td>
   <td v-on:click="selectSportObject()">{{s.workTime}}</td>
   <td v-on:click="selectSportObject()">{{s.status}}</td>
   </tr>

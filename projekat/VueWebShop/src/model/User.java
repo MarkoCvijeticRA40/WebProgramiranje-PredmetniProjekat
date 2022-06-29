@@ -24,6 +24,17 @@ public class User {
 		this.dateOfBirth = dateOfBirth;
 	}
 	
+	public User(String id, String username, String password, String name, String lastName, Gender gender, Date dateOfBirth) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.lastName = lastName;
+		this.gender = gender;
+		this.dateOfBirth = dateOfBirth;
+	}
+	
 	public User(String username, String password, String name, String lastName, Gender gender) {
 		super();
 		this.id = LocalDateTime.now().toString();
