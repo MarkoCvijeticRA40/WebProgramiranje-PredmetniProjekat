@@ -41,9 +41,9 @@ SportObjectRepository repo = new SportObjectRepository();
 	
 	@SuppressWarnings("unused")
 	public void init() {
-		if (ctx.getAttribute("sportobject") == null) {
+		if (ctx.getAttribute("id") == null) {
 			String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("sportobject", new SportObjectService());
+			ctx.setAttribute("id", "");
 		}
 	}
 	
@@ -264,13 +264,6 @@ SportObjectRepository repo = new SportObjectRepository();
 		return retVal;
 	}
 	
-	@POST
-	@Path("setActiveSportObject")
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void setActiveSportObject(SportObject sportObject) {
-		ctx.setAttribute("sportobject", sportObject.getId());
-	}
 	
 	@GET
 	@Path("getActiveSportObject")

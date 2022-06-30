@@ -30,8 +30,9 @@ public abstract class GenericRepository<Entity, StorageType extends GenericRepos
 
 	protected String getPath() {
 		return this.basePath + getFileName();
-		
 	}
+	
+	
 
 	public void writeFile(Map<String, Entity> entities) {
 		String jsonStr = gs.toJson(entities);
@@ -41,6 +42,7 @@ public abstract class GenericRepository<Entity, StorageType extends GenericRepos
 		try {
 			//outputStream = new FileOutputStream(getPath());
 			outputStream = new FileOutputStream(getPath());
+			//brisem get path i stavljam WebProgramiranje-PredmetniProjekat\projekat\VueWebShop\src\data\naziv_fajla.json
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
