@@ -16,13 +16,7 @@ Vue.component("start-page", {
   <li><a href="#/ru">Register</a></li>
   <li><a href="#about">About</a></li>
 </ul>
-<br>
-<table>
-	<tr>
-		<td><input type="text" v-model="searchText" v-on:keyup="search"></td>
-		<td>&#128269</td>
-	</tr>
-</table>
+
 <br>
 
 	
