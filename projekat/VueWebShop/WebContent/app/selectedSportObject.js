@@ -18,7 +18,8 @@ Vue.component("selected-page", {
 
 <table style="width:100%" border="1px">
  <tr>
-	<th><label v-model="sportObject.username" id="username"></label></td>
+	<th><label>Name:</label></th>
+	<td>&ensp;{{sportObject.name}}</td>
  </tr>
  <tr> 
 	<th>Type:</th>
@@ -56,11 +57,17 @@ Vue.component("selected-page", {
 </table>
 </div>`
 	, 
-	methods : {
+	methods : {	
 	},
 	mounted () {
 		axios
-         .get('rest/users/activeSportObject')
+         .get('rest/sportobject/getActiveSportObject')
          .then(response => this.sportObject = response.data);
     },
+	/*filters: {
+    	dateFormat: function (value, format) {
+    		var parsed = moment(value);
+    		return parsed.format(format);
+    		}
+   		}*/
 });

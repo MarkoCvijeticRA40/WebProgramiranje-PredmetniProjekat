@@ -15,6 +15,8 @@ import javax.ws.rs.core.MediaType;
 
 import dto.SearchDTO;
 import dto.SportObjectDTO;
+import dto.SportObjectViewDTO;
+import model.Manager;
 import model.SportObject;
 import model.SportObjectStatus;
 import repository.SportObjectRepository;
@@ -29,9 +31,9 @@ SportObjectRepository repo = new SportObjectRepository();
 	
 	@SuppressWarnings("unused")
 	public void init() {
-		if (ctx.getAttribute("sportobject") == null) {
+		if (ctx.getAttribute("id") == null) {
 			String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("sportobject", new SportObjectService());
+			ctx.setAttribute("id", "");
 		}
 	}
 	
@@ -74,7 +76,7 @@ SportObjectRepository repo = new SportObjectRepository();
 			s1.setStatus();
 			if(s1.getStatus() == SportObjectStatus.Close) {
 				retVal.add(new SportObjectDTO(s1.getId(), s1.getName(), s1.getType(), s1.getContent(), s1.getLocation().toString(), s1.getAverageGrade(), s1.getImage(), s1.getWorkTime().toString(),"CLOSE"));	
-														   }
+												   }
 		}
 		
 			return retVal;
@@ -181,6 +183,31 @@ SportObjectRepository repo = new SportObjectRepository();
 		return retVal;
 	}
 	
+	private void setActiveSO(String id) {
+		ctx.setAttribute("id", id);
+	}
 	
+	@POST
+	@Path("setActiveSportObject")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void setActiveSportObject(SportObject ulazni) {
+		//tx.setAttribute("id", sportObject.getId());
+		ArrayList<SportObject> sportObjects = repo.getAll();
+		for (SportObject m : sportObjects) {
+			if (m.getId().equals(ulazni.getId())) {
+				setActiveSO(m.getId());
+			}
+		}
+	}
+	
+	@GET
+	@Path("getActiveSportObject")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public SportObject getActiveSportObject() {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		String id = (String)ctx.getAttribute("id");
+		return repo.read(id);
+	}
 }
-	
