@@ -274,4 +274,22 @@ SportObjectRepository repo = new SportObjectRepository();
 		String id = (String)ctx.getAttribute("id");
 		return repo.read(id);
 	}
+	
+	@POST
+	@Path("transformToDTO")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public SportObjectDTO transformToDTO(SportObject sportObject) {
+		SportObjectDTO sportObjectDTO;
+		sportObject.setStatus();
+		if(sportObject.getStatus() == SportObjectStatus.Open) {
+			sportObjectDTO = new SportObjectDTO(sportObject.getId(), sportObject.getName(), sportObject.getType(), sportObject.getContent(), sportObject.getLocation().toString(), sportObject.getAverageGrade(), sportObject.getImage(), sportObject.getWorkTime().toString(),"OPEN");	
+		}
+		else {
+			sportObjectDTO = new SportObjectDTO(sportObject.getId(), sportObject.getName(), sportObject.getType(), sportObject.getContent(), sportObject.getLocation().toString(), sportObject.getAverageGrade(), sportObject.getImage(), sportObject.getWorkTime().toString(),"CLOSE");	
+		}
+		
+		return sportObjectDTO;
+	}
+	
 }

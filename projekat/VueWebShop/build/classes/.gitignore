@@ -1,8 +1,4 @@
-/services/
-/dto/
-<<<<<<< HEAD
 /model/
-/data/
-=======
 /repository/
->>>>>>> f1163de14aa04f00682a89b6ea558072c1d174fd
+/services/
+/data/

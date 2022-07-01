@@ -7,9 +7,12 @@ Vue.component("managerContent-page", {
 	template: ` 
 <div>
 <ul>
+  <ul>
   <li><a class="active" href="#/msp">Profile</a></li>
-  <li><a class="active" href="#/msp">Content</a></li>
+  <li><a class="active" href="#/mcp">Content</a></li>
+  <li><a class="active" href="#/mso">Sport Object</a></li>
   <li><a href="#/lu">Log out</a></li>
+</ul>
 </ul>
 <br>
 <br>

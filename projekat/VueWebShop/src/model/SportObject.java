@@ -14,6 +14,8 @@ public class SportObject {
 	private WorkTime workTime;
 	private SportObjectStatus status;
 	
+	public SportObject() {}
+	
 	public SportObject(String id,String name, String type, String content, Location location, Double averageGrade, String image,
 			WorkTime workTime) {
 		super();
