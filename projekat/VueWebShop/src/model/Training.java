@@ -1,7 +1,7 @@
 package model;
 
 public class Training {
-	
+	private String id;
 	private String name;
 	private String type;
 	private SportObject sportObject;
@@ -10,9 +10,10 @@ public class Training {
 	private String description;
 	private String image;
 	
-	public Training(String name, String type, SportObject sportObject, int durationInMinutes, Trainer trainer,
+	public Training(String id, String name, String type, SportObject sportObject, int durationInMinutes, Trainer trainer,
 			String description, String image) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.type = type;
 		this.sportObject = sportObject;
@@ -78,5 +79,14 @@ public class Training {
 		this.image = image;
 	}
 
+	public String getId() {
+		return id;
+	}
 
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	
+	
 }

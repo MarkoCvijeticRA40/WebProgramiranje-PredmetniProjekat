@@ -11,16 +11,18 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import dto.ManagerDTO;
+import dto.IdDTO;
 import dto.TrainerDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;
 import model.Trainer;
+import model.Training;
 import repository.AdministratorRepository;
 import repository.CustomerRepository;
 import repository.ManagerRepository;
 import repository.TrainerRepository;
+import repository.TrainingRepository;
 
 @Path("trainers")
 public class TrainerService {
@@ -29,6 +31,7 @@ public class TrainerService {
 	CustomerRepository customerRepo = new CustomerRepository();
 	AdministratorRepository administratorRepo = new AdministratorRepository();
 	ManagerRepository managerRepo = new ManagerRepository();
+	TrainingRepository trainingRepo = new TrainingRepository();
 	
 	
 	@Context
@@ -123,6 +126,23 @@ public class TrainerService {
 		}
 		return isUnique;
 	}
+	
+	@POST
+	@Path("getAllTrainersFromSportObject")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<TrainerDTO> getAllTrainersFromSportObject(IdDTO sportObjectId) {
+		trainingRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Training> trainings = trainingRepo.getAll();
+		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
+		for (Training t : trainings) {
+			if (t.getSportObject().getId().equals(sportObjectId.getId())) {
+				retVal.add(new TrainerDTO(t.getTrainer().getUsername(),t.getTrainer().getName(), t.getTrainer().getLastName(), t.getTrainer().getGender(),t.getTrainer().getDateOfBirth()));
+			}
+		}
+		return retVal;
+	}
+	
 }
 //	@GET
 //	@Path("createAuto")	

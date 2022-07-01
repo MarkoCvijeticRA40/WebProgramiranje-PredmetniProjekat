@@ -21,6 +21,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import dto.CreateSportObjectDTO;
+import dto.IdDTO;
 import dto.SearchDTO;
 import dto.SportObjectDTO;
 import model.Location;
@@ -279,8 +280,10 @@ SportObjectRepository repo = new SportObjectRepository();
 	@Path("transformToDTO")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public SportObjectDTO transformToDTO(SportObject sportObject) {
+	public SportObjectDTO transformToDTO(IdDTO sportObjectId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		SportObjectDTO sportObjectDTO;
+		SportObject sportObject = repo.read(sportObjectId.getId());
 		sportObject.setStatus();
 		if(sportObject.getStatus() == SportObjectStatus.Open) {
 			sportObjectDTO = new SportObjectDTO(sportObject.getId(), sportObject.getName(), sportObject.getType(), sportObject.getContent(), sportObject.getLocation().toString(), sportObject.getAverageGrade(), sportObject.getImage(), sportObject.getWorkTime().toString(),"OPEN");	
