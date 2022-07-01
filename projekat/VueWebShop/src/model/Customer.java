@@ -10,6 +10,7 @@ public class Customer extends User {
 	private int points;
 	private CustomerType customerType;
 	
+	
 	public Customer(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth,
 			Membership membership, ArrayList<SportObject> visitedObjects, int points, CustomerType customerType) {
 		super(username, password, name, lastName, gender, dateOfBirth);
@@ -36,6 +37,15 @@ public class Customer extends User {
 		this.customerType = null;
 	}
 	
+	public Customer(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth, ArrayList<SportObject> visitedObjects) {
+		super(username, password, name, lastName, gender, dateOfBirth);
+		this.membership = null;
+		this.visitedObjects = visitedObjects;
+		this.points = 0;
+		this.customerType = null;
+	}
+	
+	
 	public Customer(String username, String password, String name, String lastName) {
 		super(username, password, name, lastName);
 		this.membership = null;
@@ -46,10 +56,10 @@ public class Customer extends User {
 
 	public Customer() {
 		super();
-		this.membership = null;
-		this.visitedObjects = null;
+		//this.membership = null;
+		//this.visitedObjects = null;
 		this.points = 0;
-		this.customerType = null;
+		//this.customerType = null;
 	}
 
 

@@ -2,6 +2,7 @@ package services;
 
 
 
+import java.sql.Date;
 import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
@@ -14,16 +15,16 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import dto.CustomerDTO;
-import dto.SportObjectDTO;
 import model.Administrator;
 import model.Customer;
+import model.Gender;
 import model.Manager;
 import model.SportObject;
-import model.SportObjectStatus;
 import model.Trainer;
 import repository.AdministratorRepository;
 import repository.CustomerRepository;
 import repository.ManagerRepository;
+import repository.SportObjectRepository;
 import repository.TrainerRepository;
 
 @Path("customers")
@@ -33,6 +34,7 @@ public class CustomerService {
 	AdministratorRepository administratorRepo = new AdministratorRepository();
 	ManagerRepository managerRepo = new ManagerRepository();
 	TrainerRepository trainerRepo = new TrainerRepository();
+	SportObjectRepository sportObjectRepo = new SportObjectRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -132,19 +134,24 @@ public class CustomerService {
 		return customer;
 	}
 	
-//	@GET
-//	@Path("createAuto")	
-//	@Produces(MediaType.TEXT_PLAIN)
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public void createCustomerAuto()
-//	{
-//		//repo.setBasePath(getDataDirPath());
-//				
-//		Administrator newCustomer = new Administrator("Nidzo", "nesto", "Nikola", "Nikolic", Gender.Male, new Date(1995,6,25));
-//		Map<String, Administrator> mapa = new HashMap<String, Administrator>();
-//		mapa.put(newCustomer.getId(), newCustomer);
-//		repo.writeFile(mapa);
-//		
-//		System.out.println("Created new customer: ");
-//	}
+	@GET
+	@Path("createAuto")	
+	@Produces(MediaType.TEXT_PLAIN)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void createCustomerAuto()
+	{
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		sportObjectRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<SportObject> visitedObjects = new ArrayList<SportObject>();		
+		SportObject so = sportObjectRepo.read("4");
+		visitedObjects.add(so);
+		Customer newCustomer = customerRepo.read("2022-06-17T23:24:10.874440");
+		newCustomer.setVisitedObjects(visitedObjects);
+		//Map<String, Administrator> mapa = new HashMap<String, Administrator>();
+		//mapa.put(newCustomer.getId(), newCustomer);
+		//repo.writeFile(mapa);
+		customerRepo.update(newCustomer);
+		
+		//System.out.println("Created new customer: ");
+	}
 }

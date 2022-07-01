@@ -21,21 +21,25 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import dto.CreateSportObjectDTO;
+import dto.CustomerDTO;
 import dto.IdDTO;
 import dto.SearchDTO;
 import dto.SportObjectDTO;
 import model.Location;
 import model.Address;
+import model.Customer;
 import model.IdGenerator;
 import model.SportObject;
 import model.SportObjectStatus;
 import model.WorkTime;
+import repository.CustomerRepository;
 import repository.SportObjectRepository;
 
 @Path("sportobject")
 public class SportObjectService {
 
 SportObjectRepository repo = new SportObjectRepository();
+CustomerRepository customerRepo = new CustomerRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -293,6 +297,27 @@ SportObjectRepository repo = new SportObjectRepository();
 		}
 		
 		return sportObjectDTO;
+	}
+	
+	@POST
+	@Path("getCustomersFromSportObject")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getCustomersFromSportObject(IdDTO sportObjectId) {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer c : customerRepo.getAll()) {
+			if (c.getVisitedObjects() != null) {
+				for (SportObject s : c.getVisitedObjects()) {
+					if (s.getId().equals(sportObjectId.getId())) {
+						retVal.add(new CustomerDTO(c.getUsername(),c.getName(), c.getLastName(),c.getGender(),c.getDateOfBirth()));
+					}
+				}
+			}
+		}
+		
+		return retVal;
 	}
 	
 }
