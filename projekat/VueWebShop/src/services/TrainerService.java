@@ -137,7 +137,14 @@ public class TrainerService {
 		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
 		for (Training t : trainings) {
 			if (t.getSportObject().getId().equals(sportObjectId.getId())) {
-				retVal.add(new TrainerDTO(t.getTrainer().getUsername(),t.getTrainer().getName(), t.getTrainer().getLastName(), t.getTrainer().getGender(),t.getTrainer().getDateOfBirth()));
+				int cnt = 0;
+				for (TrainerDTO d : retVal) {
+					if (d.getUsername().equals(t.getTrainer().getUsername()))
+						cnt++;
+				}
+				if (cnt == 0) {
+					retVal.add(new TrainerDTO(t.getTrainer().getUsername(),t.getTrainer().getName(), t.getTrainer().getLastName(), t.getTrainer().getGender(),t.getTrainer().getDateOfBirth()));
+				}
 			}
 		}
 		return retVal;

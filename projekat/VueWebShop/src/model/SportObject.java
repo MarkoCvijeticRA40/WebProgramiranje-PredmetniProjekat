@@ -1,13 +1,14 @@
 package model;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 
 public class SportObject {
 
 	private String id;
 	private String name;
 	private String type;
-	private String content;
+	private ArrayList<Content> contents;
 	private Location location;
 	private Double averageGrade;
 	private String image;
@@ -16,13 +17,13 @@ public class SportObject {
 	
 	public SportObject() {}
 	
-	public SportObject(String id,String name, String type, String content, Location location, Double averageGrade, String image,
+	public SportObject(String id, String name, String type, ArrayList<Content> contents, Location location, Double averageGrade, String image,
 			WorkTime workTime) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.type = type;
-		this.content = content;
+		this.contents = contents;
 		this.location = location;
 		this.averageGrade = averageGrade;
 		this.image = image;
@@ -94,12 +95,12 @@ public class SportObject {
 		this.type = type;
 	}
 
-	public String getContent() {
-		return content;
+	public ArrayList<Content> getContent() {
+		return contents;
 	}
 
-	public void setContent(String content) {
-		this.content = content;
+	public void setContent(ArrayList<Content> contents) {
+		this.contents = contents;
 	}
 
 	public Location getLocation() {

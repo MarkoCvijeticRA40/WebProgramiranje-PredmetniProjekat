@@ -8,7 +8,7 @@ Vue.component("managerStart-page", {
 <div>
 <ul>
   <li><a class="active" href="#/msp">Profile</a></li>
-  <li><a class="active" href="#/mcp">Content</a></li>
+  <li><a class="active" href="#/mcp">Add Content</a></li>
   <li><a class="active" href="#/mso">Sport Object</a></li>
   <li><a class="active" href="#/mvt">Trainers</a></li>
   <li><a class="active" href="#/mcpp">Customers</a></li>

@@ -360,7 +360,7 @@ Vue.component("addSportObject-page", {
 					
 				})
 				
-				
+				router.push("/asp");
 			}
     		
     		
