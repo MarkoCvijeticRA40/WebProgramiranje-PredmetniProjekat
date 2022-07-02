@@ -414,6 +414,28 @@ CustomerRepository customerRepo = new CustomerRepository();
 		return null;
 	}
 	
+	@POST
+	@Path("updateContent")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void updateContent(AddContentDTO contentDTO) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Content content = new Content(contentDTO.getName(), contentDTO.getType(), contentDTO.getImage(), contentDTO.getDescription(), contentDTO.getDurationInMinutes());
+		SportObject sportObject = repo.read(contentDTO.getSportObjectId());
+		ArrayList<Content> contents = sportObject.getContent();
+		
+		for (int i = 0; i < contents.size(); i++) {
+			if (contents.get(i).getName().equals(contentDTO.getName())) {
+				contents.set(i, content);
+			}
+		}
+		
+		sportObject.setContent(contents);
+		repo.update(sportObject);			
+			
+	}
+	
 	
 	public boolean isContentUnique(String name) {
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
@@ -430,6 +452,23 @@ CustomerRepository customerRepo = new CustomerRepository();
 		}
 		
 		return isUnique;	
+	}
+	
+	
+	@POST
+	@Path("getContent")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public ArrayList<Content> getContent(IdDTO sportObjectId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		SportObject sportObject = repo.read(sportObjectId.getId());
+		ArrayList<Content> retVal = new ArrayList<Content>();
+		if (sportObject.getContent() != null) {
+			retVal = sportObject.getContent();
+		}
+		
+		return retVal;
 	}
 	
 	

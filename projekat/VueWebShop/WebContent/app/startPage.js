@@ -39,7 +39,7 @@ Vue.component("start-page", {
 		<th style="width:90px">Work Time</th>
 		<th>Status</th>
   	</tr>
-  	<tr v-for="s in sportObjects" v-on:click="selectedObject(s)">
+  	<tr v-for="s in sportObjects" v-on:click="selectedObject(s)" class="hand">
   		<td>{{s.name}}</td>
   		<td>{{s.type}}</td>
   		<td>{{s.content}}</td>

@@ -31,4 +31,6 @@ td button {
 	float: none;
 }
 
-
+.hand {
+	cursor: pointer;
+}
