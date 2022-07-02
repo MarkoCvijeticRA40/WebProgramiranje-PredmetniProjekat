@@ -20,6 +20,7 @@ const AddSportObjectPage = {template: '<addSportObject-page></addSportObject-pag
 const ManagerSportObjectPage = {template: '<managerSportObject-page></managerSportObject-page>'}
 const ManagerTrainersPage = { template: '<managerViewTrainers-page></managerViewTrainers-page>'}
 const ManagerCustomersPage = { template: '<managerViewCustomers-page></managerViewCustomers-page>'}
+const ManagerAddTrainingPage = { template: '<managerAddTraining-page></managerAddTraining-page>'}
 
 
 
@@ -48,7 +49,8 @@ const router = new VueRouter({
 		{ path: '/mcp', component: managerContent },
 		{ path: '/mso', component: ManagerSportObjectPage },
 		{ path: '/mvt', component: ManagerTrainersPage },
-		{ path: '/mcpp', component: ManagerCustomersPage }
+		{ path: '/mcpp', component: ManagerCustomersPage },
+		{ path: '/mat', component: ManagerAddTrainingPage }
 
 	  ]
 });

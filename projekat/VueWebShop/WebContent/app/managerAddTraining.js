@@ -1,7 +1,10 @@
-Vue.component("managerContent-page", {
+Vue.component("managerAddTraining-page", {
 	data: function () {
 		    return {
 		      manager : null,
+		      selectedTrainerUsername: "",
+		      selectedTrainer: null,
+		      trainers: null,
 		      isThereSportObject: true,
 			  print: false,
 			  name: "",
@@ -54,8 +57,17 @@ Vue.component("managerContent-page", {
 	</tr>
 	
 	<tr>
+		<td><label for="trainer">Trainer:</label></td>
+		<td>
+			<select @change="changeSelectedTrainer($event)">
+				<option v-for="trainer in trainers" :value="trainer.id" :key="trainer.id"> {{ trainer.username }} </option>
+			</select>
+		</td>
+	</tr>
+	
+	<tr>
 		<td></td>
-		<td><button v-on:click="createContent(); upload()">Save</button></td>
+		<td><button v-on:click="createTraining(); upload()">Save</button></td>
 	</tr>
 	
 </table>
@@ -66,27 +78,26 @@ Vue.component("managerContent-page", {
 `
 	, 
 	methods : {
-		createContent : function() {
-			if (this.name === "" || this.type === "" || this.selectedFile === null) {
-				toast("Name, type and image are required fields! ");
+		createTraining : function() {
+			if (this.name === "" || this.type === "" || this.selectedFile === null || this.description === "" || this.duration === 0) {
+				toast("All fields must be filled! ");
 				return;
 			}
 			axios
-			.post('rest/sportobject/addContent', {
-				name: this.name,
-				type: this.type,
-				image: "images\\" + this.selectedFile.name,
-				description: this.description,
-				durationInMinutes: this.duration,
-				sportObjectId: this.manager.sportObject.id 
-			})
+			.post('rest/trainers/getTrainerByUsername', { username: this.selectedTrainerUsername })
 			.then(response => {
-				if (response.data === "") {
-					toast("Content with same name already exists!");
-				}
-				else {
-					toast("Content is added!");
-				}
+				this.selectedTrainer = response.data;
+				axios
+				.post('rest/trainings/createTraining', {
+					name: this.name,
+					type: this.type,
+					image: "images\\" + this.selectedFile.name,
+					description: this.description,
+					durationInMinutes: this.duration,
+					sportObjectId: this.manager.sportObject.id,
+					trainerId:  this.selectedTrainer.id
+				})
+				.then(response => toast("Training is added!"));
 			});
 		},
 		
@@ -101,7 +112,11 @@ Vue.component("managerContent-page", {
 		
 			axios
 			.post('rest/sportobject/upload', formData)
-		}	  
+		},
+		
+		changeSelectedTrainer : function(event) {
+			this.selectedTrainerUsername = event.target.options[event.target.options.selectedIndex].text
+		}  
 	},
 	mounted () {
       axios
@@ -111,6 +126,15 @@ Vue.component("managerContent-page", {
 			if (this.manager.sportObject === null) {
 				this.isThereSportObject = false;
 				this.print = true
+			}
+			else {
+				axios
+				.get('rest/trainers/getAll')
+				.then(response => {
+					 this.trainers = response.data;
+					 this.selectedTrainerUsername = this.trainers[0].username; 
+				}
+				);
 			}
 		});
     },

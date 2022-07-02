@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 
 import dto.IdDTO;
 import dto.TrainerDTO;
+import dto.UsernameDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;
@@ -148,6 +149,21 @@ public class TrainerService {
 			}
 		}
 		return retVal;
+	}
+	
+	@POST
+	@Path("getTrainerByUsername")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Trainer getTrainerByUsername(UsernameDTO username) {
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		for (Trainer t : trainers) {
+			if (t.getUsername().equals(username.getUsername()))
+				return t;
+		}
+		
+		return null;
 	}
 	
 }
