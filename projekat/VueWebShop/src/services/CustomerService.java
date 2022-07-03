@@ -3,6 +3,7 @@ package services;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -13,7 +14,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import comparators.CustomerLastNameComparator;
+import comparators.CustomerNameComparator;
+import comparators.CustomerUserNameComparator;
+import comparators.SportObjectGradeComparator;
+import comparators.SportObjectLocationComparator;
+import comparators.SportObjectNameComparator;
 import dto.CustomerDTO;
+import dto.SearchDTO;
 import dto.SportObjectDTO;
 import model.Administrator;
 import model.Customer;
@@ -132,6 +140,168 @@ public class CustomerService {
 		return customer;
 	}
 	
+	@POST
+	@Path("search")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> search(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		ArrayList<Customer> customers = customerRepo.getAll();
+		
+		for (Customer s : customers) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}
+	    
+		for (Customer s : customers) {
+			if (s.getLastName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					int cnt = 0;
+					for (CustomerDTO so : retVal) {
+						if (so.getUsername().equals(s.getUsername()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}
+
+		for (Customer s : customers) {
+			if (s.getUsername().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					int cnt = 0;
+					for (CustomerDTO so : retVal) {
+						if (so.getUsername().equals(s.getUsername()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}	
+		return retVal;
+	}
+	
+	public ArrayList<CustomerDTO> nameACS(ArrayList<CustomerDTO> retVal) {
+		Collections.sort(retVal, new CustomerNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<CustomerDTO> nameDESC(ArrayList<CustomerDTO> retVal) {
+		Collections.sort(retVal, new CustomerNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<CustomerDTO> lastNameACS(ArrayList<CustomerDTO> retVal) {
+		Collections.sort(retVal, new CustomerLastNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<CustomerDTO> lastNameDESC(ArrayList<CustomerDTO> retVal) {
+		Collections.sort(retVal, new CustomerLastNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<CustomerDTO> userNameACS(ArrayList<CustomerDTO> retVal) {
+		Collections.sort(retVal, new CustomerUserNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<CustomerDTO> userNameDESC(ArrayList<CustomerDTO> retVal) {
+		Collections.sort(retVal, new CustomerUserNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}	
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@GET
+	@Path("getAll1")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getAll1() {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Customer> customers = customerRepo.getAll();
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer s : customers) {			
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = nameACS(retVal);
+		return retVal;
+	}
+	@GET
+	@Path("getAll2")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getAll2() {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Customer> customers = customerRepo.getAll();
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer s : customers) {			
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = nameDESC(retVal);
+		return retVal;
+	}
+	@GET
+	@Path("getAll3")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getAll3() {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Customer> customers = customerRepo.getAll();
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer s : customers) {			
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = lastNameACS(retVal);
+		return retVal;
+	}
+	@GET
+	@Path("getAll4")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getAll4() {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Customer> customers = customerRepo.getAll();
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer s : customers) {			
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = lastNameDESC(retVal);
+		return retVal;
+	}
+	@GET
+	@Path("getAll5")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getAll5() {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Customer> customers = customerRepo.getAll();
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer s : customers) {			
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = userNameACS(retVal);
+		return retVal;
+	}
+	@GET
+	@Path("getAll6")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getAll6() {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Customer> customers = customerRepo.getAll();
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer s : customers) {			
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = userNameDESC(retVal);
+		return retVal;
+	}
+}
 //	@GET
 //	@Path("createAuto")	
 //	@Produces(MediaType.TEXT_PLAIN)
@@ -147,4 +317,3 @@ public class CustomerService {
 //		
 //		System.out.println("Created new customer: ");
 //	}
-}

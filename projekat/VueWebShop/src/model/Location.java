@@ -6,7 +6,7 @@ public class Location {
 
 	private Double longitude;
 	private Double latitude;
-	private Address address;
+	public Address address;
 	
 	public Location(Double longitude, Double latitude, Address address) {
 		super();
@@ -43,9 +43,4 @@ public class Location {
 	public String toString() {
 		return address.toString();
 	}
-	
-	
-	
-	
-	
 }

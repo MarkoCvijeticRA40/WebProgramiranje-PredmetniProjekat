@@ -6,10 +6,10 @@ import java.util.Date;
 public class User {
 	
 	private String id;
-	private String username;
+	public String username;
 	private String password;
-	private String name;
-	private String lastName;
+	public String name;
+	public String lastName;
 	private Gender gender;
 	private Date dateOfBirth;
 	

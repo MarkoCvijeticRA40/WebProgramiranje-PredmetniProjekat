@@ -2,7 +2,7 @@ package model;
 
 public class Address {
 
-	private String addressName;	// street and number
+	public String addressName;	// street and number
 	private String city;
 	private String postalCode;
 	

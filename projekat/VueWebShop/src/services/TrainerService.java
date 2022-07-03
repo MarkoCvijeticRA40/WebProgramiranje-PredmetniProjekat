@@ -1,6 +1,7 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -11,7 +12,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import comparators.AdministratorNameComparator;
+import comparators.SportObjectGradeComparator;
+import comparators.SportObjectLocationComparator;
+import comparators.SportObjectNameComparator;
+import comparators.TrainerLastNameComparator;
+import comparators.TrainerNameComparator;
+import comparators.TrainerUserNameComparator;
+import dto.CustomerDTO;
 import dto.ManagerDTO;
+import dto.SearchDTO;
+import dto.SportObjectDTO;
 import dto.TrainerDTO;
 import model.Administrator;
 import model.Customer;
@@ -122,6 +133,173 @@ public class TrainerService {
 			}
 		}
 		return isUnique;
+	}
+	
+	@POST
+	@Path("search")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<TrainerDTO> search(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		
+		for (Trainer s : trainers) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					retVal.add(new TrainerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}
+	    
+		for (Trainer s : trainers) {
+			if (s.getLastName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					int cnt = 0;
+					for (TrainerDTO so : retVal) {
+						if (so.getUsername().equals(s.getUsername()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new TrainerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}
+
+		for (Trainer s : trainers) {
+			if (s.getUsername().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					int cnt = 0;
+					for (TrainerDTO so : retVal) {
+						if (so.getUsername().equals(s.getUsername()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new TrainerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}	
+		return retVal;
+	}
+
+	public ArrayList<TrainerDTO> nameACS(ArrayList<TrainerDTO> retVal) {
+		Collections.sort(retVal, new TrainerNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<TrainerDTO> nameDESC(ArrayList<TrainerDTO> retVal) {
+		Collections.sort(retVal, new TrainerNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<TrainerDTO> userNameACS(ArrayList<TrainerDTO> retVal) {
+		Collections.sort(retVal, new TrainerUserNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<TrainerDTO> userNameDESC(ArrayList<TrainerDTO> retVal) {
+		Collections.sort(retVal, new TrainerUserNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<TrainerDTO> lastNameACS(ArrayList<TrainerDTO> retVal) {
+		Collections.sort(retVal, new TrainerLastNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<TrainerDTO> lastNameDESC(ArrayList<TrainerDTO> retVal) {
+		Collections.sort(retVal, new TrainerLastNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}	
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@GET
+	@Path("getAllNameDESC")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<TrainerDTO> getAllNameDESC() {
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
+		for (Trainer s : trainers) {			
+			retVal.add(new TrainerDTO(s.getUsername(),s.getName(), s.getLastName(), s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = nameDESC(retVal);
+		return retVal;
+	}
+	
+	@GET
+	@Path("getAllNameACS")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<TrainerDTO> getAllNameACS() {
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
+		for (Trainer s : trainers) {			
+			retVal.add(new TrainerDTO(s.getUsername(),s.getName(), s.getLastName(), s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = nameACS(retVal);
+		return retVal;
+	}
+	
+	@GET
+	@Path("getAllUserNameDESC")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<TrainerDTO> getAllUserNameDESC() {
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
+		for (Trainer s : trainers) {			
+			retVal.add(new TrainerDTO(s.getUsername(),s.getName(), s.getLastName(), s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = userNameDESC(retVal);
+		return retVal;
+	}
+	
+	@GET
+	@Path("getAllUserNameACS")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<TrainerDTO> getAllUserNameACS() {
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
+		for (Trainer s : trainers) {			
+			retVal.add(new TrainerDTO(s.getUsername(),s.getName(), s.getLastName(), s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = userNameACS(retVal);
+		return retVal;
+	}
+	
+	@GET
+	@Path("getAllLastNameDESC")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<TrainerDTO> getAllLastNameDECS() {
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
+		for (Trainer s : trainers) {			
+			retVal.add(new TrainerDTO(s.getUsername(),s.getName(), s.getLastName(), s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = lastNameDESC(retVal);
+		return retVal;
+	}
+	
+	@GET
+	@Path("getAllLastNameACS")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<TrainerDTO> getAllLastNameACS() {
+		trainerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Trainer> trainers = trainerRepo.getAll();
+		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
+		for (Trainer s : trainers) {			
+			retVal.add(new TrainerDTO(s.getUsername(),s.getName(), s.getLastName(), s.getGender(),s.getDateOfBirth()));	
+		}
+		retVal = lastNameACS(retVal);
+		return retVal;
 	}
 }
 //	@GET

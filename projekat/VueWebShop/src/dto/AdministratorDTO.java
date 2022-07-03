@@ -5,9 +5,9 @@ import java.util.Date;
 import model.Gender;
 
 public class AdministratorDTO {
-	private String username;
-	private String name;
-	private String lastName;
+	public String username;
+	public String name;
+	public String lastName;
 	private Gender gender;
 	private Date dateOfBirth;
 	

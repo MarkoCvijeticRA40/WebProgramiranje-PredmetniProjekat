@@ -1,6 +1,7 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -11,8 +12,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import comparators.AdministratorLastNameComparator;
+import comparators.AdministratorNameComparator;
+import comparators.AdministratorUserNameComparator;
+import comparators.SportObjectGradeComparator;
+import comparators.SportObjectLocationComparator;
+import comparators.SportObjectNameComparator;
 import dto.AdministratorDTO;
 import dto.CustomerDTO;
+import dto.SearchDTO;
+import dto.SportObjectDTO;
 import model.Administrator;
 import model.Customer;
 import repository.AdministratorRepository;
@@ -20,7 +29,7 @@ import repository.AdministratorRepository;
 @Path("administrators")
 public class AdministratorService {
 
-AdministratorRepository repo = new AdministratorRepository();
+	AdministratorRepository repo = new AdministratorRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -57,6 +66,85 @@ AdministratorRepository repo = new AdministratorRepository();
 		return administrator;
 	}
 	
+	@POST
+	@Path("search")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<AdministratorDTO> search(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<AdministratorDTO> retVal = new ArrayList<AdministratorDTO>();
+		ArrayList<Administrator> administrators = repo.getAll();
+		
+		for (Administrator s : administrators) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					retVal.add(new AdministratorDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}
+	    
+		for (Administrator s : administrators) {
+			if (s.getLastName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					int cnt = 0;
+					for (AdministratorDTO so : retVal) {
+						if (so.getUsername().equals(s.getUsername()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new AdministratorDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}
+
+		for (Administrator s : administrators) {
+			if (s.getUsername().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					int cnt = 0;
+					for (AdministratorDTO so : retVal) {
+						if (so.getUsername().equals(s.getUsername()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new AdministratorDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}	
+		return retVal;
+	}
+	
+	public ArrayList<AdministratorDTO> nameACS(ArrayList<AdministratorDTO> retVal) {
+		Collections.sort(retVal, new AdministratorNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<AdministratorDTO> nameDESC(ArrayList<AdministratorDTO> retVal) {
+		Collections.sort(retVal, new AdministratorNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<AdministratorDTO> lastNameACS(ArrayList<AdministratorDTO> retVal) {
+		Collections.sort(retVal, new AdministratorLastNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<AdministratorDTO> lastNameDESC(ArrayList<AdministratorDTO> retVal) {
+		Collections.sort(retVal, new AdministratorLastNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	private ArrayList<AdministratorDTO> userNameACS(ArrayList<AdministratorDTO> retVal) {
+		Collections.sort(retVal, new AdministratorUserNameComparator());
+		return retVal;
+	}
+	
+	private ArrayList<AdministratorDTO> userNameDESC(ArrayList<AdministratorDTO> retVal) {
+		Collections.sort(retVal, new AdministratorUserNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //	@GET
 //	@Path("createAuto")	
 //	@Produces(MediaType.TEXT_PLAIN)
