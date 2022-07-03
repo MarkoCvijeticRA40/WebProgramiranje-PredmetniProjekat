@@ -17,13 +17,9 @@ import javax.ws.rs.core.MediaType;
 import comparators.CustomerLastNameComparator;
 import comparators.CustomerNameComparator;
 import comparators.CustomerUserNameComparator;
-import comparators.SportObjectGradeComparator;
-import comparators.SportObjectLocationComparator;
-import comparators.SportObjectNameComparator;
 import dto.CustomerDTO;
 
 import dto.SearchDTO;
-import dto.SportObjectDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;

@@ -48,7 +48,7 @@ public class TrainerService {
 	public void init() {
 		if (ctx.getAttribute("trainers") == null) {
 			String contextPath = ctx.getRealPath("");
-			ctx.setAttribute("trainers", new AdministratorService());
+			ctx.setAttribute("trainers", new TrainerService());
 		}
 	}
 	
@@ -172,6 +172,7 @@ public class TrainerService {
 		return null;
 	}
 	
+	@POST
 	@Path("search")	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

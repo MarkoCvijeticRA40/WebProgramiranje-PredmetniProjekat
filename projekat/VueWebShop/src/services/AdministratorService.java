@@ -15,15 +15,9 @@ import javax.ws.rs.core.MediaType;
 import comparators.AdministratorLastNameComparator;
 import comparators.AdministratorNameComparator;
 import comparators.AdministratorUserNameComparator;
-import comparators.SportObjectGradeComparator;
-import comparators.SportObjectLocationComparator;
-import comparators.SportObjectNameComparator;
 import dto.AdministratorDTO;
-import dto.CustomerDTO;
 import dto.SearchDTO;
-import dto.SportObjectDTO;
 import model.Administrator;
-import model.Customer;
 import repository.AdministratorRepository;
 
 @Path("administrators")
