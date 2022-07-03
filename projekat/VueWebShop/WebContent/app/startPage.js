@@ -5,7 +5,7 @@ Vue.component("start-page", {
 			  sportObject : {},
 			  searchText : "",
 			  selectObject : {},
-			  selected:false
+			  selected:false,
 		    }
 	},
 	template: ` 
@@ -19,18 +19,24 @@ Vue.component("start-page", {
 
 <br>
 
-	
 	<div v-if="selected != true">
 	<table>
 		<tr>
 			<td><input type="text" v-model="searchText" v-on:keyup="search"></td>
 			<td>&#128269</td>
+			<td><button v-on:click="searchASC()">SortNameByACS</button></td>
+  			<td><button v-on:click="searchDESC()">SortNameByDESC</button></td>
+  			<td><button v-on:click="searchASCLocation()">SortLocationByACS</button></td>
+  			<td><button v-on:click="searchDESCLocation()">SortLocationByDESC</button></td>
+			<td><button v-on:click="searchDESCGrade()">SortGradeByASC</button></td>
+			<td><button v-on:click="searchASCGrade()">SortGradeByDESC</button></td>
+	
 		</tr>
 	</table>
 	<br>
 	<table style="width:100%" border="1px">
  	<tr>
-		<th>Name</th>
+		<th> Name </th>
     	<th>Type</th>
 		<th>Content</th>
     	<th>Location</th>
@@ -54,7 +60,8 @@ Vue.component("start-page", {
 	
 	<div v-if="selected != false">
 	 <table style="width:100%" border="1px">
- 	<tr>
+ 	<tr><button v-on:click="unselect">Back</button></tr>
+	<tr>
 		<th>Name</th>
     	<th>Type</th>
 		<th>Content</th>
@@ -65,7 +72,7 @@ Vue.component("start-page", {
 		<th>Status</th>
 		<th>Comment</th>
   	</tr>
-  	<tr v-on:click="unselect">
+  	<tr>
   		<td>{{selectObject.name}}</td>
   		<td>{{selectObject.type}}</td>
   		<td>{{selectObject.content}}</td>
@@ -77,13 +84,18 @@ Vue.component("start-page", {
   	</tr>
 	</table>
 	</div>	
-</div>
+</div>	
 `
 	, 
 	methods : {
 		search : function() {
 		axios 
 		.post('rest/sportobject/search', { searchText : this.searchText })
+		.then(response => (this.sportObjects = response.data))
+		},
+		searchASC : function() {
+		axios 
+		.post('rest/sportobject/searchACS', { searchText : this.searchText })
 		.then(response => (this.sportObjects = response.data))
 		},
 		selectedObject : function(sportskiObjekat) {
@@ -93,7 +105,37 @@ Vue.component("start-page", {
 		unselect : function(){
 			console.log("Vratili smo se na tabelu");
 			this.selected = false;
-		}
+		},
+		searchASC : function() {
+		axios 
+		.post('rest/sportobject/searchASC', { searchText : this.searchText })
+		.then(response => (this.sportObjects = response.data))
+		},
+		searchDESC : function() {
+		axios 
+		.post('rest/sportobject/searchDESC', { searchText : this.searchText })
+		.then(response => (this.sportObjects = response.data))
+		},
+		searchASCLocation : function() {
+		axios 
+		.post('rest/sportobject/searchASCLocation', { searchText : this.searchText })
+		.then(response => (this.sportObjects = response.data))
+		},
+		searchDESCLocation : function() {
+		axios 
+		.post('rest/sportobject/searchDESCLocation', { searchText : this.searchText })
+		.then(response => (this.sportObjects = response.data))
+		},
+		searchASCGrade : function() {
+		axios 
+		.post('rest/sportobject/searchASCGrade', { searchText : this.searchText })
+		.then(response => (this.sportObjects = response.data))
+		},
+		searchDESCGrade : function() {
+		axios 
+		.post('rest/sportobject/searchDESCGrade', { searchText : this.searchText })
+		.then(response => (this.sportObjects = response.data))
+		},
 	},
 	mounted () {
         axios 

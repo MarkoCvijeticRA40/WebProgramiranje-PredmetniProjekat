@@ -3,14 +3,15 @@ package dto;
 public class SportObjectDTO {
 	
 	private String id;
-	private String name;
+	public String name;
 	private String type;
 	private String content;
-	private String location;
-	private Double averageGrade;
+	public String location;
+	public Double averageGrade;
 	private String image;
 	private String workTime;
 	private String status;
+	public String addressName;
 	
 	public SportObjectDTO(String id, String name, String type, String content, String location, Double averageGrade,
 			String image, String workTime,String status) {
@@ -26,6 +27,29 @@ public class SportObjectDTO {
 		this.status = status;
 	}
 	
+	public SportObjectDTO(String id, String name, String type, String content, String location, Double averageGrade,
+			String image, String workTime, String status, String addressName) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.type = type;
+		this.content = content;
+		this.location = location;
+		this.averageGrade = averageGrade;
+		this.image = image;
+		this.workTime = workTime;
+		this.status = status;
+		this.addressName = addressName;
+	}
+
+	public String getAddressName() {
+		return addressName;
+	}
+
+	public void setAddressName(String addressName) {
+		this.addressName = addressName;
+	}
+
 	public String getId() {
 		return id;
 	}

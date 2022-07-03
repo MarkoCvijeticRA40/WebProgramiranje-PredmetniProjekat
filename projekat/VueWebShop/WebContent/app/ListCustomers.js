@@ -2,6 +2,7 @@ Vue.component("listCustomers-page", {
 	data: function () {
 		    return {
 		      customers : null,
+		      searchText : "",
 		    }
 	},
 	template: ` 
@@ -14,12 +15,23 @@ Vue.component("listCustomers-page", {
   <li><a class="active" href="#/lic">Customers</a></li>
   <li><a class="active" href="#/lim">Managers</a></li>
   <li><a class="active" href="#/lit">Trainers</a></li>
-<li><a class="active" href="#/lia">Administrators</a></li>
+  <li><a class="active" href="#/lia">Administrators</a></li>
   <li><a href="#/lu">Log out</a></li>
-</ul>
-<br>
-<table style="width:100%" border="1px">
- <tr>
+  </ul>
+  <br>
+  <table>
+  	<td><input type="text" v-model="searchText" v-on:keyup="search"></td>
+	<td>&#128269</td>
+	<td><button v-on:click="searchNameASC()">SortNameByACS</button></td>
+  	<td><button v-on:click="searchNameDESC()">SortNameByDESC</button></td>
+  	<td><button v-on:click="searchASCLastName()">SortLastnameByACS</button></td>
+  	<td><button v-on:click="searchDESCLastName()">SortLastNameByDESC</button></td>
+	<td><button v-on:click="searchASCUserName()">SortUserNameByACS</button></td>
+	<td><button v-on:click="searchDESCUserName()">SortUserNameByDESC</button></td>
+  </table>
+
+  <table style="width:100%" border="1px">
+  <tr>
 	<th>Username</th>
     <th>Name</th>
 	<th>LastName</th>
@@ -43,7 +55,41 @@ Vue.component("listCustomers-page", {
 `
 	, 
 	methods : {						
-										
+		search : function() {
+		axios 
+		.post('rest/customers/search', { searchText : this.searchText })
+		.then(response => (this.customers = response.data))
+		},	
+		searchNameASC : function() { 
+		axios
+			.get('rest/customers/getAll1')
+			.then(response => (this.customers = response.data))
+		},
+		searchNameDESC : function() {
+			axios
+			.get('rest/customers/getAll2')
+			.then(response => (this.customers = response.data))
+		},
+		searchASCLastName : function() {
+			axios
+			.get('rest/customers/getAll3')
+			.then(response => (this.customers = response.data))
+		},
+		searchDESCLastName : function() {
+		axios
+			.get('rest/customers/getAll4')
+			.then(response => (this.customers = response.data))
+		},
+		searchASCUserName : function() {
+		axios
+			.get('rest/customers/getAll5')
+			.then(response => (this.customers = response.data))
+		},
+		searchDESCUserName : function() {
+		axios
+			.get('rest/customers/getAll6')
+			.then(response => (this.customers = response.data))
+		},							
 	},
 	filters: {
     	dateFormat: function (value, format) {

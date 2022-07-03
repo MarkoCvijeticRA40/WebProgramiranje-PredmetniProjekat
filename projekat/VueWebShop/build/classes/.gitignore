@@ -1,5 +1,13 @@
+<<<<<<< HEAD
 /model/
 /repository/
 /services/
 /data/
 /dto/
+=======
+/services/
+/comparators/
+/dto/
+/data/
+/model/
+>>>>>>> 8d87109560a714771f0f32d59e5f80ab64289cb9

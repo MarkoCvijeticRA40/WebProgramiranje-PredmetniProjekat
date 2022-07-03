@@ -1,7 +1,5 @@
 package services;
-
 import java.util.ArrayList;
-
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -10,12 +8,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
 import dto.UserDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;
-import model.SportObject;
 import model.Trainer;
 import repository.AdministratorRepository;
 import repository.CustomerRepository;

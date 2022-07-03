@@ -138,4 +138,9 @@ public class SportObject {
 	public void setId(String id) {
 		this.id = id;
 	}
+	
+	public String toString() {
+		return averageGrade.toString();
+	}
+
 }

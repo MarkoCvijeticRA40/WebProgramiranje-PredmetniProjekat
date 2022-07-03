@@ -2,6 +2,8 @@ package services;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -12,9 +14,17 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import comparators.ManagerLastNameComparator;
+import comparators.ManagerNameComparator;
+import comparators.ManagerUserNameComparator;
+import comparators.SportObjectGradeComparator;
+import comparators.SportObjectLocationComparator;
+import comparators.SportObjectNameComparator;
 import dto.CreateManagerDTO;
 import dto.CustomerDTO;
 import dto.ManagerDTO;
+import dto.SearchDTO;
+import dto.SportObjectDTO;
 import dto.UpdateManagerDTO;
 import dto.UsernameDTO;
 import model.Address;
@@ -252,7 +262,173 @@ public class ManagerService {
 		return isUnique;
 	}
 	
+
 	
+	@POST
+	@Path("search")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<ManagerDTO> search(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
+		ArrayList<Manager> managers = managerRepo.getAll();
+		
+		for (Manager s : managers) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					retVal.add(new ManagerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}
+	    
+		for (Manager s : managers) {
+			if (s.getLastName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					int cnt = 0;
+					for (ManagerDTO so : retVal) {
+						if (so.getUsername().equals(s.getUsername()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new ManagerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}
+
+		for (Manager s : managers) {
+			if (s.getUsername().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					int cnt = 0;
+					for (ManagerDTO so : retVal) {
+						if (so.getUsername().equals(s.getUsername()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new ManagerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			}
+		}	
+		return retVal;
+	}
+	
+	public ArrayList<ManagerDTO> nameACS(ArrayList<ManagerDTO> retVal) {
+		Collections.sort(retVal, new ManagerNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<ManagerDTO> nameDESC(ArrayList<ManagerDTO> retVal) {
+		Collections.sort(retVal, new ManagerNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<ManagerDTO> lastNameACS(ArrayList<ManagerDTO> retVal) {
+		Collections.sort(retVal, new ManagerLastNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<ManagerDTO> lastNameDESC(ArrayList<ManagerDTO> retVal) {
+		Collections.sort(retVal, new ManagerLastNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<ManagerDTO> userNameACS(ArrayList<ManagerDTO> retVal) {
+		Collections.sort(retVal, new ManagerUserNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<ManagerDTO> userNameDESC(ArrayList<ManagerDTO> retVal) {
+		Collections.sort(retVal, new ManagerUserNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}	
+	
+
+	@GET
+	@Path("getAllNameACS")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<ManagerDTO> getAll1() {
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Manager> managers = managerRepo.getAll();
+		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
+		for (Manager m : managers) {			
+			retVal.add(new ManagerDTO(m.getUsername(), m.getName(), m.getLastName(),m.getGender(),m.getDateOfBirth()));	
+		}
+		retVal = nameACS(retVal);
+		return retVal;
+	}
+	
+	@GET
+	@Path("getAllNameDESC")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<ManagerDTO> getAll2() {
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Manager> managers = managerRepo.getAll();
+		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
+		for (Manager m : managers) {			
+			retVal.add(new ManagerDTO(m.getUsername(), m.getName(), m.getLastName(),m.getGender(),m.getDateOfBirth()));	
+		}
+		retVal = nameDESC(retVal);
+		return retVal;
+	}
+	
+	@GET
+	@Path("getAllLastNameACS")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<ManagerDTO> getAll3() {
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Manager> managers = managerRepo.getAll();
+		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
+		for (Manager m : managers) {			
+			retVal.add(new ManagerDTO(m.getUsername(), m.getName(), m.getLastName(),m.getGender(),m.getDateOfBirth()));	
+		}
+		retVal = lastNameACS(retVal);
+		return retVal;
+	}
+	@GET
+	@Path("getAllLastNameDESC")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<ManagerDTO> getAll4() {
+		managerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Manager> managers = managerRepo.getAll();
+		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
+		for (Manager m : managers) {			
+			retVal.add(new ManagerDTO(m.getUsername(), m.getName(), m.getLastName(),m.getGender(),m.getDateOfBirth()));	
+		}
+		retVal = lastNameDESC(retVal);
+		return retVal;
+	}
+	@GET
+	@Path("getAllUserNameACS")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<ManagerDTO> getAll5() {
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Manager> managers = managerRepo.getAll();
+		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
+		for (Manager m : managers) {			
+			retVal.add(new ManagerDTO(m.getUsername(), m.getName(), m.getLastName(),m.getGender(),m.getDateOfBirth()));	
+		}
+		retVal = userNameACS(retVal);
+		return retVal;
+	}
+	@GET
+	@Path("getAllUserNameDESC")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<ManagerDTO> getAll6() {
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Manager> managers = managerRepo.getAll();
+		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
+		for (Manager m : managers) {			
+			retVal.add(new ManagerDTO(m.getUsername(), m.getName(), m.getLastName(),m.getGender(),m.getDateOfBirth()));	
+		}
+		retVal = userNameDESC(retVal);
+		return retVal;
+	}
+
 }
 //	@GET
 //	@Path("createAuto")	

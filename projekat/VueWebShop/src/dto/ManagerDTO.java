@@ -6,9 +6,9 @@ import model.Gender;
 
 public class ManagerDTO {
 	
-	private String username;
-	private String name;
-	private String lastName;
+	public String username;
+	public String name;
+	public String lastName;
 	private Gender gender;
 	private Date dateOfBirth;
 	

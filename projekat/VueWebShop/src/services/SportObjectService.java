@@ -1,5 +1,6 @@
 package services;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -8,6 +9,10 @@ import java.io.OutputStream;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.io.File;
+import java.io.FileOutputStream;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,16 +21,20 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 
 import dto.AddContentDTO;
+import comparators.SportObjectGradeComparator;
+import comparators.SportObjectLocationComparator;
+import comparators.SportObjectNameComparator;
 import dto.CreateSportObjectDTO;
 import dto.CustomerDTO;
 import dto.IdDTO;
 import dto.SearchDTO;
 import dto.SportObjectDTO;
+import dto.SportObjectViewDTO;
+import model.Location;
 import model.Address;
 import model.Content;
 import model.Customer;
@@ -54,26 +63,6 @@ CustomerRepository customerRepo = new CustomerRepository();
 		}
 	}
 	
-//	@GET
-//	@Path("createAuto")	
-//	@Produces(MediaType.TEXT_PLAIN)
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public void createAdministratorAuto()
-//	{
-//		repo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-//				
-//		Address adr = new Address("Spens","Novi Sad","22000");
-//		Location loc = new Location(101.1,55.9,adr);
-//		WorkTime work = new WorkTime(LocalTime.of(15,0,0),LocalTime.of(23,0,0));
-//		SportObject newCustomer = new SportObject("6","Spens","Hala","Grupni treninzi",loc, 4.9,"images" + File.separator + "spens.png", work);
-////		Map<String, SportObject> mapa = new HashMap<String, SportObject>();
-////		mapa.put(newCustomer.getId(), newCustomer);
-////		repo.writeFile(mapa);
-//		repo.create(newCustomer);
-//		System.out.println("Created new customer: ");
-//	}
-	
-	
 	@POST
 	@Path("create")	
 	@Produces(MediaType.APPLICATION_JSON)
@@ -88,10 +77,7 @@ CustomerRepository customerRepo = new CustomerRepository();
 		int endTimeHours = Integer.parseInt(sportObjectDTO.getEndTime().split(":")[0]);
 		int endTimeMinutes = Integer.parseInt(sportObjectDTO.getEndTime().split(":")[1]);
 		
-		SportObject sportObject = new SportObject(IdGenerator.getInstance().generateId(repo.getKeySet(), 5), sportObjectDTO.getName(), sportObjectDTO.getType(), new Location(sportObjectDTO.getLongitude(), sportObjectDTO.getLatitude(), new Address(sportObjectDTO.getStreetAndNumber(), sportObjectDTO.getCity(), sportObjectDTO.getPostalCode())), new WorkTime(LocalTime.of(startTimeHours, startTimeMinutes), LocalTime.of(endTimeHours, endTimeMinutes)), sportObjectDTO.getImage());
-		
-		
-				
+		SportObject sportObject = new SportObject(IdGenerator.getInstance().generateId(repo.getKeySet(), 5), sportObjectDTO.getName(), sportObjectDTO.getType(), new Location(sportObjectDTO.getLongitude(), sportObjectDTO.getLatitude(), new Address(sportObjectDTO.getStreetAndNumber(), sportObjectDTO.getCity(), sportObjectDTO.getPostalCode())), new WorkTime(LocalTime.of(startTimeHours, startTimeMinutes), LocalTime.of(endTimeHours, endTimeMinutes)), sportObjectDTO.getImage());			
 //		Address adr = new Address("Spens","Novi Sad","22000");
 //		Location loc = new Location(101.1,55.9,adr);
 //		WorkTime work = new WorkTime(LocalTime.of(15,0,0),LocalTime.of(23,0,0));
@@ -103,10 +89,6 @@ CustomerRepository customerRepo = new CustomerRepository();
 		return sportObject;
 	}
 
-
-
-
-
 	@POST
 	@Path("upload")
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
@@ -117,12 +99,10 @@ CustomerRepository customerRepo = new CustomerRepository();
 
 	   System.out.println(fileDetails.getFileName());
 
-	   String uploadedFileLocation = "C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\WebContent\\images\\" + fileDetails.getFileName();
+	   String uploadedFileLocation = "WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\" + fileDetails.getFileName();
 
 	   // save it
 	   writeToFile(uploadedInputStream, uploadedFileLocation);
-
-	  
 	}
 	
 	private void writeToFile(InputStream uploadedInputStream, String uploadedFileLocation) {
@@ -178,11 +158,9 @@ CustomerRepository customerRepo = new CustomerRepository();
 				retVal.add(new SportObjectDTO(s1.getId(), s1.getName(), s1.getType(), sb.toString(), s1.getLocation().toString(), s1.getAverageGrade(), s1.getImage(), s1.getWorkTime().toString(),"CLOSE"));	
 												   }
 		}
-		
 			return retVal;
 	}
-	
-	
+
 	@POST
 	@Path("search")	
 	@Produces(MediaType.APPLICATION_JSON)
@@ -191,7 +169,6 @@ CustomerRepository customerRepo = new CustomerRepository();
 		if (search.getSearchText().isBlank()) {
 			return getAll();
 		}
-		
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
 		ArrayList<SportObject> sportObjects = repo.getAll();
@@ -328,9 +305,22 @@ CustomerRepository customerRepo = new CustomerRepository();
 			}
 		}
 		
+		for (SportObject s : sportObjects) {
+			s.setStatus();
+			if(s.getStatus() == SportObjectStatus.Open) {
+				if (s.getStatus().toString().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+				}
+			}
+		}
 		return retVal;
-	}
-	
+	}	
 	
 	@GET
 	@Path("getActiveSportObject")
@@ -385,6 +375,365 @@ CustomerRepository customerRepo = new CustomerRepository();
 			}
 		}
 		
+		return retVal;
+	}
+		
+				
+
+	//@GET
+	//@Path("createAuto")	
+	//@Produces(MediaType.TEXT_PLAIN)
+	//@Consumes(MediaType.APPLICATION_JSON)
+	//public void createAdministratorAuto()
+	//{
+//		repo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+//				
+//		Address adr = new Address("Spens","Novi Sad","22000");
+//		Location loc = new Location(101.1,55.9,adr);
+//		WorkTime work = new WorkTime(LocalTime.of(15,0,0),LocalTime.of(23,0,0));
+//		SportObject newCustomer = new SportObject("6","Spens","Hala","Grupni treninzi",loc, 4.9,"images" + File.separator + "spens.png", work);
+////		Map<String, SportObject> mapa = new HashMap<String, SportObject>();
+////		mapa.put(newCustomer.getId(), newCustomer);
+////		repo.writeFile(mapa);
+//		repo.create(newCustomer);
+//		System.out.println("Created new customer: ");
+	
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@POST
+	@Path("searchASC")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<SportObjectDTO> searchASC(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		search.getSearchText();
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
+		ArrayList<SportObject> sportObjects = repo.getAll();
+		
+		for (SportObject s : sportObjects) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+				}
+				else {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getType().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getLocation().getAddress().getCity().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (Double.toString(s.getAverageGrade()).toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			s.setStatus();
+			if(s.getStatus() == SportObjectStatus.Open) {
+				if (s.getStatus().toString().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+				}
+			}
+		}
+		retVal = nameACS(retVal);
+		return retVal;
+	}
+
+	@POST
+	@Path("searchDESC")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<SportObjectDTO> searchDESC(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		search.getSearchText();
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
+		ArrayList<SportObject> sportObjects = repo.getAll();
+		
+		for (SportObject s : sportObjects) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+				}
+				else {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getType().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getLocation().getAddress().getCity().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (Double.toString(s.getAverageGrade()).toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			s.setStatus();
+			if(s.getStatus() == SportObjectStatus.Open) {
+				if (s.getStatus().toString().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+				}
+			}
+		}
+		retVal = nameDESC(retVal);
 		return retVal;
 	}
 	
@@ -448,10 +797,518 @@ CustomerRepository customerRepo = new CustomerRepository();
 						isUnique = false;
 					}
 				}
+	
 			}
 		}
 		
-		return isUnique;	
+		return isUnique;
+	}
+
+	@POST
+	@Path("searchASCLocation")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<SportObjectDTO> searchASCLocation(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		search.getSearchText();
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
+		ArrayList<SportObject> sportObjects = repo.getAll();
+		
+		for (SportObject s : sportObjects) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));	
+				}
+				else {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE",s.getLocation().getAddress().getCity()));	
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getType().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE",s.getLocation().getAddress().getCity()));
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getLocation().getAddress().getCity().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE",s.getLocation().getAddress().getCity()));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (Double.toString(s.getAverageGrade()).toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE",s.getLocation().getAddress().getCity()));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			s.setStatus();
+			if(s.getStatus() == SportObjectStatus.Open) {
+				if (s.getStatus().toString().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), s.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));	
+				}
+			}
+		}
+		retVal = locationACS(retVal);
+		return retVal;
+	}	
+	
+	@POST
+	@Path("searchDESCLocation")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<SportObjectDTO> searchDESLocation(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		search.getSearchText();
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
+		ArrayList<SportObject> sportObjects = repo.getAll();
+		
+		for (SportObject s : sportObjects) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));	
+				}
+				else {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE",s.getLocation().getAddress().getCity()));	
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getType().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE",s.getLocation().getAddress().getCity()));
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getLocation().getAddress().getCity().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE",s.getLocation().getAddress().getCity()));
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (Double.toString(s.getAverageGrade()).toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE",s.getLocation().getAddress().getCity()));
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			s.setStatus();
+			if(s.getStatus() == SportObjectStatus.Open) {
+				if (s.getStatus().toString().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN",s.getLocation().getAddress().getCity()));	
+				}
+			}
+		}
+		retVal = locationDESC(retVal);
+		return retVal;
+	}
+
+	@POST
+	@Path("searchASCGrade")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<SportObjectDTO> searchASCGrade(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		search.getSearchText();
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
+		ArrayList<SportObject> sportObjects = repo.getAll();
+		
+		for (SportObject s : sportObjects) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+				}
+				else {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getType().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getLocation().getAddress().getCity().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (Double.toString(s.getAverageGrade()).toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			s.setStatus();
+			if(s.getStatus() == SportObjectStatus.Open) {
+				if (s.getStatus().toString().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+				}
+			}
+		}
+		retVal = gradeACS(retVal);
+		return retVal;
 	}
 	
 	
@@ -472,4 +1329,208 @@ CustomerRepository customerRepo = new CustomerRepository();
 	}
 	
 	
+
+
+	@POST
+	@Path("searchDESCGrade")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<SportObjectDTO> searchDESCGrade(SearchDTO search) {
+		if (search.getSearchText().isBlank()) {
+			return getAll();
+		}
+		search.getSearchText();
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
+		ArrayList<SportObject> sportObjects = repo.getAll();
+		
+		for (SportObject s : sportObjects) {
+			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+				}
+				else {
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getType().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (s.getLocation().getAddress().getCity().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			if (Double.toString(s.getAverageGrade()).toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+				s.setStatus();
+				if(s.getStatus() == SportObjectStatus.Open) {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));
+					}
+				}
+				else {
+					int cnt = 0;
+					for (SportObjectDTO so : retVal) {
+						if (so.getId().equals(s.getId()))
+							cnt++;
+					}
+					if (cnt == 0) {
+						StringBuilder sb = new StringBuilder("");
+						if (s.getContent() != null) {
+							for (Content c : s.getContent()) {
+								sb.append("\n" + c.getName());
+							}
+						}
+						retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"CLOSE"));	
+					}
+				}
+			}
+		}
+		
+		for (SportObject s : sportObjects) {
+			s.setStatus();
+			if(s.getStatus() == SportObjectStatus.Open) {
+				if (s.getStatus().toString().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					StringBuilder sb = new StringBuilder("");
+					if (s.getContent() != null) {
+						for (Content c : s.getContent()) {
+							sb.append("\n" + c.getName());
+						}
+					}
+					retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+				}
+			}
+		}
+		retVal = gradeDESC(retVal);
+		return retVal;
+	}
+
+	public ArrayList<SportObjectDTO> gradeACS(ArrayList<SportObjectDTO> retVal) {
+		Collections.sort(retVal, new SportObjectGradeComparator());
+		return retVal;
+	}
+	
+	public ArrayList<SportObjectDTO> gradeDESC(ArrayList<SportObjectDTO> retVal) {
+		Collections.sort(retVal, new SportObjectGradeComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<SportObjectDTO> nameACS(ArrayList<SportObjectDTO> retVal) {
+		Collections.sort(retVal, new SportObjectNameComparator());
+		return retVal;
+	}
+	
+	public ArrayList<SportObjectDTO> nameDESC(ArrayList<SportObjectDTO> retVal) {
+		Collections.sort(retVal, new SportObjectNameComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	private ArrayList<SportObjectDTO> locationACS(ArrayList<SportObjectDTO> retVal) {
+		Collections.sort(retVal, new SportObjectLocationComparator());
+		return retVal;
+	}
+	
+	private ArrayList<SportObjectDTO> locationDESC(ArrayList<SportObjectDTO> retVal) {
+		Collections.sort(retVal, new SportObjectLocationComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+
 }
