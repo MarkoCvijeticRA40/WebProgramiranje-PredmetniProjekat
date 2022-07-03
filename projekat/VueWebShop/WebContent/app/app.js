@@ -22,6 +22,7 @@ const ManagerTrainersPage = { template: '<managerViewTrainers-page></managerView
 const ManagerCustomersPage = { template: '<managerViewCustomers-page></managerViewCustomers-page>'}
 const ManagerAddTrainingPage = { template: '<managerAddTraining-page></managerAddTraining-page>'}
 const ManagerContentViewPage = { template: '<managerContentView-page></managerContentView-page>'}
+const ManagerTrainingViewPage = { template: '<managerTrainingView-page></managerTrainingView-page>'}
 
 
 
@@ -52,7 +53,8 @@ const router = new VueRouter({
 		{ path: '/mvt', component: ManagerTrainersPage },
 		{ path: '/mcpp', component: ManagerCustomersPage },
 		{ path: '/mat', component: ManagerAddTrainingPage },
-		{ path: '/mcvp', component: ManagerContentViewPage }
+		{ path: '/mcvp', component: ManagerContentViewPage },
+		{ path: '/mtvp', component: ManagerTrainingViewPage }
 
 	  ]
 });

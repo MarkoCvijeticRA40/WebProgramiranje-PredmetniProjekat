@@ -53,5 +53,14 @@ public class TrainerRepository extends GenericRepository<Trainer, TrainerReposit
 		return map;
 
 	}
+	
+	public Trainer getTrainerByUsername(String username) {
+		for (Trainer t : getAll()) {
+			if (t.getUsername().equals(username))
+				return t;
+		}
+		
+		return null;
+	}
 
 }

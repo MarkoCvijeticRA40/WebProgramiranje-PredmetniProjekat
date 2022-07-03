@@ -16,6 +16,7 @@ Vue.component("managerViewTrainers-page", {
   <li><a class="active" href="#/mvt">Trainers</a></li>
   <li><a class="active" href="#/mcpp">Customers</a></li>
   <li><a class="active" href="#/mcvp">Content</a></li>
+  <li><a class="active" href="#/mtvp">Trainings</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>

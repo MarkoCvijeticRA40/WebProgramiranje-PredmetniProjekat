@@ -1,15 +1,16 @@
-Vue.component("managerContentView-page", {
+Vue.component("managerTrainingView-page", {
 	data: function () {
 		    return {
 			  manager: null,
 			  sportObject: null,
 			  isThereSportObject: true,
 			  print: false,
-			  content: null,
+			  trainings: null,
+			  trainers: null,
 			  mode: "view",
 			  selected: null,
-			  backup: null,
-			  selectedFile: null
+			  selectedFile: null,
+			  selectedTrainerUsername: ""
 		    }
 	},
 	template: ` 
@@ -31,17 +32,19 @@ Vue.component("managerContentView-page", {
  <tr>
 	<th>Name</th>
     <th>Type</th>
-	<th>Image</th>
+	<th style="width:260px">Image</th>
     <th>Description</th>
     <th>Duration</th>
+    <th>Trainer</th>
   </tr>
-  <tr v-for="c in content" class="hand" v-on:click="selectedContent(c)">
-  <td>{{c.name}}</td>
-  <td>{{c.type}}</td>
-  <td><img v-bind:src="c.image" width="260px" Height="160px" alt="Image is not posted."></td>
-  <td>{{c.description}}</td>
-  <td v-if="c.durationInMinutes !== 0">{{c.durationInMinutes}}</td>
-  <td v-if="c.durationInMinutes === 0">Duration is not defined.</td>
+  <tr v-for="training in trainings" class="hand" v-on:click="selectedTraining(training)">
+  <td>{{training.name}}</td>
+  <td>{{training.type}}</td>
+  <td><img v-bind:src="training.image" width="260px" Height="160px" alt="Image is not posted."></td>
+  <td>{{training.description}}</td>
+  <td v-if="training.durationInMinutes !== 0">{{training.durationInMinutes}}</td>
+  <td v-if="training.durationInMinutes === 0">Duration is not defined.</td>
+  <td>{{training.trainer.name}} {{training.trainer.lastName}}</td>
   </tr>
 </table>
 
@@ -74,7 +77,16 @@ Vue.component("managerContentView-page", {
 	</tr>
 	
 	<tr>
-		<td><button v-on:click="editContent(); upload()">Save</button></td>
+		<td><label for="trainer">Trainer:</label></td>
+		<td>
+			<select @change="changeSelectedTrainer($event)">
+				<option v-for="trainer in trainers" v-bind:selected="trainer.username === selected.trainer.username" :value="trainer.id" :key="trainer.id"> {{ trainer.username }} </option>
+			</select>
+		</td>
+	</tr>
+	
+	<tr>
+		<td><button v-on:click="editTraining(); upload()">Save</button></td>
 		<td><button v-on:click="cancelEdit()">Cancel</button></td>
 	</tr>
 	
@@ -85,57 +97,93 @@ Vue.component("managerContentView-page", {
 	, 
 	methods : {
 		
-		selectedContent : function(content) {
-			this.selected = content;
+		selectedTraining : function(training) {
+			this.selected = training;
 			this.backup = [this.selected.name, this.selected.type, this.selected.description, this.selected.durationInMinutes];
+			this.selectedTrainerUsername = this.selected.trainer.username;
 			this.mode = "edit";
 		},
 		
 		cancelEdit : function() {
+			this.mode = "view";
 			this.selected.name = this.backup[0];
 			this.selected.type = this.backup[1];
 			this.selected.description = this.backup[2];
 			this.selected.durationInMinutes = this.backup[3];
-			this.mode = "view";
 		},
 		
 		onFileSelected : function(event) {
 			this.selectedFile = event.target.files[0]
 		},
 		
-		editContent : function() {
-			if (this.selected.name === "" || this.selected.type === "") {
-				toast("Name, type and image are required fields! ");
+		changeSelectedTrainer : function(event) {
+			this.selectedTrainerUsername = event.target.options[event.target.options.selectedIndex].text;
+		},
+		
+		upload : function() {
+			
+			const formData = new FormData();
+			formData.append('file', this.selectedFile);
+		
+			axios
+			.post('rest/sportobject/upload', formData)
+		},
+		
+		editTraining : function() {
+			if (this.selected.name === "" || this.selected.type === "" || this.selected.description === "" || this.durationInMinutes === "") {
+				toast("All fields must be filled! ");
 				return;
 			}
 			
 			if (this.selectedFile === null) {
 				axios
-				.post('rest/sportobject/updateContent', {
+				.post('rest/trainings/updateTraining', {
+				id: this.selected.id,
 				name: this.selected.name,
 				type: this.selected.type,
 				image: this.selected.image,
 				description: this.selected.description,
 				durationInMinutes: this.selected.durationInMinutes,
+				trainerUsername: this.selectedTrainerUsername,
 				sportObjectId: this.manager.sportObject.id 
 				})
 				.then(response => { 
-					toast("Content is updated!");
+					toast("Training is updated!");
+					axios
+					.post('rest/trainings/getTrainingsFromSportObject', { id: this.manager.sportObject.id })
+					.then(response => {
+						 this.trainings = response.data; 
+						 axios
+						 .get('rest/trainers/getAll')
+						 .then(response => this.trainers = response.data);
+					}
+					);
 					this.mode = "view";
 				});
 			}
 			else {
 				axios
-				.post('rest/sportobject/updateContent', {
+				.post('rest/trainings/updateTraining', {
+				id: this.selected.id,
 				name: this.selected.name,
 				type: this.selected.type,
 				image: "images\\" + this.selectedFile.name,
 				description: this.selected.description,
 				durationInMinutes: this.selected.durationInMinutes,
+				trainerUsername: this.selectedTrainerUsername,
 				sportObjectId: this.manager.sportObject.id 
 				})
 				.then(response => { 
-					toast("Content is updated!");
+					toast("Training is updated!");
+					axios
+					.post('rest/trainings/getTrainingsFromSportObject', { id: this.manager.sportObject.id })
+					.then(response => {
+						 this.trainings = response.data; 
+						 axios
+						 .get('rest/trainers/getAll')
+						 .then(response => this.trainers = response.data);
+					}
+					);
 					this.mode = "view";
 				});
 			}
@@ -150,19 +198,18 @@ Vue.component("managerContentView-page", {
 			this.manager = response.data;
 			if (this.manager.sportObject === null) {
 				this.isThereSportObject = false;
-				this.print = true;
+				this.print = true
 			}
 			else {
-			axios
-			.post('rest/sportobject/transformToDTO', { id: this.manager.sportObject.id })
-			.then(response => { 
-				this.sportObject = response.data
 				axios
-				.post('rest/sportobject/getContent', { id: this.sportObject.id })
-				.then(response => { 
-					this.content = response.data;
-					});
-				 } );
+				.post('rest/trainings/getTrainingsFromSportObject', { id: this.manager.sportObject.id })
+				.then(response => {
+					 this.trainings = response.data; 
+					 axios
+					 .get('rest/trainers/getAll')
+					 .then(response => this.trainers = response.data);
+				}
+				);
 			}
 		});
 		

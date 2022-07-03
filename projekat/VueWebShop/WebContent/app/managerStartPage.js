@@ -7,13 +7,14 @@ Vue.component("managerStart-page", {
 	template: ` 
 <div>
 <ul>
-  <li><a class="active" href="#/msp">Profile</a></li>
+ <li><a class="active" href="#/msp">Profile</a></li>
   <li><a class="active" href="#/mcp">Add Content</a></li>
   <li><a class="active" href="#/mat">Add Training</a></li>
   <li><a class="active" href="#/mso">Sport Object</a></li>
   <li><a class="active" href="#/mvt">Trainers</a></li>
   <li><a class="active" href="#/mcpp">Customers</a></li>
   <li><a class="active" href="#/mcvp">Content</a></li>
+  <li><a class="active" href="#/mtvp">Trainings</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>

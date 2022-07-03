@@ -1,5 +1,7 @@
 package services;
 
+import java.util.ArrayList;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -10,6 +12,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import dto.CreateTrainingDTO;
+import dto.IdDTO;
+import dto.TrainingDTO;
 import model.IdGenerator;
 import model.SportObject;
 import model.Trainer;
@@ -54,6 +58,47 @@ public class TrainingService {
 		
 		return training;
 	}
+	
+	
+	@POST
+	@Path("getTrainingsFromSportObject")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<Training> getTrainingsFromSportObject(IdDTO sportObjectId)
+	{
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<Training> retVal = new ArrayList<Training>();
+		for (Training t : repo.getAll()) {
+			if (t.getSportObject().getId().equals(sportObjectId.getId()))
+				retVal.add(t);
+		}
+		
+		return retVal;
+	}
+	
+	
+	@POST
+	@Path("updateTraining")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void updateTraining(TrainingDTO trainingDTO) {
+		
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		sportObjectRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Trainer trainer = trainerRepo.getTrainerByUsername(trainingDTO.getTrainerUsername());
+		SportObject sportObject = sportObjectRepo.read(trainingDTO.getSportObjectId());
+		Training training = new Training(trainingDTO.getId(), trainingDTO.getName(), trainingDTO.getType(), sportObject, trainingDTO.getDurationInMinutes(), trainer, trainingDTO.getDescription(), trainingDTO.getImage());
+		
+		repo.update(training);
+	}
+	
+	
+	
+	
+	
 	
 //	@GET
 //	@Path("createAuto")	
