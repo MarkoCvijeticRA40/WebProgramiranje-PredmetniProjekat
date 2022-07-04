@@ -49,7 +49,7 @@ public class CustomerService {
 			ctx.setAttribute("customers", new CustomerService());
 		}
 	}
-	//
+	
 	
 	@GET
 	@Path("getAll")	
@@ -136,6 +136,7 @@ public class CustomerService {
 		customerRepo.update(customer);
 		return customer;
 	}
+	
 	
 	@POST
 	@Path("search")	

@@ -8,6 +8,7 @@ Vue.component("customerStart-page", {
 <div>
 <ul>
   <li><a class="active" href="#/csp">Profile</a></li>
+  <li><a class="active" href="#/ctvp">Trainings</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>

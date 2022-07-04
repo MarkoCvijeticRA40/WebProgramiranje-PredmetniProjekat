@@ -1,17 +1,18 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Trainer extends User{
 
-	private TrainingHistory trainingHistory;
+	private ArrayList<TrainingHistory> trainingHistory;
 	
 	public Trainer() {
 		
 	}
 	
 	public Trainer(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth,
-			TrainingHistory trainingHistory) {
+			ArrayList<TrainingHistory> trainingHistory) {
 		super(username, password, name, lastName, gender, dateOfBirth);
 		this.trainingHistory = trainingHistory;
 	}
@@ -21,11 +22,11 @@ public class Trainer extends User{
 		this.trainingHistory = null;
 	}
 
-	public TrainingHistory getTrainingHistory() {
+	public ArrayList<TrainingHistory> getTrainingHistory() {
 		return trainingHistory;
 	}
 
-	public void setTrainingHistory(TrainingHistory trainingHistory) {
+	public void setTrainingHistory(ArrayList<TrainingHistory> trainingHistory) {
 		this.trainingHistory = trainingHistory;
 	}
 	

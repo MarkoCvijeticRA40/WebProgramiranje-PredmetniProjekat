@@ -94,7 +94,7 @@ CustomerRepository customerRepo = new CustomerRepository();
 
 	   System.out.println(fileDetails.getFileName());
 
-	   String uploadedFileLocation = "WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\" + fileDetails.getFileName();
+	   String uploadedFileLocation = "C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\WebContent\\images\\" + fileDetails.getFileName();
 
 	   // save it
 	   writeToFile(uploadedInputStream, uploadedFileLocation);

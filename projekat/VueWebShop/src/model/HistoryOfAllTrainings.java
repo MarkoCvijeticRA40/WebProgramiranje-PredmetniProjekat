@@ -2,17 +2,21 @@ package model;
 
 import java.time.LocalDateTime;
 
-public class TrainingHistory {
-
+public class HistoryOfAllTrainings {
+	
+	private String id;
 	private LocalDateTime applicationDate;
 	private Training training;
 	private Customer customer;
+	private Trainer trainer;
 	
-	public TrainingHistory(LocalDateTime applicationDate, Training training, Customer customer) {
+	public HistoryOfAllTrainings(String id, LocalDateTime applicationDate, Training training, Customer customer, Trainer trainer) {
 		super();
+		this.id = id;
 		this.applicationDate = applicationDate;
 		this.training = training;
 		this.customer = customer;
+		this.trainer = trainer;
 	}
 
 	public LocalDateTime getApplicationDate() {
@@ -39,4 +43,21 @@ public class TrainingHistory {
 		this.customer = customer;
 	}
 
+	public Trainer getTrainer() {
+		return trainer;
+	}
+
+	public void setTrainer(Trainer trainer) {
+		this.trainer = trainer;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+	
+	
 }
