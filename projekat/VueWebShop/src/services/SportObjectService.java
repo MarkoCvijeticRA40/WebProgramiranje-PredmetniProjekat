@@ -381,7 +381,7 @@ CustomerRepository customerRepo = new CustomerRepository();
 	//@Consumes(MediaType.APPLICATION_JSON)
 	//public void createAdministratorAuto()
 	//{
-//		repo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+//		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 //				
 //		Address adr = new Address("Spens","Novi Sad","22000");
 //		Location loc = new Location(101.1,55.9,adr);
@@ -1323,9 +1323,6 @@ CustomerRepository customerRepo = new CustomerRepository();
 		return retVal;
 	}
 	
-	
-
-
 	@POST
 	@Path("searchDESCGrade")	
 	@Produces(MediaType.APPLICATION_JSON)

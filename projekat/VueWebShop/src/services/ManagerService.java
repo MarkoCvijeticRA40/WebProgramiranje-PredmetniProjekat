@@ -384,7 +384,7 @@ public class ManagerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<ManagerDTO> getAll4() {
-		managerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<Manager> managers = managerRepo.getAll();
 		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
 		for (Manager m : managers) {			

@@ -24,6 +24,13 @@ import repository.HistoryOfAllTrainingsRepository;
 import repository.ScheduledTrainingsRepository;
 import repository.TrainingRepository;
 
+import javax.servlet.ServletContext;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
+
+import repository.ScheduledTrainingsRepository;
+
+
 @Path("scheduledTrainings")
 public class ScheduledTrainingsService {
 
@@ -32,6 +39,7 @@ public class ScheduledTrainingsService {
 	CustomerRepository customerRepo = new CustomerRepository();
 	HistoryOfAllTrainingsRepository historyRepo = new HistoryOfAllTrainingsRepository();
 	ScheduledTrainingsRepository scheduleRepo = new ScheduledTrainingsRepository(); 
+
 	
 	@Context
 	ServletContext ctx;
@@ -43,7 +51,7 @@ public class ScheduledTrainingsService {
 			ctx.setAttribute("scheduledTrainings", new ScheduledTrainingsService());
 		}
 	}
-	
+
 	
 	@POST
 	@Path("schedule")	

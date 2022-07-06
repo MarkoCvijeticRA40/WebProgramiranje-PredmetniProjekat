@@ -2,8 +2,10 @@ package services;
 
 
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -17,16 +19,21 @@ import javax.ws.rs.core.MediaType;
 import comparators.CustomerLastNameComparator;
 import comparators.CustomerNameComparator;
 import comparators.CustomerUserNameComparator;
+import dto.BuyMembership;
 import dto.CustomerDTO;
-
+import dto.MembershipDTO;
 import dto.SearchDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;
+import model.Membership;
+import model.MembershipStatus;
+import model.SportObjectStatus;
 import model.Trainer;
 import repository.AdministratorRepository;
 import repository.CustomerRepository;
 import repository.ManagerRepository;
+import repository.MembershipRepository;
 import repository.SportObjectRepository;
 import repository.TrainerRepository;
 
@@ -38,6 +45,7 @@ public class CustomerService {
 	ManagerRepository managerRepo = new ManagerRepository();
 	TrainerRepository trainerRepo = new TrainerRepository();
 	SportObjectRepository sportObjectRepo = new SportObjectRepository();
+	MembershipRepository membershipRepo = new MembershipRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -48,6 +56,39 @@ public class CustomerService {
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("customers", new CustomerService());
 		}
+	}
+	
+	@POST
+	@Path("updateMembership")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void updateCustomerMembership(BuyMembership dto) {
+		
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		membershipRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Membership membership = membershipRepo.read(dto.getMembershipId());
+		Customer customer = customerRepo.read(dto.getCustomerId());
+		
+		membership.setDayPaying(LocalDate.now());
+		
+		if(membership.getTypeMembership().equals("Yearly")) {
+			membership.setStartValidation(LocalDate.now());
+			membership.setEndValidation(LocalDate.now().plusYears(1));	
+		}
+		else if(membership.getTypeMembership().equals("Monthly")) {
+			membership.setStartValidation(LocalDate.now());
+			membership.setEndValidation(LocalDate.now().plusMonths(1));
+		}
+		else {
+			membership.setStartValidation(LocalDate.now());
+			membership.setEndValidation(LocalDate.now().plusWeeks(1));
+		}
+		membership.setStatus();
+		
+		customer.setMembership(membership);
+		
+		customerRepo.update(customer);
 	}
 	
 	
