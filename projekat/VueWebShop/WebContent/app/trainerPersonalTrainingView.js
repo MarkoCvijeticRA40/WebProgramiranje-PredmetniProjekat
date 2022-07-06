@@ -1,4 +1,4 @@
-Vue.component("trainerTrainingView-page", {
+Vue.component("trainerPersonalTrainingsView-page", {
 	data: function () {
 		    return {
 		      trainer : null,
@@ -20,17 +20,18 @@ Vue.component("trainerTrainingView-page", {
  <tr>
 	<th>Name</th>
     <th>Type</th>
-	<th style="width:260px">Image</th>
-    <th>Description</th>
-    <th>Duration</th>
+    <th>Sport Object</th>
+    <th>Customer</th>
+    <th>Date</th>
+    <th>Time</th>
   </tr>
-  <tr v-for="training in trainings">
-  <td>{{training.name}}</td>
-  <td>{{training.type}}</td>
-  <td><img v-bind:src="training.image" width="260px" Height="160px" alt="Image is not posted."></td>
-  <td>{{training.description}}</td>
-  <td v-if="training.durationInMinutes !== 0">{{training.durationInMinutes}}</td>
-  <td v-if="training.durationInMinutes === 0">Duration is not defined.</td>
+  <tr v-for="t in trainings">
+  <td>{{t.training.name}}</td>
+  <td>{{t.training.type}}</td>
+  <td>{{t.training.sportObject.name}}</td>
+  <td>{{t.customer.name}} {{t.customer.lastName}}</td>
+  <td>{{t.applicationDate.dayOfMonth}}.{{t.applicationDate.monthValue}}.{{t.applicationDate.year}}</td>
+  <td>{{t.applicationDate.hour}}:00</td>
   </tr>
 </table>
 
@@ -52,7 +53,7 @@ Vue.component("trainerTrainingView-page", {
          .then(response => {
 			 this.trainer = response.data;
 			 axios 
-			 .post('rest/trainers/getTrainings', { id: this.trainer.id })
+			 .post('rest/trainers/getPersonalTrainings', { id: this.trainer.id })
 			 .then(response => this.trainings = response.data);
 		  });
     },

@@ -27,6 +27,7 @@ const CustomerTrainingViewPage = { template: '<customerTrainingView-page></custo
 const TrainerTrainingViewPage = { template: '<trainerTrainingView-page></trainerTrainingView-page>'}
 const CustomerScheduleTrainingPage = { template: '<customerScheduleTraining-page></customerScheduleTraining-page>'}
 const TrainerGroupTrainingsViewPage = { template: '<trainerGroupTrainingsView-page></trainerGroupTrainingsView-page>'}
+const TrainerPersonalTrainingsViewPage = { template: '<trainerPersonalTrainingsView-page></trainerPersonalTrainingsView-page>'}
 
 
 
@@ -62,7 +63,8 @@ const router = new VueRouter({
 		{ path: '/ctvp', component: CustomerTrainingViewPage },
 		{ path: '/ttvp', component: TrainerTrainingViewPage },
 		{ path: '/cst', component: CustomerScheduleTrainingPage },
-		{ path: '/tgtvp', component: TrainerGroupTrainingsViewPage }
+		{ path: '/tgtvp', component: TrainerGroupTrainingsViewPage },
+		{ path: '/tptvp', component: TrainerPersonalTrainingsViewPage }
 
 	  ]
 });

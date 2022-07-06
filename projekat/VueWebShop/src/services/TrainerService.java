@@ -376,6 +376,24 @@ public class TrainerService {
 		
 		return retVal;
 	}
+	
+	@POST
+	@Path("getPersonalTrainings")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<HistoryOfAllTrainings> getPersonalTrainings(IdDTO trainerId) {
+		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
+		
+		for (HistoryOfAllTrainings h : scheduleRepo.getAll()) {
+			if (h.getTraining().getType().equals("Personalni") && h.getTrainer().getId().equals(trainerId.getId())) {
+				retVal.add(h);
+			}
+		}
+		
+		return retVal;
+	}
 
 
 //
