@@ -33,7 +33,7 @@ Vue.component("trainerPersonalTrainingsView-page", {
   <td>{{t.customer.name}} {{t.customer.lastName}}</td>
   <td>{{t.applicationDate.dayOfMonth}}.{{t.applicationDate.monthValue}}.{{t.applicationDate.year}}</td>
   <td>{{t.applicationDate.hour}}:00</td>
-  <td v-if="cancel === 'true'"><button>Cancel</button></td>
+  <td v-if="t.canCancel === 'true'"><button v-on:click="cancelTraining(t)">Cancel</button></td>
   </tr>
 </table>
 
@@ -41,11 +41,16 @@ Vue.component("trainerPersonalTrainingsView-page", {
 `
 	, 
 	methods : {
-		 canCancel: function(training) {
-		 	axios
-		 	.post('rest/scheduledTrainings/canCancel', { id: training.id })
-		 	.then(response => this.cancel = response.data);
-		 } 
+		cancelTraining : function(training) {
+			axios
+			.post('rest/scheduledTrainings/cancelTraining', { id: training.id })
+			.then(response => {
+			 	axios 
+				.post('rest/trainers/getPersonalTrainings', { id: this.trainer.id })
+				.then(response => this.trainings = response.data);
+				toast("Training is canceled!") 
+			});
+		}
 	},
 	filters: {
     	dateFormat: function (value, format) {

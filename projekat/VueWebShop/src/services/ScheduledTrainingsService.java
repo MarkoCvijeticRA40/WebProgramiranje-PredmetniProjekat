@@ -84,22 +84,15 @@ public class ScheduledTrainingsService {
 
 	}
 	
-	
 	@POST
-	@Path("canCancel")	
+	@Path("cancelTraining")	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public String canCancelPersonalTraining(IdDTO trainingId) {
+	public void cancelTraining(IdDTO trainingId) {
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		
-		String retVal = "true";
-		
-		HistoryOfAllTrainings training = repo.read(trainingId.getId());
-		if (training.getApplicationDate().minusDays(2).compareTo(LocalDateTime.now()) < 0) {
-			retVal = "false";
-		}
+		repo.delete(trainingId.getId());
 
-		return retVal;
 	}
+	
 	
 }

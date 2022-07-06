@@ -1,5 +1,6 @@
 package services;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import javax.servlet.ServletContext;
@@ -13,6 +14,7 @@ import javax.ws.rs.core.MediaType;
 
 
 import dto.IdDTO;
+import dto.PersonalTrainingDTO;
 import comparators.TrainerLastNameComparator;
 import comparators.TrainerNameComparator;
 import comparators.TrainerUserNameComparator;
@@ -381,14 +383,19 @@ public class TrainerService {
 	@Path("getPersonalTrainings")	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public ArrayList<HistoryOfAllTrainings> getPersonalTrainings(IdDTO trainerId) {
+	public ArrayList<PersonalTrainingDTO> getPersonalTrainings(IdDTO trainerId) {
 		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
-		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
+		ArrayList<PersonalTrainingDTO> retVal = new ArrayList<PersonalTrainingDTO>();
 		
 		for (HistoryOfAllTrainings h : scheduleRepo.getAll()) {
 			if (h.getTraining().getType().equals("Personalni") && h.getTrainer().getId().equals(trainerId.getId())) {
-				retVal.add(h);
+				if (h.getApplicationDate().minusDays(2).compareTo(LocalDateTime.now()) < 0) {
+					retVal.add(new PersonalTrainingDTO(h.getId(), h.getApplicationDate(), h.getTraining(), h.getCustomer(), h.getTrainer(), "false"));
+				}
+				else {
+					retVal.add(new PersonalTrainingDTO(h.getId(), h.getApplicationDate(), h.getTraining(), h.getCustomer(), h.getTrainer(), "true"));
+				}
 			}
 		}
 		
