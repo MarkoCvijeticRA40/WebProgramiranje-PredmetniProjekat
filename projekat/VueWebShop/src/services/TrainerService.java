@@ -21,12 +21,14 @@ import dto.TrainerDTO;
 import dto.UsernameDTO;
 import model.Administrator;
 import model.Customer;
+import model.HistoryOfAllTrainings;
 import model.Manager;
 import model.Trainer;
 import model.Training;
 import repository.AdministratorRepository;
 import repository.CustomerRepository;
 import repository.ManagerRepository;
+import repository.ScheduledTrainingsRepository;
 import repository.TrainerRepository;
 import repository.TrainingRepository;
 
@@ -38,6 +40,7 @@ public class TrainerService {
 	AdministratorRepository administratorRepo = new AdministratorRepository();
 	ManagerRepository managerRepo = new ManagerRepository();
 	TrainingRepository trainingRepo = new TrainingRepository();
+	ScheduledTrainingsRepository scheduleRepo = new ScheduledTrainingsRepository();
 	
 	
 	@Context
@@ -350,6 +353,25 @@ public class TrainerService {
 		for (Training t : trainingRepo.getAll()) {
 			if (t.getTrainer().getId().equals(trainerId.getId()))
 				retVal.add(t);
+		}
+		
+		return retVal;
+	}
+	
+	
+	@POST
+	@Path("getGroupTrainings")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<HistoryOfAllTrainings> getGroupTrainings(IdDTO trainerId) {
+		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
+		
+		for (HistoryOfAllTrainings h : scheduleRepo.getAll()) {
+			if (h.getTraining().getType().equals("Grupni") && h.getTrainer().getId().equals(trainerId.getId())) {
+				retVal.add(h);
+			}
 		}
 		
 		return retVal;

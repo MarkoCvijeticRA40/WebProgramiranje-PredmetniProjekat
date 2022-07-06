@@ -9,6 +9,7 @@ Vue.component("trainerStart-page", {
 <ul>
   <li><a class="active" href="#/tsp">Profile</a></li>
   <li><a class="active" href="#/ttvp">Trainings</a></li>
+  <li><a class="active" href="#/tgtvp">Group Trainings</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>
