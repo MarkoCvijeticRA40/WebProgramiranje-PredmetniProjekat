@@ -53,5 +53,16 @@ public class TrainingRepository extends GenericRepository<Training, TrainingRepo
 		return map;
 
 	}
+	
+	
+	public Training getTrainingByNameTypeAndSportObject(String name, String type, String sportObject) {
+		for (Training t : getAll()) {
+			if (t.getName().equals(name) && t.getType().equals(type) && t.getSportObject().getName().equals(sportObject)) {
+				return t;
+			}
+		}
+		
+		return null;
+	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -38,6 +39,16 @@ public class TrainingService {
 			ctx.setAttribute("trainings", new TrainingService());
 		}
 	}
+	
+	@GET
+	@Path("getAll")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<Training> getTrainings() {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		return repo.getAll();
+	}
+	
 	
 	@POST
 	@Path("createTraining")	

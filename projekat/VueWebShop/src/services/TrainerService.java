@@ -356,7 +356,7 @@ public class TrainerService {
 	}
 
 
-
+//
 //	@GET
 //	@Path("createAuto")	
 //	@Produces(MediaType.TEXT_PLAIN)
