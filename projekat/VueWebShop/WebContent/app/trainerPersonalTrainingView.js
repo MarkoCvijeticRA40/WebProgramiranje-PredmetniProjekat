@@ -2,7 +2,8 @@ Vue.component("trainerPersonalTrainingsView-page", {
 	data: function () {
 		    return {
 		      trainer : null,
-		      trainings: null
+		      trainings: null,
+		      cancel: "false"
 		    }
 	},
 	template: ` 
@@ -32,6 +33,7 @@ Vue.component("trainerPersonalTrainingsView-page", {
   <td>{{t.customer.name}} {{t.customer.lastName}}</td>
   <td>{{t.applicationDate.dayOfMonth}}.{{t.applicationDate.monthValue}}.{{t.applicationDate.year}}</td>
   <td>{{t.applicationDate.hour}}:00</td>
+  <td v-if="cancel === 'true'"><button>Cancel</button></td>
   </tr>
 </table>
 
@@ -39,7 +41,11 @@ Vue.component("trainerPersonalTrainingsView-page", {
 `
 	, 
 	methods : {
-		 
+		 canCancel: function(training) {
+		 	axios
+		 	.post('rest/scheduledTrainings/canCancel', { id: training.id })
+		 	.then(response => this.cancel = response.data);
+		 } 
 	},
 	filters: {
     	dateFormat: function (value, format) {

@@ -12,6 +12,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import dto.IdDTO;
 import dto.ScheduleTrainingDTO;
 import model.Customer;
 import model.HistoryOfAllTrainings;
@@ -73,6 +74,24 @@ public class ScheduledTrainingsService {
 		HistoryOfAllTrainings appointment = new HistoryOfAllTrainings(IdGenerator.getInstance().generateId(historyRepo.getKeySet(), 10), date, training, customer, trainer);
 		scheduleRepo.create(appointment);
 
+	}
+	
+	
+	@POST
+	@Path("canCancel")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public String canCancelPersonalTraining(IdDTO trainingId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		String retVal = "true";
+		
+		HistoryOfAllTrainings training = repo.read(trainingId.getId());
+		if (training.getApplicationDate().minusDays(2).compareTo(LocalDateTime.now()) < 0) {
+			retVal = "false";
+		}
+
+		return retVal;
 	}
 	
 }
