@@ -54,8 +54,6 @@ public class HistoryOfAllTrainingsService {
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
-//		Date currentTime = new Date();
-//		Date thirtyDaysBeforeNow = new Date(currentTime.getTime() - TimeUnit.DAYS.toMillis(30));
 		for (HistoryOfAllTrainings h : repo.getAll()) {
 			if (h.getCustomer().getId().equals(customerId.getId())) {
 				if (LocalDateTime.now().minusDays(30).compareTo(h.getApplicationDate()) <= 0) {
@@ -67,29 +65,29 @@ public class HistoryOfAllTrainingsService {
 		return retVal;
 	}
 	
-	@GET
-	@Path("createAuto")	
-	@Produces(MediaType.TEXT_PLAIN)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public void createAdministratorAuto()
-	{
-		repo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		trainerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		trainingRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		
-		
-		Trainer trainer = trainerRepo.read("2022-06-19T21:32:21.213536");
-		Training training = trainingRepo.read("1");
-		Customer customer = customerRepo.read("2022-06-17T16:43:25.833348900");
-		HistoryOfAllTrainings t1 = new HistoryOfAllTrainings("1",LocalDateTime.of(2022, 6, 2, 14, 0), training, customer, trainer);
-		HistoryOfAllTrainings t2 = new HistoryOfAllTrainings("2", LocalDateTime.of(2022, 6, 4, 18, 0), training, customer, trainer);
-		HistoryOfAllTrainings t3 = new HistoryOfAllTrainings("3", LocalDateTime.of(2022, 7, 3, 20, 0), training, customer, trainer);
-		HistoryOfAllTrainings t4 = new HistoryOfAllTrainings("2", LocalDateTime.of(2022, 6, 5, 18, 0), training, customer, trainer);
-		
-//		Map<String, HistoryOfAllTrainings> mapa = new HashMap<String, HistoryOfAllTrainings>();
-//		mapa.put(t1.getId(), t1);
-//		repo.writeFile(mapa);
-		repo.create(t4);
-	}
+//	@GET
+//	@Path("createAuto")	
+//	@Produces(MediaType.TEXT_PLAIN)
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	public void createAdministratorAuto()
+//	{
+//		repo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+//		trainerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+//		trainingRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+//		customerRepo.setBasePath("C:\\Users\\KORISNIK\\Desktop\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+//		
+//		
+//		Trainer trainer = trainerRepo.read("2022-06-19T21:32:21.213536");
+//		Training training = trainingRepo.read("1");
+//		Customer customer = customerRepo.read("2022-06-17T16:43:25.833348900");
+//		HistoryOfAllTrainings t1 = new HistoryOfAllTrainings("1",LocalDateTime.of(2022, 6, 2, 14, 0), training, customer, trainer);
+//		HistoryOfAllTrainings t2 = new HistoryOfAllTrainings("2", LocalDateTime.of(2022, 6, 4, 18, 0), training, customer, trainer);
+//		HistoryOfAllTrainings t3 = new HistoryOfAllTrainings("3", LocalDateTime.of(2022, 7, 3, 20, 0), training, customer, trainer);
+//		HistoryOfAllTrainings t4 = new HistoryOfAllTrainings("2", LocalDateTime.of(2022, 6, 5, 18, 0), training, customer, trainer);
+//		
+////		Map<String, HistoryOfAllTrainings> mapa = new HashMap<String, HistoryOfAllTrainings>();
+////		mapa.put(t1.getId(), t1);
+////		repo.writeFile(mapa);
+//		repo.create(t4);
+//	}
 }

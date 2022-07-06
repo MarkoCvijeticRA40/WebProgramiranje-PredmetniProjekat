@@ -10,6 +10,8 @@ Vue.component("customerTrainingView-page", {
 <ul>
   <li><a class="active" href="#/csp">Profile</a></li>
   <li><a class="active" href="#/ctvp">Trainings</a></li>
+  <li><a class="active" href="#/ccm">Buy Membership</a></li> 
+  <li><a class="active" href="#/cam">Active Membership</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>

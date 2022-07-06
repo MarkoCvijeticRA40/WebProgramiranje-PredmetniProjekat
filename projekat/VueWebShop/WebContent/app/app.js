@@ -25,8 +25,9 @@ const ManagerContentViewPage = { template: '<managerContentView-page></managerCo
 const ManagerTrainingViewPage = { template: '<managerTrainingView-page></managerTrainingView-page>'}
 const CustomerTrainingViewPage = { template: '<customerTrainingView-page></customerTrainingView-page>'}
 const TrainerTrainingViewPage = { template: '<trainerTrainingView-page></trainerTrainingView-page>'}
-
-
+const CustomerScheduleTrainingPage = { template: '<customerScheduleTraining-page></customerScheduleTraining-page>'}
+const customerCreateMemberShip = { template: '<customerMemberShip-page></customerMemberShip-page>'}
+const customerActiveMembership =  { template: '<customerActive-page></customerActive-page>'}
 
 const router = new VueRouter({
 	  mode: 'hash',
@@ -58,7 +59,11 @@ const router = new VueRouter({
 		{ path: '/mcvp', component: ManagerContentViewPage },
 		{ path: '/mtvp', component: ManagerTrainingViewPage },
 		{ path: '/ctvp', component: CustomerTrainingViewPage },
-		{ path: '/ttvp', component: TrainerTrainingViewPage }
+		{ path: '/ttvp', component: TrainerTrainingViewPage },
+		{ path: '/cst', component: CustomerScheduleTrainingPage },
+		{ path: '/ccm', component: customerCreateMemberShip },
+		{ path: '/cam', component: customerActiveMembership },
+
 
 	  ]
 });

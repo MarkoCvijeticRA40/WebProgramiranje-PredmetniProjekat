@@ -1,7 +1,8 @@
-Vue.component("customerStart-page", {
+Vue.component("customerScheduleTraining-page", {
 	data: function () {
 		    return {
-		      customer: null
+		      customer: null,
+		      trainings: null
 		    }
 	},
 	template: ` 
@@ -17,8 +18,12 @@ Vue.component("customerStart-page", {
 <br>
 <table style="font-size:50">
 	<tr>
-		<td><label for="username">Username:</label></td>
-		<td>&ensp;{{customer.username}}</td>
+		<td><label for="training">Training:</label></td>
+		<td>
+			<select @change="changeSelectedTraining($event)">
+				<option v-for="training in trainings" :value="training.id" :key="training.id"> {{training.name}}-{{training.sportObject.name}} </option>
+			</select>
+		</td>
 	</tr>
 	
 	
@@ -48,8 +53,8 @@ Vue.component("customerStart-page", {
 	, 
 	methods : {
 	
-		editCustomer : function() {
-			router.push("/ecp");
+		changeSelectedTraining : function(event) {
+			this.selectedTrainingName = event.target.options[event.target.options.selectedIndex].text
 		}
 		
 	},
