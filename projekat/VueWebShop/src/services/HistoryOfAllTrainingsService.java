@@ -17,10 +17,14 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import dto.IdDTO;
+import dto.WelcomeCustomerDTO;
 import model.Customer;
 import model.HistoryOfAllTrainings;
+import model.IdGenerator;
+import model.MembershipStatus;
 import model.Trainer;
 import model.Training;
+import model.TrainingHistory;
 import repository.CustomerRepository;
 import repository.HistoryOfAllTrainingsRepository;
 import repository.TrainerRepository;
@@ -64,6 +68,67 @@ public class HistoryOfAllTrainingsService {
 		
 		return retVal;
 	}
+	
+	
+	@POST
+	@Path("welcomeCustomer")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public HistoryOfAllTrainings welcomeCustomer(WelcomeCustomerDTO dto) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainingRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Customer customer = customerRepo.getCustomerByUsername(dto.getCustomer());
+		if (customer.getMembership() == null) {
+			return null;
+		}
+		customer.getMembership().setStatus();
+		if (customer.getMembership().getMembershipStatus() == MembershipStatus.NoActive || customer.getMembership().getNumberOfTerms() <= 0) {
+			return null;
+		}
+		
+		LocalDateTime applicationDate = LocalDateTime.now();
+		
+		String trainingName = dto.getTraining().split("-")[0];
+		String trainingType = dto.getTraining().split("-")[1];
+		String trainingSportObject = dto.getTraining().split("-")[2];
+		Training training = trainingRepo.getTrainingByNameTypeAndSportObject(trainingName, trainingType, trainingSportObject);
+		Trainer trainer;
+		if (training.getTrainer() != null) {
+			trainer = training.getTrainer();
+		}
+		else {
+			trainer = null;
+		}
+		
+		int numOfAvailableTrainings = customer.getMembership().getNumberOfTerms();
+		numOfAvailableTrainings -= 1;
+		customer.getMembership().setNumberOfTerms(numOfAvailableTrainings);
+		customerRepo.update(customer);
+		
+		if (training.getTrainer() != null) {
+			ArrayList<TrainingHistory> trainersTrainingHistory = new ArrayList<TrainingHistory>();
+			if (trainer.getTrainingHistory() != null) {
+				trainersTrainingHistory = trainer.getTrainingHistory();
+			}
+			training.setTrainer(null);
+			trainersTrainingHistory.add(new TrainingHistory(applicationDate, training, customer));
+			trainer.setTrainingHistory(trainersTrainingHistory);
+			trainerRepo.update(trainer);
+		}
+		
+		HistoryOfAllTrainings history = new HistoryOfAllTrainings(IdGenerator.getInstance().generateId(repo.getKeySet(), 10), applicationDate, training, customer, trainer);
+		repo.create(history);
+		
+		
+		return history;
+		
+	}
+	
+	
+	
 	
 //	@GET
 //	@Path("createAuto")	

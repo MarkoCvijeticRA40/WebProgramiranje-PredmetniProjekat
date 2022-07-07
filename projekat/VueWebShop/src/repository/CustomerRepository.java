@@ -53,4 +53,13 @@ public class CustomerRepository extends GenericRepository<Customer, CustomerRepo
 		return map;
 
 	}
+	
+	public Customer getCustomerByUsername(String username) {
+		for (Customer customer : getAll()) {
+			if (customer.getUsername().equals(username))
+				return customer;
+		}
+		
+		return null;
+	}
 }

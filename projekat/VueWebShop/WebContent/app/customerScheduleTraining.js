@@ -5,7 +5,8 @@ Vue.component("customerScheduleTraining-page", {
 		      trainings: null,
 		      selectedTrainingName: null,
 		      date: null,
-		      time: ""
+		      time: "",
+		      isActive: true
 
 		    }
 	},
@@ -21,7 +22,7 @@ Vue.component("customerScheduleTraining-page", {
 </ul>
 <br>
 <br>
-<table style="font-size:50">
+<table style="font-size:50" v-if="isActive">
 	<tr>
 		<td><label for="training">Training:</label></td>
 		<td>
@@ -65,6 +66,8 @@ Vue.component("customerScheduleTraining-page", {
 	</tr>
 </table>
 
+<span v-if="isActive === false">Your membership is not active!</span>
+
 </div>
 `
 	, 
@@ -97,6 +100,10 @@ Vue.component("customerScheduleTraining-page", {
          .get('rest/users/activeCustomer')
          .then(response => { 
 			this.customer = response.data;
+			if (this.customer.membership.membershipStatus === "NoActive") {
+				this.isActive = false;
+				return;
+			}
 			axios
 			.get('rest/trainings/getAll')
 			.then(response => { 

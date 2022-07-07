@@ -30,6 +30,7 @@ const TrainerGroupTrainingsViewPage = { template: '<trainerGroupTrainingsView-pa
 const TrainerPersonalTrainingsViewPage = { template: '<trainerPersonalTrainingsView-page></trainerPersonalTrainingsView-page>'}
 const customerCreateMemberShip = { template: '<customerMemberShip-page></customerMemberShip-page>'}
 const customerActiveMembership =  { template: '<customerActive-page></customerActive-page>'}
+const ManagerWelcomeCustomer =  { template: '<managerWelcomeCustomer-page></managerWelcomeCustomer-page>'}
 
 
 const router = new VueRouter({
@@ -68,7 +69,7 @@ const router = new VueRouter({
 		{ path: '/tptvp', component: TrainerPersonalTrainingsViewPage },
 		{ path: '/ccm', component: customerCreateMemberShip },
 		{ path: '/cam', component: customerActiveMembership },
-
+		{ path: '/mwc', component: ManagerWelcomeCustomer }
 
 	  ]
 });

@@ -263,7 +263,7 @@ CustomerRepository customerRepo = new CustomerRepository();
 		}
 		
 		for (SportObject s : sportObjects) {
-			if (Double.toString(s.getAverageGrade()).toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+			if (s.getAverageGrade() == Double.parseDouble(search.getSearchText().trim())) {	
 				s.setStatus();
 				if(s.getStatus() == SportObjectStatus.Open) {
 					int cnt = 0;
