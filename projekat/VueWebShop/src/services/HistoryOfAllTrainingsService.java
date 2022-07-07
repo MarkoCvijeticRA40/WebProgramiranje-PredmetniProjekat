@@ -22,6 +22,7 @@ import model.Customer;
 import model.HistoryOfAllTrainings;
 import model.IdGenerator;
 import model.MembershipStatus;
+import model.SportObject;
 import model.Trainer;
 import model.Training;
 import model.TrainingHistory;
@@ -101,6 +102,28 @@ public class HistoryOfAllTrainingsService {
 		}
 		else {
 			trainer = null;
+		}
+		
+		int cnt = 0;
+		if (customer.getVisitedObjects() != null) {
+			for (SportObject so : customer.getVisitedObjects()) {
+				if (so.getId().equals(training.getSportObject().getId())) {
+					cnt++;
+					break;
+				}
+			}
+			
+			if (cnt == 0) {
+				ArrayList<SportObject> visitedObjects = new ArrayList<SportObject>();
+				visitedObjects = customer.getVisitedObjects();
+				visitedObjects.add(training.getSportObject());
+				customer.setVisitedObjects(visitedObjects);
+			}
+		}
+		else {
+			ArrayList<SportObject> visitedObjects = new ArrayList<SportObject>();
+			visitedObjects.add(training.getSportObject());
+			customer.setVisitedObjects(visitedObjects);
 		}
 		
 		int numOfAvailableTrainings = customer.getMembership().getNumberOfTerms();

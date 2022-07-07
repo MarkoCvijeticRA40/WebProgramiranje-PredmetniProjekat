@@ -1524,5 +1524,49 @@ CustomerRepository customerRepo = new CustomerRepository();
 		Collections.reverse(retVal);
 		return retVal;
 	}
+	
+	
+	@POST
+	@Path("getVisitedObjects")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<SportObjectDTO> getVisitedObjects(IdDTO customerId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Customer customer = customerRepo.read(customerId.getId());
+		if (customer.getVisitedObjects() == null) {
+			return null;
+		}
+		ArrayList<SportObject> sportObjects = customer.getVisitedObjects();
+		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
+		
+		for (SportObject s : sportObjects) {			
+			s.setStatus();
+			StringBuilder sb = new StringBuilder("");
+			if (s.getContent() != null) {
+				for (Content c : s.getContent()) {
+					sb.append("\n" + c.getName());
+				}
+			}
+			if(s.getStatus() == SportObjectStatus.Open) {
+				retVal.add(new SportObjectDTO(s.getId(), s.getName(), s.getType(), sb.toString(), s.getLocation().toString(), s.getAverageGrade(), s.getImage(), s.getWorkTime().toString(),"OPEN"));	
+			}
+		}
+		
+		for (SportObject s1 : sportObjects) {			
+			s1.setStatus();
+			StringBuilder sb = new StringBuilder("");
+			if (s1.getContent() != null) {
+				for (Content c : s1.getContent()) {
+					sb.append("\n" + c.getName());
+				}
+			}
+			if(s1.getStatus() == SportObjectStatus.Close) {
+				retVal.add(new SportObjectDTO(s1.getId(), s1.getName(), s1.getType(), sb.toString(), s1.getLocation().toString(), s1.getAverageGrade(), s1.getImage(), s1.getWorkTime().toString(),"CLOSE"));	
+												   }
+		}
+			return retVal;
+	}
 
 }

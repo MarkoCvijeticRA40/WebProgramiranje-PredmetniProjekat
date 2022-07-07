@@ -1,14 +1,28 @@
 package services;
 
 import javax.servlet.ServletContext;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
+
+import dto.CommentDTO;
+import model.Comment;
+import model.Customer;
+import model.IdGenerator;
+import model.SportObject;
 import repository.CommentRepository;
+import repository.CustomerRepository;
+import repository.SportObjectRepository;
 
 @Path("comments")
 public class CommentService {
 
 CommentRepository repo = new CommentRepository();
+CustomerRepository customerRepo = new CustomerRepository();
+SportObjectRepository sportObjectRepo = new SportObjectRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -19,6 +33,24 @@ CommentRepository repo = new CommentRepository();
 			String contextPath = ctx.getRealPath("");
 			ctx.setAttribute("comments", new CommentService());
 		}
+	}
+	
+	
+	@POST
+	@Path("create")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void addComment(CommentDTO commentDTO) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		sportObjectRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Customer customer = customerRepo.read(commentDTO.getCustomerId());
+		SportObject sportObject = sportObjectRepo.read(commentDTO.getSportObjectId());
+		
+		Comment comment = new Comment(IdGenerator.getInstance().generateId(repo.getKeySet(), 10), customer, sportObject, commentDTO.getComment(), commentDTO.getGrade(), false);
+		repo.create(comment);
+		
 	}
 	
 //	@GET

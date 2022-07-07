@@ -1,21 +1,21 @@
 package model;
 
-
-
 public class Comment {
 	private String id;
-	private CustomerType customer;
+	private Customer customer;
 	private SportObject sportObject;
 	private String text;
 	private int grade;
+	private boolean isAproved;
 	
-	public Comment(String id, CustomerType customer, SportObject sportObject, String text, int grade) {
+	public Comment(String id, Customer customer, SportObject sportObject, String text, int grade, boolean isAproved) {
 		super();
 		this.id = id;
 		this.customer = customer;
 		this.sportObject = sportObject;
 		this.text = text;
 		this.grade = grade;
+		this.isAproved = isAproved;
 	}
 	
 	
@@ -32,11 +32,11 @@ public class Comment {
 
 
 
-	public CustomerType getCustomer() {
+	public Customer getCustomer() {
 		return customer;
 	}
 
-	public void setCustomer(CustomerType customer) {
+	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
@@ -62,6 +62,17 @@ public class Comment {
 
 	public void setGrade(int grade) {
 		this.grade = grade;
+	}
+
+
+
+	public boolean isAproved() {
+		return isAproved;
+	}
+
+
+	public void setAproved(boolean isAproved) {
+		this.isAproved = isAproved;
 	}
 	
 	
