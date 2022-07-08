@@ -32,12 +32,14 @@ import dto.SearchDTO;
 import dto.SportObjectDTO;
 import model.Location;
 import model.Address;
+import model.Comment;
 import model.Content;
 import model.Customer;
 import model.IdGenerator;
 import model.SportObject;
 import model.SportObjectStatus;
 import model.WorkTime;
+import repository.CommentRepository;
 import repository.CustomerRepository;
 import repository.SportObjectRepository;
 
@@ -46,6 +48,7 @@ public class SportObjectService {
 
 SportObjectRepository repo = new SportObjectRepository();
 CustomerRepository customerRepo = new CustomerRepository();
+CommentRepository commentRepo = new CommentRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -371,6 +374,31 @@ CustomerRepository customerRepo = new CustomerRepository();
 		}
 		
 		return retVal;
+	}
+	
+	
+	@POST
+	@Path("updateGrade")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void updateGrade(IdDTO sportObjectId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		commentRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		SportObject sportObject = repo.read(sportObjectId.getId());
+		
+		int sum = 0;
+		int cnt = 0;
+		for (Comment c : commentRepo.getAll()) {
+			if (c.getSportObject().getId().equals(sportObjectId.getId())) {
+				sum += c.getGrade();
+				cnt++;
+			}
+		}
+		
+		double avgGrade = (double)sum / (double)cnt;
+		sportObject.setAverageGrade(avgGrade);
+		repo.update(sportObject);
 	}
 		
 				

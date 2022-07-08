@@ -80,6 +80,9 @@ Vue.component("customerVisitedObjects-page", {
 			.then(response => {
 				toast("Comment is sent!");
 				this.isSelected = false;
+				axios
+				.post('rest/sportobject/updateGrade', { id: this.selectedSportObject.id })
+				.then(); 
 			});
 		}
 	},
