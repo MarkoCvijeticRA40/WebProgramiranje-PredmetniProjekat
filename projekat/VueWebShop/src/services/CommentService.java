@@ -1,7 +1,10 @@
 package services;
 
+import java.util.ArrayList;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -9,6 +12,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import dto.CommentDTO;
+import dto.IdDTO;
 import model.Comment;
 import model.Customer;
 import model.IdGenerator;
@@ -48,8 +52,47 @@ SportObjectRepository sportObjectRepo = new SportObjectRepository();
 		Customer customer = customerRepo.read(commentDTO.getCustomerId());
 		SportObject sportObject = sportObjectRepo.read(commentDTO.getSportObjectId());
 		
-		Comment comment = new Comment(IdGenerator.getInstance().generateId(repo.getKeySet(), 10), customer, sportObject, commentDTO.getComment(), commentDTO.getGrade(), false);
+		Comment comment = new Comment(IdGenerator.getInstance().generateId(repo.getKeySet(), 10), customer, sportObject, commentDTO.getComment(), commentDTO.getGrade(), false, false);
 		repo.create(comment);
+		
+	}
+	
+	
+	@GET
+	@Path("getAll")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<Comment> getAll() {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		return repo.getAll();
+		
+	}
+	
+	
+	@POST
+	@Path("aprove")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void aproveComment(IdDTO commentId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Comment comment = repo.read(commentId.getId());
+		comment.setAproved(true);
+		repo.update(comment);
+		
+	}
+	
+	@POST
+	@Path("denie")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void denieComment(IdDTO commentId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Comment comment = repo.read(commentId.getId());
+		comment.setDenied(true);
+		repo.update(comment);
 		
 	}
 	

@@ -7,8 +7,9 @@ public class Comment {
 	private String text;
 	private int grade;
 	private boolean isAproved;
+	private boolean isDenied;
 	
-	public Comment(String id, Customer customer, SportObject sportObject, String text, int grade, boolean isAproved) {
+	public Comment(String id, Customer customer, SportObject sportObject, String text, int grade, boolean isAproved, boolean isDenied) {
 		super();
 		this.id = id;
 		this.customer = customer;
@@ -16,6 +17,7 @@ public class Comment {
 		this.text = text;
 		this.grade = grade;
 		this.isAproved = isAproved;
+		this.isDenied = isDenied;
 	}
 	
 	
@@ -73,6 +75,18 @@ public class Comment {
 
 	public void setAproved(boolean isAproved) {
 		this.isAproved = isAproved;
+	}
+
+
+
+	public boolean isDenied() {
+		return isDenied;
+	}
+
+
+
+	public void setDenied(boolean isDenied) {
+		this.isDenied = isDenied;
 	}
 	
 	

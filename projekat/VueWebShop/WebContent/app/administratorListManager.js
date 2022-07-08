@@ -8,7 +8,7 @@ Vue.component("listManager-page", {
 	template: ` 
 <div>
 <ul>
-  <li><a class="active" href="#/asp">Profile</a></li>
+ <li><a class="active" href="#/asp">Profile</a></li>
   <li><a class="active" href="#/act">Add Trainer</a></li>
   <li><a class="active" href="#/acm">Add Manager</a></li>
    <li><a class="active" href="#/aso">Add Sport Object</a></li>
@@ -16,6 +16,7 @@ Vue.component("listManager-page", {
   <li><a class="active" href="#/lim">Managers</a></li>
   <li><a class="active" href="#/lit">Trainers</a></li>
 <li><a class="active" href="#/lia">Administrators</a></li>
+<li><a class="active" href="#/acp">Comments</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>
