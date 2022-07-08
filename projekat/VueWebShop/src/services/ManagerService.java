@@ -20,6 +20,8 @@ import dto.CreateManagerDTO;
 import dto.ManagerDTO;
 import dto.SearchDTO;
 import dto.UpdateManagerDTO;
+import dto.UpdatePasswordDTO;
+import dto.UpdateUserDTO;
 import dto.UsernameDTO;
 import model.Address;
 import model.Administrator;
@@ -154,6 +156,36 @@ public class ManagerService {
 		managerRepo.update(manager);
 		return manager;
 	}
+	
+	
+	@POST
+	@Path("updateManager")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Manager update(UpdateUserDTO managerDTO) {
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Manager manager = managerRepo.read(managerDTO.getId());
+		manager.setName(managerDTO.getName());
+		manager.setLastName(managerDTO.getLastName());
+		managerRepo.update(manager);
+		return manager;
+	}
+	
+	
+	@POST
+	@Path("updatePassword")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Manager updatePassword(UpdatePasswordDTO managerDTO) {
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Manager manager = managerRepo.read(managerDTO.getId());
+		manager.setPassword(managerDTO.getPassword());
+		managerRepo.update(manager);
+		return manager;
+	}
+	
 	
 	@POST
 	@Path("updateDTO")	

@@ -24,12 +24,7 @@ Vue.component("editAdministratorProfile-page", {
 <br>
 <br>
 <table style="font-size:50">
-	<tr>
-		<td><label for="username">Username:</label></td>
-		<td><input type="text" v-model="administrator.username" id="username"></td>
-	</tr>
-	
-	
+
 	<tr>
 		<td><label for="name">Name:</label></td>
 		<td><input type="text" v-model="administrator.name" id="name"></td>
@@ -79,7 +74,7 @@ Vue.component("editAdministratorProfile-page", {
 	methods : {
 		
 		updateAdministrator : function() {
-			if (this.administrator.username === "" || this.administrator.name === "" || this.administrator.lastName === "") {
+			if (this.administrator.name === "" || this.administrator.lastName === "") {
 				toast("All fields must be filled!")
 				return;
 			}

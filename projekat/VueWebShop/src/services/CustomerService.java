@@ -23,6 +23,8 @@ import dto.BuyMembership;
 import dto.CustomerDTO;
 import dto.MembershipDTO;
 import dto.SearchDTO;
+import dto.UpdateUserDTO;
+import dto.UpdatePasswordDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;
@@ -100,8 +102,8 @@ public class CustomerService {
 		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<Customer> customers = customerRepo.getAll();
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
-		for (Customer s : customers) {			
-			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+		for (Customer c : customers) {			
+			retVal.add(new CustomerDTO(c.getUsername(),c.getName(), c.getLastName(),c.getGender(),c.getDateOfBirth()));	
 		}
 		return retVal;
 	}
@@ -177,6 +179,34 @@ public class CustomerService {
 		customerRepo.update(customer);
 		return customer;
 	}
+	
+	@POST
+	@Path("updateCustomer")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Customer update(UpdateUserDTO customerDTO) {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		Customer customer = customerRepo.read(customerDTO.getId());
+		customer.setName(customerDTO.getName());
+		customer.setLastName(customerDTO.getLastName());
+		customerRepo.update(customer);
+		return customer;
+	}
+	
+	
+	@POST
+	@Path("updatePassword")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Customer updatePassword(UpdatePasswordDTO customerDTO) {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		Customer customer = customerRepo.read(customerDTO.getId());
+		customer.setPassword(customerDTO.getPassword());
+		customerRepo.update(customer);
+		return customer;
+	}
+	
+	
 	
 	
 	@POST

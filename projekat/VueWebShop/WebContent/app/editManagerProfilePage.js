@@ -17,11 +17,6 @@ Vue.component("editManagerProfile-page", {
 <br>
 <br>
 <table style="font-size:50">
-	<tr>
-		<td><label for="username">Username:</label></td>
-		<td><input type="text" v-model="manager.username" id="username"></td>
-	</tr>
-	
 	
 	<tr>
 		<td><label for="name">Name:</label></td>
@@ -72,12 +67,16 @@ Vue.component("editManagerProfile-page", {
 	methods : {
 		
 		updateManager : function() {
-			if (this.manager.username === "" || this.manager.name === "" || this.manager.lastName === "") {
+			if (this.manager.name === "" || this.manager.lastName === "") {
 				toast("All fields must be filled!")
 				return;
 			}
 			axios
-			.post('rest/managers/update', this.manager)
+			.post('rest/managers/updateManager', {
+				id: this.manager.id,
+				name: this.manager.name,
+				lastName: this.manager.lastName 
+			})
 			.then(response => toast("You have successfully updated your profile!"));
 			
 		},
@@ -90,7 +89,10 @@ Vue.component("editManagerProfile-page", {
 			if (this.oldPassword === this.manager.password && this.newPassword === this.confirmPassword) {
 				 this.manager.password = this.newPassword;	
 				 axios
-				.post('rest/managers/update', this.manager)
+				.post('rest/managers/updatePassword', {
+					id: this.manager.id,
+					password:  this.manager.password 
+				})
 				.then(response => toast("You have successfully changed your password!"));
 			}
 			else {

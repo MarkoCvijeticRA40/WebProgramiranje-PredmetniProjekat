@@ -17,12 +17,7 @@ Vue.component("editTrainerProfile-page", {
 <br>
 <br>
 <table style="font-size:50">
-	<tr>
-		<td><label for="username">Username:</label></td>
-		<td><input type="text" v-model="trainer.username" id="username"></td>
-	</tr>
-	
-	
+		
 	<tr>
 		<td><label for="name">Name:</label></td>
 		<td><input type="text" v-model="trainer.name" id="name"></td>
@@ -71,7 +66,7 @@ Vue.component("editTrainerProfile-page", {
 	methods : {
 		
 		updateTrainer : function() {
-			if (this.trainer.username === "" || this.trainer.name === "" || this.trainer.lastName === "") {
+			if (this.trainer.name === "" || this.trainer.lastName === "") {
 				toast("All fields must be filled!")
 				return;
 			}

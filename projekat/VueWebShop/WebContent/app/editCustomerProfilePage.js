@@ -17,11 +17,6 @@ Vue.component("editCustomerProfile-page", {
 <br>
 <br>
 <table style="font-size:50">
-	<tr>
-		<td><label for="username">Username:</label></td>
-		<td><input type="text" v-model="customer.username" id="username"></td>
-	</tr>
-	
 	
 	<tr>
 		<td><label for="name">Name:</label></td>
@@ -72,12 +67,16 @@ Vue.component("editCustomerProfile-page", {
 	methods : {
 		
 		updateCustomer : function() {
-			if (this.customer.username === "" || this.customer.name === "" || this.customer.lastName === "") {
+			if (this.customer.name === "" || this.customer.lastName === "") {
 				toast("All fields must be filled!")
 				return;
 			}
 			axios
-			.post('rest/customers/update', this.customer)
+			.post('rest/customers/updateCustomer', { 
+				id: this.customer.id,
+				name: this.customer.name,
+				lastName: this.customer.lastName
+			 })
 			.then(response => toast("You have successfully updated your profile!"));
 			
 		},
@@ -90,7 +89,10 @@ Vue.component("editCustomerProfile-page", {
 			if (this.oldPassword === this.customer.password && this.newPassword === this.confirmPassword) {
 				 this.customer.password = this.newPassword;	
 				 axios
-				.post('rest/customers/update', this.customer)
+				.post('rest/customers/updatePassword', { 
+					id: this.customer.id,
+					password:  this.customer.password
+				})
 				.then(response => toast("You have successfully changed your password!"));
 			}
 			else {
