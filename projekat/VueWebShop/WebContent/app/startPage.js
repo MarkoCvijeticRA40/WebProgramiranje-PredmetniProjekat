@@ -6,7 +6,8 @@ Vue.component("start-page", {
 			  searchText : "",
 			  selectObject : {},
 			  selected:false,
-			  comments: null
+			  comments: null,
+			  trainings: null
 		    }
 	},
 	template: ` 
@@ -92,6 +93,26 @@ Vue.component("start-page", {
   <td>{{c.text}}</td>
   </tr>
 </table>
+<br>
+<table style="width:100%" border="1px">
+ <tr>
+	<th>Name</th>
+    <th>Type</th>
+	<th style="width:260px">Image</th>
+    <th>Description</th>
+    <th>Duration</th>
+    <th>Trainer</th>
+  </tr>
+  <tr v-for="training in trainings">
+  <td>{{training.name}}</td>
+  <td>{{training.type}}</td>
+  <td><img v-bind:src="training.image" width="260px" Height="160px" alt="Image is not posted."></td>
+  <td>{{training.description}}</td>
+  <td v-if="training.durationInMinutes !== 0">{{training.durationInMinutes}}</td>
+  <td v-if="training.durationInMinutes === 0">Duration is not defined.</td>
+  <td>{{training.trainer.name}} {{training.trainer.lastName}}</td>
+  </tr>
+</table>
 	
 	</div>	
 </div>	
@@ -114,6 +135,9 @@ Vue.component("start-page", {
 		 	.post('rest/comments/getAprovedComments', { id: this.selectObject.id })
 		 	.then(response => this.comments = response.data);
 			this.selected = true;
+			axios
+			.post('rest/trainings/getTrainingsFromSportObject', { id: this.selectObject.id })
+			.then(response => this.trainings = response.data); 
 		},
 		unselect : function(){
 			console.log("Vratili smo se na tabelu");
