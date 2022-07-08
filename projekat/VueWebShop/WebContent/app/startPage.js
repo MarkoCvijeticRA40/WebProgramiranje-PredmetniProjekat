@@ -6,6 +6,7 @@ Vue.component("start-page", {
 			  searchText : "",
 			  selectObject : {},
 			  selected:false,
+			  comments: null
 		    }
 	},
 	template: ` 
@@ -70,7 +71,6 @@ Vue.component("start-page", {
 		<th style="width:260px">Image</th>
 		<th style="width:90px">Work Time</th>
 		<th>Status</th>
-		<th>Comment</th>
   	</tr>
   	<tr>
   		<td>{{selectObject.name}}</td>
@@ -83,6 +83,16 @@ Vue.component("start-page", {
   		<td>{{selectObject.status}}</td>
   	</tr>
 	</table>
+	<br>
+	<table style="width:100%" border="1px">
+  <tr>
+	<th>Comments</th>
+  </tr>
+  <tr v-for="c in comments">
+  <td>{{c.text}}</td>
+  </tr>
+</table>
+	
 	</div>	
 </div>	
 `
@@ -100,6 +110,9 @@ Vue.component("start-page", {
 		},
 		selectedObject : function(sportskiObjekat) {
 			this.selectObject = sportskiObjekat;
+			axios
+		 	.post('rest/comments/getAprovedComments', { id: this.selectObject.id })
+		 	.then(response => this.comments = response.data);
 			this.selected = true;
 		},
 		unselect : function(){
@@ -140,6 +153,8 @@ Vue.component("start-page", {
 	mounted () {
         axios 
 		.get('rest/sportobject/getAll')
-		.then(response => (this.sportObjects = response.data))
+		.then(response => {
+			this.sportObjects = response.data;
+		})
     },
 });
