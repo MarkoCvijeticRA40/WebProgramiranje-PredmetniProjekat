@@ -115,6 +115,25 @@ SportObjectRepository sportObjectRepo = new SportObjectRepository();
 		
 	}
 	
+	
+	@POST
+	@Path("getManagerComments")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<Comment> getManagerComments(IdDTO sportObjectId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<Comment> retVal = new ArrayList<Comment>();
+		for (Comment c : repo.getAll()) {
+			if (c.getSportObject().getId().equals(sportObjectId.getId())) {
+				retVal.add(c);
+			}
+		}
+		
+		return retVal;
+		
+	}
+	
 //	@GET
 //	@Path("createAuto")	
 //	@Produces(MediaType.TEXT_PLAIN)

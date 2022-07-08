@@ -4,7 +4,8 @@ Vue.component("managerSportObject-page", {
 			  manager: null,
 			  sportObject: null,
 			  isThereSportObject: true,
-			  print: false
+			  print: false,
+			  comments: null
 		    }
 	},
 	template: ` 
@@ -23,7 +24,8 @@ Vue.component("managerSportObject-page", {
  </ul>
 <br>
 
-<table v-if="isThereSportObject" style="width:100%" border="1px">
+<div v-if="isThereSportObject">
+<table style="width:100%" border="1px">
  <tr>
 	<th>Name</th>
     <th>Type</th>
@@ -45,6 +47,16 @@ Vue.component("managerSportObject-page", {
   <td>{{sportObject.status}}</td>
   </tr>
 </table>
+<br>
+<table style="width:100%" border="1px">
+  <tr>
+	<th>Comments</th>
+  </tr>
+  <tr v-for="c in comments">
+  <td>{{c.text}}</td>
+  </tr>
+</table>
+</div>
 
 <span v-if="print">Manager is not in charge of any sport object.</span>
 
@@ -65,7 +77,12 @@ Vue.component("managerSportObject-page", {
 			else {
 			axios
 			.post('rest/sportobject/transformToDTO', { id: this.manager.sportObject.id })
-			.then(response => this.sportObject = response.data );
+			.then(response => {
+			 this.sportObject = response.data;
+			 axios
+			 .post('rest/comments/getManagerComments', { id: this.sportObject.id })
+			 .then(response => this.comments = response.data); 
+			 });
 			}
 		});
 		

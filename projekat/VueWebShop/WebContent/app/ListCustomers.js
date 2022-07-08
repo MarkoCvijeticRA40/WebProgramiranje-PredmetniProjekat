@@ -15,7 +15,8 @@ Vue.component("listCustomers-page", {
   <li><a class="active" href="#/lic">Customers</a></li>
   <li><a class="active" href="#/lim">Managers</a></li>
   <li><a class="active" href="#/lit">Trainers</a></li>
-  <li><a class="active" href="#/lia">Administrators</a></li>
+<li><a class="active" href="#/lia">Administrators</a></li>
+<li><a class="active" href="#/acp">Comments</a></li>
   <li><a href="#/lu">Log out</a></li>
   </ul>
   <br>
