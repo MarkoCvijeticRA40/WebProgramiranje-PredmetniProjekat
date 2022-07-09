@@ -1566,7 +1566,11 @@ CommentRepository commentRepo = new CommentRepository();
 		if (customer.getVisitedObjects() == null) {
 			return null;
 		}
-		ArrayList<SportObject> sportObjects = customer.getVisitedObjects();
+		//ArrayList<SportObject> sportObjects = customer.getVisitedObjects();
+		ArrayList<SportObject> sportObjects = new ArrayList<SportObject>();
+		for (SportObject so : customer.getVisitedObjects()) {
+			sportObjects.add(repo.read(so.getId()));
+		}
 		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
 		
 		for (SportObject s : sportObjects) {			
