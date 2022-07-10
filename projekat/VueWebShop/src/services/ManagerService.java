@@ -453,6 +453,17 @@ public class ManagerService {
 		retVal = userNameDESC(retVal);
 		return retVal;
 	}
+	
+	
+	@POST
+	@Path("deleteManager")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void deleteCustomer(UsernameDTO managerUsername) {
+		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		Manager manager = managerRepo.getManagerByUsername(managerUsername.getUsername());
+		managerRepo.delete(manager.getId());
+	}
 
 }
 //	@GET

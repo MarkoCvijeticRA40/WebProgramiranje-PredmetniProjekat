@@ -8,7 +8,7 @@ Vue.component("listCustomers-page", {
 	template: ` 
 <div>
 <ul>
-  <li><a class="active" href="#/asp">Profile</a></li>
+   <li><a class="active" href="#/asp">Profile</a></li>
   <li><a class="active" href="#/act">Add Trainer</a></li>
   <li><a class="active" href="#/acm">Add Manager</a></li>
    <li><a class="active" href="#/aso">Add Sport Object</a></li>
@@ -17,6 +17,8 @@ Vue.component("listCustomers-page", {
   <li><a class="active" href="#/lit">Trainers</a></li>
 <li><a class="active" href="#/lia">Administrators</a></li>
 <li><a class="active" href="#/acp">Comments</a></li>
+<li><a class="active" href="#/also">Sport Objects</a></li>
+<li><a class="active" href="#/alt">Trainings</a></li>
   <li><a href="#/lu">Log out</a></li>
   </ul>
   <br>
@@ -45,7 +47,7 @@ Vue.component("listCustomers-page", {
   <td>{{c.lastName}}</td>
   <td>{{c.gender}}</td>
   <td>&ensp;{{c.dateOfBirth | dateFormat('DD.MM.YYYY')}}</td>
-
+  <td><button v-on:click="deleteCustomer(c)">Delete</button></td>
   </tr>
 </table>
 
@@ -90,7 +92,18 @@ Vue.component("listCustomers-page", {
 		axios
 			.get('rest/customers/getAll6')
 			.then(response => (this.customers = response.data))
-		},							
+		},	
+		
+		deleteCustomer : function(customer) {
+			axios
+			.post('rest/customers/delete', { username: customer.username})
+			.then(response => {
+				axios 
+				.get('rest/customers/getAll')
+				.then(response => (this.customers = response.data)); 
+				toast("Customer is deleted!")
+			});
+		},						
 	},
 	filters: {
     	dateFormat: function (value, format) {

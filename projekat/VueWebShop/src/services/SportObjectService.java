@@ -30,6 +30,7 @@ import dto.CustomerDTO;
 import dto.IdDTO;
 import dto.SearchDTO;
 import dto.SportObjectDTO;
+import dto.UsernameDTO;
 import model.Location;
 import model.Address;
 import model.Comment;
@@ -1569,7 +1570,9 @@ CommentRepository commentRepo = new CommentRepository();
 		//ArrayList<SportObject> sportObjects = customer.getVisitedObjects();
 		ArrayList<SportObject> sportObjects = new ArrayList<SportObject>();
 		for (SportObject so : customer.getVisitedObjects()) {
-			sportObjects.add(repo.read(so.getId()));
+			SportObject sportObject = repo.getById(so.getId());
+			if (sportObject != null)
+				sportObjects.add(sportObject);
 		}
 		ArrayList<SportObjectDTO> retVal = new ArrayList<SportObjectDTO>();
 		
@@ -1599,6 +1602,16 @@ CommentRepository commentRepo = new CommentRepository();
 												   }
 		}
 			return retVal;
+	}
+	
+	
+	@POST
+	@Path("deleteSportObject")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void deleteSportObject(IdDTO sportObjectId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		repo.delete(sportObjectId.getId());
 	}
 
 }

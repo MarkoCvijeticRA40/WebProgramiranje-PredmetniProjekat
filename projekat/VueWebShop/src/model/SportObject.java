@@ -14,6 +14,7 @@ public class SportObject {
 	private String image;
 	private WorkTime workTime;
 	private SportObjectStatus status;
+	private boolean isDeleted;
 	
 	public SportObject() {}
 	
@@ -29,6 +30,7 @@ public class SportObject {
 		this.image = image;
 		this.workTime = workTime;
 		setStatus();
+		this.isDeleted = false;
 	}
 	
 	public SportObject(String id,String name, String type, Location location, WorkTime workTime, String image) {
@@ -41,6 +43,7 @@ public class SportObject {
 		this.workTime = workTime;
 		this.image = image;
 		setStatus();
+		this.isDeleted = false;
 	}
 
 	public void setStatus() {
@@ -142,5 +145,15 @@ public class SportObject {
 	public String toString() {
 		return averageGrade.toString();
 	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	
 
 }

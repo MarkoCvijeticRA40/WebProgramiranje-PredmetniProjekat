@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.google.gson.reflect.TypeToken;
 
+import model.Customer;
 import model.Training;
 
 public class TrainingRepository extends GenericRepository<Training, TrainingRepository> {
@@ -28,7 +29,8 @@ public class TrainingRepository extends GenericRepository<Training, TrainingRepo
 		ArrayList<Training> list = new ArrayList<>();
 
 		for (Map.Entry<String, Training> entry : map.entrySet()) {
-			list.add(((Training) entry.getValue()));
+			if (!entry.getValue().isDeleted())
+				list.add(((Training) entry.getValue()));
 		}
 
 		return list;
@@ -63,6 +65,13 @@ public class TrainingRepository extends GenericRepository<Training, TrainingRepo
 		}
 		
 		return null;
+	}
+	
+	
+	public void delete(String id) {
+		Map<String, Training> map = getMap();
+		map.get(id).setDeleted(true);
+		writeFile(map);
 	}
 
 }

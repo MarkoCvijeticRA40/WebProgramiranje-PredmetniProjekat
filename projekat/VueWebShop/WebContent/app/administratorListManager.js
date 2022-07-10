@@ -17,6 +17,8 @@ Vue.component("listManager-page", {
   <li><a class="active" href="#/lit">Trainers</a></li>
 <li><a class="active" href="#/lia">Administrators</a></li>
 <li><a class="active" href="#/acp">Comments</a></li>
+<li><a class="active" href="#/also">Sport Objects</a></li>
+<li><a class="active" href="#/alt">Trainings</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>
@@ -44,6 +46,7 @@ Vue.component("listManager-page", {
   <td>{{m.lastName}}</td>
   <td>{{m.gender}}</td>
   <td>&ensp;{{m.dateOfBirth | dateFormat('DD.MM.YYYY')}}</td>
+  <td><button v-on:click="deleteManager(m)">Delete</button></td>
   </tr>
 </table>
 <br>
@@ -86,6 +89,17 @@ Vue.component("listManager-page", {
 			.get('rest/managers/getAllUserNameDESC')
 			.then(response => (this.managers = response.data))
 		},
+		
+		deleteManager : function(manager) {
+			axios
+			.post('rest/managers/deleteManager', { username: manager.username })
+			.then(response => {
+				axios 
+				.get('rest/managers/getAll')
+				.then(response => (this.managers = response.data))
+				toast("Manager is deleted!");
+			})
+		}
 
 	},
 	filters: {

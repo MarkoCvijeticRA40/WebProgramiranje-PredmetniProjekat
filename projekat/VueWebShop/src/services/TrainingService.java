@@ -46,7 +46,19 @@ public class TrainingService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<Training> getTrainings() {
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		return repo.getAll();
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Training> retVal = new ArrayList<Training>();
+		for (Training t : repo.getAll()) {
+			if (trainerRepo.getById(t.getTrainer().getId()) != null)
+				retVal.add(t);
+			else {
+				t.setTrainer(null);
+				retVal.add(t);
+			}
+					
+		}
+			
+		return retVal;
 	}
 	
 	
@@ -77,13 +89,21 @@ public class TrainingService {
 	public ArrayList<Training> getTrainingsFromSportObject(IdDTO sportObjectId)
 	{
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		ArrayList<Training> retVal = new ArrayList<Training>();
 		for (Training t : repo.getAll()) {
-			if (t.getSportObject().getId().equals(sportObjectId.getId()))
-				retVal.add(t);
+			if (t.getSportObject().getId().equals(sportObjectId.getId())) {
+				if (trainerRepo.getById(t.getTrainer().getId()) != null)
+					retVal.add(t);
+				else {
+					t.setTrainer(null);
+					retVal.add(t);
+				}
+			}
+			
 		}
-		
+			
 		return retVal;
 	}
 	
@@ -106,6 +126,14 @@ public class TrainingService {
 	}
 	
 	
+	@POST
+	@Path("deleteTraining")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void deleteTraining(IdDTO trainingId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		repo.delete(trainingId.getId());
+	}
 	
 	
 	

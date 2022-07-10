@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Map;
 import com.google.gson.reflect.TypeToken;
+
+import model.Customer;
 import model.SportObject;
 
 public class SportObjectRepository extends GenericRepository<SportObject, SportObjectRepository> {
@@ -26,7 +28,8 @@ public class SportObjectRepository extends GenericRepository<SportObject, SportO
 		ArrayList<SportObject> list = new ArrayList<>();
 
 		for (Map.Entry<String, SportObject> entry : map.entrySet()) {
-			list.add(((SportObject) entry.getValue()));
+			if (!entry.getValue().isDeleted())
+				list.add(((SportObject) entry.getValue()));
 		}
 
 		return list;
@@ -49,5 +52,25 @@ public class SportObjectRepository extends GenericRepository<SportObject, SportO
 		//System.out.println("Map with: " + map.size());
 
 		return map;
+	}
+	
+	
+	public SportObject getById(String id) {
+		SportObject retVal = null;
+		for(SportObject s: getAll()) {
+			if(s.getId().equals(id))
+			{
+				retVal = s;
+			}
+		}
+		
+		return retVal;
+	}
+	
+	
+	public void delete(String id) {
+		Map<String, SportObject> map = getMap();
+		map.get(id).setDeleted(true);
+		writeFile(map);
 	}
 }

@@ -49,10 +49,6 @@ Vue.component("managerContentView-page", {
 <span v-if="print">Manager is not in charge of any sport object.</span>
 
 <table v-if="mode === 'edit'" style="font-size:50">
-	<tr>
-		<td><label for="name">Name:</label></td>
-		<td><input type="text" id="name" v-model="selected.name"></td>
-	</tr>
 	
 	<tr>
 		<td><label for="type">Type:</label></td>

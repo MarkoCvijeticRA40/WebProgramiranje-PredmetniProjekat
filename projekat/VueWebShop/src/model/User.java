@@ -12,6 +12,7 @@ public class User {
 	public String lastName;
 	private Gender gender;
 	private Date dateOfBirth;
+	private boolean isDeleted;
 	
 	public User(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth) {
 		super();
@@ -22,6 +23,7 @@ public class User {
 		this.lastName = lastName;
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
+		this.isDeleted = false;
 	}
 	
 	public User(String id, String username, String password, String name, String lastName, Gender gender, Date dateOfBirth) {
@@ -33,6 +35,7 @@ public class User {
 		this.lastName = lastName;
 		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
+		this.isDeleted = false;
 	}
 	
 	public User(String username, String password, String name, String lastName, Gender gender) {
@@ -44,6 +47,7 @@ public class User {
 		this.lastName = lastName;
 		this.gender = gender;
 		this.dateOfBirth = null;
+		this.isDeleted = false;
 	}
 	
 	
@@ -56,6 +60,7 @@ public class User {
 		this.lastName = lastName;
 		this.gender = gender.Male;
 		this.dateOfBirth = null;
+		this.isDeleted = false;
 	}
 	
 	public User() {
@@ -67,6 +72,7 @@ public class User {
 		this.lastName = null;
 		this.gender = null;
 		this.dateOfBirth = null;
+		this.isDeleted = false;
 	}
 
 	public String getUsername() {
@@ -119,6 +125,18 @@ public class User {
 	
 	public String getId() {
 		return id;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 	
 	

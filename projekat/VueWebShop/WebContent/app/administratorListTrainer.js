@@ -8,7 +8,7 @@ Vue.component("listTrainer-page", {
 	template: ` 
 <div>
 <ul>
-  <li><a class="active" href="#/asp">Profile</a></li>
+   <li><a class="active" href="#/asp">Profile</a></li>
   <li><a class="active" href="#/act">Add Trainer</a></li>
   <li><a class="active" href="#/acm">Add Manager</a></li>
    <li><a class="active" href="#/aso">Add Sport Object</a></li>
@@ -17,6 +17,8 @@ Vue.component("listTrainer-page", {
   <li><a class="active" href="#/lit">Trainers</a></li>
 <li><a class="active" href="#/lia">Administrators</a></li>
 <li><a class="active" href="#/acp">Comments</a></li>
+<li><a class="active" href="#/also">Sport Objects</a></li>
+<li><a class="active" href="#/alt">Trainings</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>
@@ -45,6 +47,7 @@ Vue.component("listTrainer-page", {
   <td>{{s.lastName}}</td>
   <td>{{s.gender}}</td>
   <td>&ensp;{{s.dateOfBirth | dateFormat('DD.MM.YYYY')}}</td>
+  <td><button v-on:click="deleteTrainer(s)">Delete</button></td>
   </tr>
 </table>
 <br>
@@ -87,6 +90,17 @@ Vue.component("listTrainer-page", {
 			.get('rest/trainers/getAllUserNameDESC')
 			.then(response => (this.trainers = response.data))
 		},
+		
+		deleteTrainer : function(trainer) {
+			axios
+			.post('rest/trainers/deleteTrainer', { username: trainer.username })
+			.then(response => {
+				axios 
+				.get('rest/trainers/getAll')
+				.then(response => (this.trainers = response.data));
+				toast("Trainer is deleted");
+			});
+		}
 	},
 	filters: {
     	dateFormat: function (value, format) {

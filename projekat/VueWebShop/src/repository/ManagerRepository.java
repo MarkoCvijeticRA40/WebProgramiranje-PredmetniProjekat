@@ -9,6 +9,7 @@ import java.util.Map;
 
 import com.google.gson.reflect.TypeToken;
 
+import model.Customer;
 import model.Manager;
 
 public class ManagerRepository extends GenericRepository<Manager, ManagerRepository> {
@@ -28,7 +29,8 @@ public class ManagerRepository extends GenericRepository<Manager, ManagerReposit
 		ArrayList<Manager> list = new ArrayList<>();
 
 		for (Map.Entry<String, Manager> entry : map.entrySet()) {
-			list.add(((Manager) entry.getValue()));
+			if (!entry.getValue().isDeleted())
+				list.add(((Manager) entry.getValue()));
 		}
 
 		return list;
@@ -38,7 +40,7 @@ public class ManagerRepository extends GenericRepository<Manager, ManagerReposit
 
 		String json = "";
 		try {
-			json = new String(Files.readAllBytes(Paths.get(getPath()))); //bilo getPath()
+			json = new String(Files.readAllBytes(Paths.get(getPath()))); 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -52,6 +54,23 @@ public class ManagerRepository extends GenericRepository<Manager, ManagerReposit
 
 		return map;
 
+	}
+	
+	
+	public Manager getManagerByUsername(String username) {
+		for (Manager manager : getAll()) {
+			if (manager.getUsername().equals(username))
+				return manager;
+		}
+		
+		return null;
+	}
+	
+	
+	public void delete(String id) {
+		Map<String, Manager> map = getMap();
+		map.get(id).setDeleted(true);
+		writeFile(map);
 	}
 
 }

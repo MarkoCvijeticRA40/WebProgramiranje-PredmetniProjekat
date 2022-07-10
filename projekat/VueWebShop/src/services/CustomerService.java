@@ -21,9 +21,11 @@ import comparators.CustomerNameComparator;
 import comparators.CustomerUserNameComparator;
 import dto.BuyMembership;
 import dto.CustomerDTO;
+import dto.IdDTO;
 import dto.MembershipDTO;
 import dto.SearchDTO;
 import dto.UpdateUserDTO;
+import dto.UsernameDTO;
 import dto.UpdatePasswordDTO;
 import model.Administrator;
 import model.Customer;
@@ -369,6 +371,17 @@ public class CustomerService {
 		}
 		retVal = userNameDESC(retVal);
 		return retVal;
+	}
+	
+	
+	@POST
+	@Path("delete")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void deleteCustomer(UsernameDTO customerUsername) {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		Customer customer = customerRepo.getCustomerByUsername(customerUsername.getUsername());
+		customerRepo.delete(customer.getId());
 	}
 }
 //	@GET

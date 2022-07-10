@@ -33,6 +33,8 @@ const customerActiveMembership =  { template: '<customerActive-page></customerAc
 const ManagerWelcomeCustomer =  { template: '<managerWelcomeCustomer-page></managerWelcomeCustomer-page>'}
 const CustomerVisitedObjectsPage =  { template: '<customerVisitedObjects-page></customerVisitedObjects-page>'}
 const AdministratorCommentsPage =  { template: '<administratorComments-page></administratorComments-page>'}
+const AdministratorListSportObjects =  { template: '<administratorListSportObjects-page></administratorListSportObjects-page>'}
+const AdministratorListTrainings =  { template: '<administratorListTrainings-page></administratorListTrainings-page>'}
 
 
 const router = new VueRouter({
@@ -73,7 +75,9 @@ const router = new VueRouter({
 		{ path: '/cam', component: customerActiveMembership },
 		{ path: '/mwc', component: ManagerWelcomeCustomer },
 		{ path: '/cvo', component: CustomerVisitedObjectsPage },
-		{ path: '/acp', component: AdministratorCommentsPage }
+		{ path: '/acp', component: AdministratorCommentsPage },
+		{ path: '/also', component: AdministratorListSportObjects },
+		{ path: '/alt', component: AdministratorListTrainings }
 
 	  ]
 });

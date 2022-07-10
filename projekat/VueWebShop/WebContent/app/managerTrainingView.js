@@ -45,7 +45,7 @@ Vue.component("managerTrainingView-page", {
   <td>{{training.description}}</td>
   <td v-if="training.durationInMinutes !== 0">{{training.durationInMinutes}}</td>
   <td v-if="training.durationInMinutes === 0">Duration is not defined.</td>
-  <td>{{training.trainer.name}} {{training.trainer.lastName}}</td>
+  <td v-if="training.trainer !== null">{{training.trainer.name}} {{training.trainer.lastName}}</td>
   </tr>
 </table>
 

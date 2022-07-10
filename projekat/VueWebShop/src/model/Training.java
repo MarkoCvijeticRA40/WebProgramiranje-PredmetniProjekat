@@ -9,6 +9,7 @@ public class Training {
 	private Trainer trainer;
 	private String description;
 	private String image;
+	private boolean isDeleted;
 	
 	public Training(String id, String name, String type, SportObject sportObject, int durationInMinutes, Trainer trainer,
 			String description, String image) {
@@ -21,6 +22,7 @@ public class Training {
 		this.trainer = trainer;
 		this.description = description;
 		this.image = image;
+		this.isDeleted = false;
 	}
 
 	public String getName() {
@@ -85,6 +87,14 @@ public class Training {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public boolean isDeleted() {
+		return isDeleted;
+	}
+
+	public void setDeleted(boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 
 	

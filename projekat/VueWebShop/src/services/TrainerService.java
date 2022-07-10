@@ -144,6 +144,7 @@ public class TrainerService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<TrainerDTO> getAllTrainersFromSportObject(IdDTO sportObjectId) {
 		trainingRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<Training> trainings = trainingRepo.getAll();
 		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
 		for (Training t : trainings) {
@@ -154,7 +155,9 @@ public class TrainerService {
 						cnt++;
 				}
 				if (cnt == 0) {
-					retVal.add(new TrainerDTO(t.getTrainer().getUsername(),t.getTrainer().getName(), t.getTrainer().getLastName(), t.getTrainer().getGender(),t.getTrainer().getDateOfBirth()));
+					Trainer trainer = trainerRepo.getById((t.getTrainer().getId()));
+					if (trainer != null)
+						retVal.add(new TrainerDTO(trainer.getUsername(),t.getTrainer().getName(), trainer.getLastName(), trainer.getGender(), trainer.getDateOfBirth()));
 				}
 			}
 		}
@@ -400,6 +403,17 @@ public class TrainerService {
 		}
 		
 		return retVal;
+	}
+	
+	
+	@POST
+	@Path("deleteTrainer")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void deleteTrainer(UsernameDTO trainerUsername) {
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		Trainer trainer = trainerRepo.getTrainerByUsername(trainerUsername.getUsername());
+		trainerRepo.delete(trainer.getId());
 	}
 
 
