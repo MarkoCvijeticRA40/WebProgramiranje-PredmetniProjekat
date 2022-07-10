@@ -115,6 +115,15 @@ Vue.component("managerContent-page", {
 				this.isThereSportObject = false;
 				this.print = true
 			}
+			axios
+			.post('rest/sportobject/transformToDTO', { id: this.manager.sportObject.id })
+			.then(response => {
+			 if (response.data === "") {
+			 	this.isThereSportObject = false;
+				this.print = true;	
+				return;
+			 }
+			 });
 		});
     },
 });

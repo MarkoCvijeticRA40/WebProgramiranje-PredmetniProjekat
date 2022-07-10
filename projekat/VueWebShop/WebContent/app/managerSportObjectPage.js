@@ -78,6 +78,11 @@ Vue.component("managerSportObject-page", {
 			axios
 			.post('rest/sportobject/transformToDTO', { id: this.manager.sportObject.id })
 			.then(response => {
+			 if (response.data === "") {
+			 	this.isThereSportObject = false;
+				this.print = true;	
+				return;
+			 }
 			 this.sportObject = response.data;
 			 axios
 			 .post('rest/comments/getManagerComments', { id: this.sportObject.id })

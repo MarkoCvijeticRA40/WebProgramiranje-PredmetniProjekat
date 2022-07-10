@@ -90,6 +90,10 @@ public class TrainingService {
 	{
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		sportObjectRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		if (sportObjectRepo.getById(sportObjectId.getId()) == null)
+			return null;
 		
 		ArrayList<Training> retVal = new ArrayList<Training>();
 		for (Training t : repo.getAll()) {

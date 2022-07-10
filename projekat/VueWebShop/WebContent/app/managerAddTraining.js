@@ -132,12 +132,24 @@ Vue.component("managerAddTraining-page", {
 			}
 			else {
 				axios
+				.post('rest/sportobject/transformToDTO', { id: this.manager.sportObject.id })
+				.then(response => {
+			 	if (response.data === "") {
+			 		this.isThereSportObject = false;
+					this.print = true;	
+					return;
+				 }
+				 axios
 				.get('rest/trainers/getAll')
 				.then(response => {
 					 this.trainers = response.data;
 					 this.selectedTrainerUsername = this.trainers[0].username; 
 				}
 				);
+				 
+				 });
+				
+				
 			}
 		});
     },

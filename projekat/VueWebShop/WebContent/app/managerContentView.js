@@ -154,11 +154,13 @@ Vue.component("managerContentView-page", {
 			.post('rest/sportobject/transformToDTO', { id: this.manager.sportObject.id })
 			.then(response => { 
 				this.sportObject = response.data
+				if (this.sportObject !== "") {
 				axios
 				.post('rest/sportobject/getContent', { id: this.sportObject.id })
 				.then(response => { 
 					this.content = response.data;
 					});
+				}
 				 } );
 			}
 		});

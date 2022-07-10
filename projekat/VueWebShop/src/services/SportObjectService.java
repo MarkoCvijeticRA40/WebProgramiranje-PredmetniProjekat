@@ -338,7 +338,9 @@ CommentRepository commentRepo = new CommentRepository();
 	public SportObjectDTO transformToDTO(IdDTO sportObjectId) {
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		SportObjectDTO sportObjectDTO;
-		SportObject sportObject = repo.read(sportObjectId.getId());
+		SportObject sportObject = repo.getById(sportObjectId.getId());
+		if (sportObject == null)
+			return null;
 		StringBuilder sb = new StringBuilder("");
 		if (sportObject.getContent() != null) {
 			for (Content c : sportObject.getContent()) {
@@ -362,6 +364,10 @@ CommentRepository commentRepo = new CommentRepository();
 	@Produces(MediaType.APPLICATION_JSON)
 	public ArrayList<CustomerDTO> getCustomersFromSportObject(IdDTO sportObjectId) {
 		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		if (repo.getById(sportObjectId.getId()) == null)
+			return null;
 		
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
 		for (Customer c : customerRepo.getAll()) {

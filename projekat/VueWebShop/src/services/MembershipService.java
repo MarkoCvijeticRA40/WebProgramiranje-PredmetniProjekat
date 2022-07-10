@@ -1,9 +1,5 @@
 package services;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -13,14 +9,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import dto.BuyMembership;
-import dto.ManagerDTO;
 import dto.MembershipDTO;
-import model.Customer;
 import model.IdGenerator;
-import model.Manager;
 import model.Membership;
-import model.MembershipStatus;
 import repository.CustomerRepository;
 import repository.MembershipRepository;
 

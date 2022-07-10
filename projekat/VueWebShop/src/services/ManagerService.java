@@ -34,6 +34,7 @@ import model.WorkTime;
 import repository.AdministratorRepository;
 import repository.CustomerRepository;
 import repository.ManagerRepository;
+import repository.SportObjectRepository;
 import repository.TrainerRepository;
 
 @Path("managers")
@@ -43,6 +44,7 @@ public class ManagerService {
 	AdministratorRepository administratorRepo = new AdministratorRepository();
 	ManagerRepository managerRepo = new ManagerRepository();
 	TrainerRepository trainerRepo = new TrainerRepository();
+	SportObjectRepository sportObjectRepo = new SportObjectRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -75,10 +77,11 @@ public class ManagerService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<ManagerDTO> getManagersWithoutSportObject() {
 		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		sportObjectRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<Manager> managers = managerRepo.getAll();
 		ArrayList<ManagerDTO> retVal = new ArrayList<ManagerDTO>();
 		for (Manager m : managers) {
-			if (m.getSportObject() == null) {
+			if (m.getSportObject() == null || sportObjectRepo.getById(m.getSportObject().getId()) == null) {
 				retVal.add(new ManagerDTO(m.getUsername(), m.getName(), m.getLastName(),m.getGender(),m.getDateOfBirth()));
 			}
 		}

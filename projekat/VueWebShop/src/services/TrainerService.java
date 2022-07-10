@@ -31,6 +31,7 @@ import repository.AdministratorRepository;
 import repository.CustomerRepository;
 import repository.ManagerRepository;
 import repository.ScheduledTrainingsRepository;
+import repository.SportObjectRepository;
 import repository.TrainerRepository;
 import repository.TrainingRepository;
 
@@ -43,6 +44,7 @@ public class TrainerService {
 	ManagerRepository managerRepo = new ManagerRepository();
 	TrainingRepository trainingRepo = new TrainingRepository();
 	ScheduledTrainingsRepository scheduleRepo = new ScheduledTrainingsRepository();
+	SportObjectRepository sportObjectRepo = new SportObjectRepository();
 	
 	
 	@Context
@@ -145,6 +147,10 @@ public class TrainerService {
 	public ArrayList<TrainerDTO> getAllTrainersFromSportObject(IdDTO sportObjectId) {
 		trainingRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		sportObjectRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		if (sportObjectRepo.getById(sportObjectId.getId()) == null)
+			return null;
 		ArrayList<Training> trainings = trainingRepo.getAll();
 		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
 		for (Training t : trainings) {
@@ -374,7 +380,7 @@ public class TrainerService {
 		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
 		
 		for (HistoryOfAllTrainings h : scheduleRepo.getAll()) {
-			if (h.getTraining().getType().equals("Grupni") && h.getTrainer().getId().equals(trainerId.getId()) && h.getApplicationDate().compareTo(LocalDateTime.now()) >= 0) {
+			if (h.getTraining().getType().equals("Grupni") && h.getTrainer().getId().equals(trainerId.getId()) && h.getApplicationDate().compareTo(LocalDateTime.now()) >= 0 && customerRepo.getById(h.getCustomer().getId()) != null) {
 				retVal.add(h);
 			}
 		}
@@ -388,11 +394,12 @@ public class TrainerService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<PersonalTrainingDTO> getPersonalTrainings(IdDTO trainerId) {
 		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		ArrayList<PersonalTrainingDTO> retVal = new ArrayList<PersonalTrainingDTO>();
 		
 		for (HistoryOfAllTrainings h : scheduleRepo.getAll()) {
-			if (h.getTraining().getType().equals("Personalni") && h.getTrainer().getId().equals(trainerId.getId()) && h.getApplicationDate().compareTo(LocalDateTime.now()) >= 0) {
+			if (h.getTraining().getType().equals("Personalni") && h.getTrainer().getId().equals(trainerId.getId()) && h.getApplicationDate().compareTo(LocalDateTime.now()) >= 0 && customerRepo.getById(h.getCustomer().getId()) != null) {
 				if (h.getApplicationDate().minusDays(2).compareTo(LocalDateTime.now()) < 0) {
 					retVal.add(new PersonalTrainingDTO(h.getId(), h.getApplicationDate(), h.getTraining(), h.getCustomer(), h.getTrainer(), "false"));
 				}
