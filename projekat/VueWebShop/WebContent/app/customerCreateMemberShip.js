@@ -5,6 +5,8 @@ Vue.component("customerMemberShip-page", {
 				selected : false,
 				selectMembership : null,
 				customer:null,
+				code: "",
+				promoCodeUsed: false
 				
 		    }
 	},
@@ -46,6 +48,7 @@ Vue.component("customerMemberShip-page", {
 			<th>Value</th>
 			<th>Status</th>
 			<th>Number of terms</th>
+			<th v-if="!promoCodeUsed">Promo code (optional)</th>
 			<th>If you want to buy:</th>
 		</tr>
 		<tr>
@@ -53,6 +56,7 @@ Vue.component("customerMemberShip-page", {
 			<td>{{selectMembership.value}}</td>
 			<td>{{selectMembership.membershipStatus}}</td>
 			<td>{{selectMembership.numberOfTerms}}</td>
+			<td v-if="!promoCodeUsed"><input type="text" v-model="code"><button v-on:click="submit()">Get discount</button></td>
 			<td width="100px"><button style="width:100px;" v-on:click="BuyMembership()">Buy</button></td>
 		</tr>	
 	</table>
@@ -81,6 +85,29 @@ Vue.component("customerMemberShip-page", {
 			})
 			.then(response => toast("Membership is update!"));
 		},
+		
+		submit : function() {
+			if (this.code === "") {
+				toast("You must enter promo code!");
+				return;
+			}
+			
+			axios
+			.post('rest/memberships/checkPromoCode', {
+				promoCode: this.code,
+				membershipId: this.selectMembership.id
+			})
+			.then(response => { 
+				if (response.data === "") {
+					toast("Code is not valid!");
+					return;
+				}
+				this.promoCodeUsed = true;
+				this.selectMembership = response.data; 
+				toast("You have got discount!");
+				
+			});
+		}
 	},
 	mounted () {
 			axios 

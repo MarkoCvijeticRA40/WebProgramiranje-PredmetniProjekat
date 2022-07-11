@@ -25,6 +25,8 @@ Vue.component("administratorStart-page", {
 <li><a class="active" href="#/acp">Comments</a></li>
 <li><a class="active" href="#/also">Sport Objects</a></li>
 <li><a class="active" href="#/alt">Trainings</a></li>
+<li><a class="active" href="#/acpc">Add Promo Code</a></li>
+<li><a class="active" href="#/apcv">Promo Codes</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>

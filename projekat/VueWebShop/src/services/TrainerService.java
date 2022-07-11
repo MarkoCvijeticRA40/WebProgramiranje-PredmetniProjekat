@@ -358,7 +358,7 @@ public class TrainerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<Training> getTrainings(IdDTO trainerId) {
-		trainingRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainingRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<Training> retVal = new ArrayList<Training>();
 		
 		for (Training t : trainingRepo.getAll()) {
@@ -375,7 +375,7 @@ public class TrainerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<HistoryOfAllTrainings> getGroupTrainings(IdDTO trainerId) {
-		scheduleRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
 		

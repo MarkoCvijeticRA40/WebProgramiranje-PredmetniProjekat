@@ -36,6 +36,8 @@ const CustomerVisitedObjectsPage =  { template: '<customerVisitedObjects-page></
 const AdministratorCommentsPage =  { template: '<administratorComments-page></administratorComments-page>'}
 const AdministratorListSportObjects =  { template: '<administratorListSportObjects-page></administratorListSportObjects-page>'}
 const AdministratorListTrainings =  { template: '<administratorListTrainings-page></administratorListTrainings-page>'}
+const AdministratorCreatePromoCode =  { template: '<administratorCreatePromoCode-page></administratorCreatePromoCode-page>'}
+const AdministratorPromoCodesView =  { template: '<administratorPromoCodesView-page></administratorPromoCodesView-page>'}
 
 
 const router = new VueRouter({
@@ -78,8 +80,10 @@ const router = new VueRouter({
 		{ path: '/cvo', component: CustomerVisitedObjectsPage },
 		{ path: '/acp', component: AdministratorCommentsPage },
 		{ path: '/also', component: AdministratorListSportObjects },
-		{ path: '/alt', component: AdministratorListTrainings }
-
+		{ path: '/alt', component: AdministratorListTrainings },
+		{ path: '/acpc', component: AdministratorCreatePromoCode },
+		{ path: '/apcv', component: AdministratorPromoCodesView }
+		
 	  ]
 });
 

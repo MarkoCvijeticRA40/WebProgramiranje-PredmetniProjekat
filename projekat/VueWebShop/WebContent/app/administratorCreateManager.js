@@ -13,7 +13,7 @@ Vue.component("administratorCreateManager-page", {
 	template: ` 
 <div>
 <ul>
-   <li><a class="active" href="#/asp">Profile</a></li>
+  <li><a class="active" href="#/asp">Profile</a></li>
   <li><a class="active" href="#/act">Add Trainer</a></li>
   <li><a class="active" href="#/acm">Add Manager</a></li>
    <li><a class="active" href="#/aso">Add Sport Object</a></li>
@@ -24,6 +24,8 @@ Vue.component("administratorCreateManager-page", {
 <li><a class="active" href="#/acp">Comments</a></li>
 <li><a class="active" href="#/also">Sport Objects</a></li>
 <li><a class="active" href="#/alt">Trainings</a></li>
+<li><a class="active" href="#/acpc">Add Promo Code</a></li>
+<li><a class="active" href="#/apcv">Promo Codes</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>

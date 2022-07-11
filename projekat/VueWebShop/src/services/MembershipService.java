@@ -1,4 +1,5 @@
 package services;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -9,11 +10,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import dto.CheckPromoCodeDTO;
 import dto.MembershipDTO;
 import model.IdGenerator;
 import model.Membership;
+import model.PromoCode;
 import repository.CustomerRepository;
 import repository.MembershipRepository;
+import repository.PromoCodeRepository;
 
 @Path("memberships")
 public class MembershipService {
@@ -22,6 +26,7 @@ MembershipRepository repo = new MembershipRepository();
 	
 	MembershipRepository membershipRepo = new MembershipRepository();
 	CustomerRepository customerRepo = new CustomerRepository();
+	PromoCodeRepository promoCodeRepo = new PromoCodeRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -83,6 +88,44 @@ MembershipRepository repo = new MembershipRepository();
 		repo.create(membership);
 		
 		return membership;
+	}
+	
+	
+	@POST
+	@Path("checkPromoCode")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public MembershipDTO checkPromoCode(CheckPromoCodeDTO dto) {
+		
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		promoCodeRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		int cnt = 0;
+		double discount = 0;
+		String promoCodeId = "";
+		for (PromoCode promoCode : promoCodeRepo.getAll()) {
+			if (promoCode.getId().equals(dto.getPromoCode()) && promoCode.getStartDate().compareTo(LocalDate.now()) <= 0 && promoCode.getEndDate().compareTo(LocalDate.now()) >= 0 && promoCode.getQuantity() > 0) {
+				cnt++;
+				discount = promoCode.getDiscountPercentage();
+				promoCodeId = promoCode.getId();
+				break;
+			}
+		}
+		
+		if (cnt == 0) {
+			return null;
+		}
+		else {
+			Membership membership = repo.read(dto.getMembershipId());
+			membership.setValue(membership.getValue()*((100 - discount)/100));
+			repo.update(membership);
+			
+			PromoCode promoCode = promoCodeRepo.read(promoCodeId);
+			promoCode.setQuantity(promoCode.getQuantity() - 1);
+			promoCodeRepo.update(promoCode);
+			
+			return new MembershipDTO(membership.getId(), membership.getTypeMembership(), membership.getDayPaying(), membership.getValue(), membership.getStartValidation(), membership.getEndValidation(), membership.getMembershipStatus(), membership.getNumberOfTerms());
+		}
 	}
 	
 
