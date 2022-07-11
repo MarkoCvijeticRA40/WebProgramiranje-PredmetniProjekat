@@ -1,3 +1,4 @@
+
 const StartPage = { template: '<start-page></start-page>' }
 const RegisterPage = { template: '<register-page></register-page>' }
 const LoginPage = { template: '<login-page></login-page>' }
@@ -81,6 +82,7 @@ const router = new VueRouter({
 
 	  ]
 });
+
 
 var app = new Vue({
 	router,

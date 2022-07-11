@@ -1619,5 +1619,28 @@ CommentRepository commentRepo = new CommentRepository();
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		repo.delete(sportObjectId.getId());
 	}
+	
+	
+	@POST
+	@Path("getLongitude")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public double getLongitude(IdDTO sportObjectId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		SportObject sportObject = repo.read(sportObjectId.getId());
+		return sportObject.getLocation().getLongitude();
+	}
+	
+	@POST
+	@Path("getLatitude")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public double getLatitude(IdDTO sportObjectId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		SportObject sportObject = repo.read(sportObjectId.getId());
+		return sportObject.getLocation().getLatitude();
+	}
 
 }

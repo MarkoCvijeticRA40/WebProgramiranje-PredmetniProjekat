@@ -34,3 +34,8 @@ td button {
 .hand {
 	cursor: pointer;
 }
+
+.map {
+        height: 400px;
+        width: 100%;
+}

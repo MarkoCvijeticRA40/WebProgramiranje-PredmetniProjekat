@@ -1,5 +1,6 @@
 Vue.component("start-page", {
 	data: function () {
+	
 		    return {
 			  sportObjects : null,
 			  sportObject : {},
@@ -7,7 +8,9 @@ Vue.component("start-page", {
 			  selectObject : {},
 			  selected:false,
 			  comments: null,
-			  trainings: null
+			  trainings: null,
+			  longitude: 0,
+			  latitude: 0
 		    }
 	},
 	template: ` 
@@ -60,7 +63,7 @@ Vue.component("start-page", {
 	</table>	
 	</div>
 	
-	<div v-if="selected != false">
+	<div v-if="selected != false" >
 	 <table style="width:100%" border="1px">
  	<tr><button v-on:click="unselect">Back</button></tr>
 	<tr>
@@ -77,13 +80,15 @@ Vue.component("start-page", {
   		<td>{{selectObject.name}}</td>
   		<td>{{selectObject.type}}</td>
   		<td>{{selectObject.content}}</td>
-  		<td>{{selectObject.location}}</td>
+  		<td>{{selectObject.location}}<button v-on:click="showMap()">Show</button></td>
   		<td>{{selectObject.averageGrade}}</td>
   		<td><img v-bind:src="selectObject.image" width="260px" Height="160px" alt="bilo sta"></td>
   		<td>{{selectObject.workTime}}</td>
   		<td>{{selectObject.status}}</td>
   	</tr>
 	</table>
+	<br>
+	<div id="map" class="map"></div>
 	<br>
 	<table style="width:100%" border="1px">
   <tr>
@@ -113,8 +118,8 @@ Vue.component("start-page", {
   <td v-if="training.trainer !== null">{{training.trainer.name}} {{training.trainer.lastName}}</td>
   </tr>
 </table>
-	
 	</div>	
+	
 </div>	
 `
 	, 
@@ -173,6 +178,31 @@ Vue.component("start-page", {
 		.post('rest/sportobject/searchDESCGrade', { searchText : this.searchText })
 		.then(response => (this.sportObjects = response.data))
 		},
+		
+		showMap : function() {
+			axios
+			.post('rest/sportobject/getLongitude', { id: this.selectObject.id })
+			.then(response => { 
+				this.longitude = response.data
+			 	axios
+			 	.post('rest/sportobject/getLatitude', { id: this.selectObject.id })
+			 	.then(response => this.latitude = response.data);
+			});
+			
+			var map = new ol.Map({
+	        target: 'map',
+	        layers: [
+	          new ol.layer.Tile({
+	            source: new ol.source.OSM()
+	          })
+	        ],
+	        view: new ol.View({
+	          center: ol.proj.fromLonLat([this.longitude, this.latitude]),
+	          zoom: 18
+	        })
+	      });
+		}
+		
 	},
 	mounted () {
         axios 
@@ -180,5 +210,6 @@ Vue.component("start-page", {
 		.then(response => {
 			this.sportObjects = response.data;
 		})
+		
     },
 });
