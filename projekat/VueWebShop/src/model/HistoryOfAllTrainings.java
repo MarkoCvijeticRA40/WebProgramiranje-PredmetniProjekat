@@ -9,6 +9,7 @@ public class HistoryOfAllTrainings {
 	private Training training;
 	private Customer customer;
 	private Trainer trainer;
+	public SportObject sportObject;
 	
 	public HistoryOfAllTrainings(String id, LocalDateTime applicationDate, Training training, Customer customer, Trainer trainer) {
 		super();
@@ -17,6 +18,14 @@ public class HistoryOfAllTrainings {
 		this.training = training;
 		this.customer = customer;
 		this.trainer = trainer;
+	}
+	
+	public SportObject getSportObject() {
+		return sportObject;
+	}
+
+	public void setSportObject(SportObject sportObject) {
+		this.sportObject = sportObject;
 	}
 
 	public LocalDateTime getApplicationDate() {

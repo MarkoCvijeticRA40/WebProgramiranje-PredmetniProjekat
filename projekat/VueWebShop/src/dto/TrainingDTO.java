@@ -9,7 +9,7 @@ public class TrainingDTO {
 	private String description;
 	private int durationInMinutes;
 	private String trainerUsername;
-	private String sportObjectId;
+	public String sportObjectId;
 	
 	public TrainingDTO() {}
 

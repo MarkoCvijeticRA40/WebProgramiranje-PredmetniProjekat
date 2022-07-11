@@ -15,9 +15,13 @@ import javax.ws.rs.core.MediaType;
 
 import dto.IdDTO;
 import dto.PersonalTrainingDTO;
+import comparators.GroupTrainingComparator;
+import comparators.PersonalTrainingComparator;
 import comparators.TrainerLastNameComparator;
 import comparators.TrainerNameComparator;
 import comparators.TrainerUserNameComparator;
+import comparators.TrainingSportObjectComparator;
+import comparators.TrainingSportObjectTrainerComparator;
 import dto.SearchDTO;
 import dto.TrainerDTO;
 import dto.UsernameDTO;
@@ -282,7 +286,7 @@ public class TrainerService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<TrainerDTO> getAllNameACS() {
-		trainerRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<Trainer> trainers = trainerRepo.getAll();
 		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
 		for (Trainer s : trainers) {			
@@ -322,43 +326,12 @@ public class TrainerService {
 		return retVal;
 	}
 	
-	@GET
-	@Path("getAllLastNameDESC")	
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public ArrayList<TrainerDTO> getAllLastNameDECS() {
-		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		ArrayList<Trainer> trainers = trainerRepo.getAll();
-		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
-		for (Trainer s : trainers) {			
-			retVal.add(new TrainerDTO(s.getUsername(),s.getName(), s.getLastName(), s.getGender(),s.getDateOfBirth()));	
-		}
-		retVal = lastNameDESC(retVal);
-		return retVal;
-	}
-	
-	@GET
-	@Path("getAllLastNameACS")	
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public ArrayList<TrainerDTO> getAllLastNameACS() {
-		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
-		ArrayList<Trainer> trainers = trainerRepo.getAll();
-		ArrayList<TrainerDTO> retVal = new ArrayList<TrainerDTO>();
-		for (Trainer s : trainers) {			
-			retVal.add(new TrainerDTO(s.getUsername(),s.getName(), s.getLastName(), s.getGender(),s.getDateOfBirth()));	
-		}
-		retVal = lastNameACS(retVal);
-		return retVal;
-	}
-	
-	
 	@POST
 	@Path("getTrainings")	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<Training> getTrainings(IdDTO trainerId) {
-		trainingRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		trainingRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		ArrayList<Training> retVal = new ArrayList<Training>();
 		
 		for (Training t : trainingRepo.getAll()) {
@@ -369,13 +342,12 @@ public class TrainerService {
 		return retVal;
 	}
 	
-	
 	@POST
 	@Path("getGroupTrainings")	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<HistoryOfAllTrainings> getGroupTrainings(IdDTO trainerId) {
-		scheduleRepo.setBasePath("C:\\Users\\marko\\eclipse-workspace\\WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
 		
@@ -384,7 +356,53 @@ public class TrainerService {
 				retVal.add(h);
 			}
 		}
+		return retVal;
+	}
+	
+	@POST
+	@Path("getGroupTrainings1")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<HistoryOfAllTrainings> getGroupTrainings3(IdDTO trainerId) {
+		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
+		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
+		
+		for (HistoryOfAllTrainings h : scheduleRepo.getAll()) {
+			if (h.getTraining().getType().equals("Grupni") && h.getTrainer().getId().equals(trainerId.getId()) && h.getApplicationDate().compareTo(LocalDateTime.now()) >= 0 && customerRepo.getById(h.getCustomer().getId()) != null) {
+				retVal.add(h);
+			}
+		}
+		retVal = nameGroup3(retVal);
+		return retVal;
+	}
+	
+	@POST
+	@Path("getGroupTrainings2")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<HistoryOfAllTrainings> getGroupTrainings4(IdDTO trainerId) {
+		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
+		
+		for (HistoryOfAllTrainings h : scheduleRepo.getAll()) {
+			if (h.getTraining().getType().equals("Grupni") && h.getTrainer().getId().equals(trainerId.getId()) && h.getApplicationDate().compareTo(LocalDateTime.now()) >= 0 && customerRepo.getById(h.getCustomer().getId()) != null) {
+				retVal.add(h);
+			}
+		}
+		retVal = nameGroup4(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<HistoryOfAllTrainings> nameGroup3(ArrayList<HistoryOfAllTrainings> retVal) {
+		Collections.sort(retVal, new GroupTrainingComparator());
+		return retVal;
+	}
+	
+	public ArrayList<HistoryOfAllTrainings> nameGroup4(ArrayList<HistoryOfAllTrainings> retVal) {
+		Collections.sort(retVal, new GroupTrainingComparator());
+		Collections.reverse(retVal);
 		return retVal;
 	}
 	
@@ -408,10 +426,67 @@ public class TrainerService {
 				}
 			}
 		}
-		
 		return retVal;
 	}
 	
+	@POST
+	@Path("getPersonalTrainings1")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<PersonalTrainingDTO> getPersonalTrainings1(IdDTO trainerId) {
+		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<PersonalTrainingDTO> retVal = new ArrayList<PersonalTrainingDTO>();
+		
+		for (HistoryOfAllTrainings h : scheduleRepo.getAll()) {
+			if (h.getTraining().getType().equals("Personalni") && h.getTrainer().getId().equals(trainerId.getId()) && h.getApplicationDate().compareTo(LocalDateTime.now()) >= 0 && customerRepo.getById(h.getCustomer().getId()) != null) {
+				if (h.getApplicationDate().minusDays(2).compareTo(LocalDateTime.now()) < 0) {
+					retVal.add(new PersonalTrainingDTO(h.getId(), h.getApplicationDate(), h.getTraining(), h.getCustomer(), h.getTrainer(), "false",h.getTraining().getSportObject().getName()));
+				}
+				else {
+					retVal.add(new PersonalTrainingDTO(h.getId(), h.getApplicationDate(), h.getTraining(), h.getCustomer(), h.getTrainer(), "true",h.getTraining().getSportObject().getName()));
+				}
+			}
+		}
+		retVal = nameGroup1(retVal);
+		return retVal;
+	}
+	
+	
+	@POST
+	@Path("getPersonalTrainings2")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<PersonalTrainingDTO> getPersonalTrainings2(IdDTO trainerId) {
+		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<PersonalTrainingDTO> retVal = new ArrayList<PersonalTrainingDTO>();
+		
+		for (HistoryOfAllTrainings h : scheduleRepo.getAll()) {
+			if (h.getTraining().getType().equals("Personalni") && h.getTrainer().getId().equals(trainerId.getId()) && h.getApplicationDate().compareTo(LocalDateTime.now()) >= 0 && customerRepo.getById(h.getCustomer().getId()) != null) {
+				if (h.getApplicationDate().minusDays(2).compareTo(LocalDateTime.now()) < 0) {
+					retVal.add(new PersonalTrainingDTO(h.getId(), h.getApplicationDate(), h.getTraining(), h.getCustomer(), h.getTrainer(), "false",h.getTraining().getSportObject().getName()));
+				}
+				else {
+					retVal.add(new PersonalTrainingDTO(h.getId(), h.getApplicationDate(), h.getTraining(), h.getCustomer(), h.getTrainer(), "true",h.getTraining().getSportObject().getName()));
+				}
+			}
+		}
+		retVal = nameGroup2(retVal);
+		return retVal;
+	}
+	public ArrayList<PersonalTrainingDTO> nameGroup1(ArrayList<PersonalTrainingDTO> retVal) {
+		Collections.sort(retVal, new PersonalTrainingComparator());
+		return retVal;
+	}
+	
+	public ArrayList<PersonalTrainingDTO> nameGroup2(ArrayList<PersonalTrainingDTO> retVal) {
+		Collections.sort(retVal, new PersonalTrainingComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
 	
 	@POST
 	@Path("deleteTrainer")	

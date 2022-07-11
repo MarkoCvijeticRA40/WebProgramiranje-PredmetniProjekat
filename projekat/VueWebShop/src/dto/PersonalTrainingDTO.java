@@ -14,8 +14,22 @@ public class PersonalTrainingDTO {
 	private Customer customer;
 	private Trainer trainer;
 	private String canCancel;
+	private String name;
+	
 	
 	public PersonalTrainingDTO() {}
+	
+	public PersonalTrainingDTO(String id, LocalDateTime applicationDate, Training training, Customer customer,
+			Trainer trainer, String canCancel, String name) {
+		super();
+		this.id = id;
+		this.applicationDate = applicationDate;
+		this.training = training;
+		this.customer = customer;
+		this.trainer = trainer;
+		this.canCancel = canCancel;
+		this.name = name;
+	}
 
 	public PersonalTrainingDTO(String id, LocalDateTime applicationDate, Training training, Customer customer,
 			Trainer trainer, String canCancel) {
@@ -26,6 +40,14 @@ public class PersonalTrainingDTO {
 		this.customer = customer;
 		this.trainer = trainer;
 		this.canCancel = canCancel;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getId() {

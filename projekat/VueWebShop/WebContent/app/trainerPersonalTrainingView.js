@@ -16,6 +16,10 @@ Vue.component("trainerPersonalTrainingsView-page", {
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>
+<table>
+<td><button v-on:click="SportObjectNameASC()">SortSportObjectByACS</button></td>
+<td><button v-on:click="SportObjectNameDESC()">SortSportObjectByACS</button></td>
+</table>
 <br>
 <table style="width:100%" border="1px">
  <tr>
@@ -50,7 +54,17 @@ Vue.component("trainerPersonalTrainingsView-page", {
 				.then(response => this.trainings = response.data);
 				toast("Training is canceled!") 
 			});
-		}
+		},
+		SportObjectNameASC : function() { 
+		axios
+			.post('rest/trainers/getPersonalTrainings1', { id: this.trainer.id })
+			.then(response => this.trainings = response.data); 
+		},
+		SportObjectNameDESC : function() { 
+		axios
+			.post('rest/trainers/getPersonalTrainings2', { id: this.trainer.id })
+			.then(response => this.trainings = response.data); 
+		},
 	},
 	filters: {
     	dateFormat: function (value, format) {
