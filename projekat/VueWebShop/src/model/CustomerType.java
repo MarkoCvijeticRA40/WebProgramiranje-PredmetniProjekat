@@ -2,7 +2,7 @@ package model;
 
 public class CustomerType {
 	
-	private String name;
+	public String name;
 	private double discount;
 	private int requiredPoints;
 	
@@ -13,16 +13,35 @@ public class CustomerType {
 		this.requiredPoints = requiredPoints;
 	}
 
+	public CustomerType(String name) {
+		super();
+		this.name = name;
+	}
+	
+	public CustomerType() {}
+	
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName(Customer customer) {
+		
+		double points = customer.getPoints();
+		
+		if(points < 3000) {
+			customer.customerType.seterPomocna("Bronze");
+		}
+		else if(points > 3000.00 && points < 10000.00 ) {
+			customer.customerType.seterPomocna("Silver");
+		}
+		else 
+		{
+			customer.customerType.seterPomocna("Gold");
+		}
 	}
-
-	public double getDiscount() {
-		return discount;
+	
+	public void seterPomocna(String name) {
+		this.name = name;
 	}
 
 	public void setDiscount(double discount) {

@@ -17,7 +17,6 @@ Vue.component("customerActive-page", {
 </ul>
 <br>
 <br>
-	<div>
 	<table style="width:100%" border="1px">
 		<tr>
 			<th>Start validation:</th>

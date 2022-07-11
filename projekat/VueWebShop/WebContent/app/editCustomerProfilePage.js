@@ -33,6 +33,7 @@ Vue.component("editCustomerProfile-page", {
 		<td><button v-on:click="updateCustomer()">Save</button></td>
 	</tr>
 	
+	
 </table>
 <br>
 <br>
@@ -57,6 +58,8 @@ Vue.component("editCustomerProfile-page", {
 		<td><button class="center" v-on:click="changePassword()" >Change password</button></td>
 		<td><button  v-on:click="updateCustomerPassword()" v-bind:disabled="mode=='dontChangePassword'" >Save</button></td>
 	</tr>
+	
+	
 </table>
 
 
@@ -99,9 +102,7 @@ Vue.component("editCustomerProfile-page", {
 				toast("Try again!");	
 			}
 			
-		}
-	
-		
+		},
 	},
 	mounted () {
          axios

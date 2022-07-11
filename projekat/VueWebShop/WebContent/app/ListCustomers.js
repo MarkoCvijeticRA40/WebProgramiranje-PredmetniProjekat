@@ -31,6 +31,8 @@ Vue.component("listCustomers-page", {
   	<td><button v-on:click="searchDESCLastName()">SortLastNameByDESC</button></td>
 	<td><button v-on:click="searchASCUserName()">SortUserNameByACS</button></td>
 	<td><button v-on:click="searchDESCUserName()">SortUserNameByDESC</button></td>
+	<td><button v-on:click="searchASCPoints()">SortPointsByACS</button></td>
+	<td><button v-on:click="searchDESCPoints()">SortPointsByDESC</button></td>
   </table>
 
   <table style="width:100%" border="1px">
@@ -40,6 +42,8 @@ Vue.component("listCustomers-page", {
 	<th>LastName</th>
     <th>Gender</th>
     <th>Date of Birth</th>
+	<th>Points</th>
+	<th>Type</th>
   </tr>
   <tr v-for="c in customers">
   <td>{{c.username}}</td>
@@ -47,6 +51,8 @@ Vue.component("listCustomers-page", {
   <td>{{c.lastName}}</td>
   <td>{{c.gender}}</td>
   <td>&ensp;{{c.dateOfBirth | dateFormat('DD.MM.YYYY')}}</td>
+  <td>{{c.points}}</td>
+  <td>{{c.customerType.name}}</td>	
   <td><button v-on:click="deleteCustomer(c)">Delete</button></td>
   </tr>
 </table>
@@ -103,6 +109,18 @@ Vue.component("listCustomers-page", {
 				.then(response => (this.customers = response.data)); 
 				toast("Customer is deleted!")
 			});
+		},
+			
+		searchASCPoints : function() {
+		axios
+			.get('rest/customers/getAll7')
+			.then(response => (this.customers = response.data))
+		},
+		
+		searchDESCPoints : function() {
+		axios
+			.get('rest/customers/getAll8')
+			.then(response => (this.customers = response.data))
 		},						
 	},
 	filters: {

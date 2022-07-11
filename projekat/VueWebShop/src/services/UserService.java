@@ -1,4 +1,5 @@
 package services;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -8,14 +9,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+
+import dto.BuyMembership;
+import dto.CustomerDTO;
 import dto.UserDTO;
 import model.Administrator;
 import model.Customer;
 import model.Manager;
+import model.Membership;
 import model.Trainer;
 import repository.AdministratorRepository;
 import repository.CustomerRepository;
 import repository.ManagerRepository;
+import repository.MembershipRepository;
 import repository.SportObjectRepository;
 import repository.TrainerRepository;
 
@@ -27,6 +33,7 @@ public class UserService {
 	ManagerRepository managerRepo = new ManagerRepository();
 	TrainerRepository trainerRepo = new TrainerRepository();
 	SportObjectRepository sportRepo = new SportObjectRepository();
+	MembershipRepository memberRepo = new MembershipRepository();
 	
 	@Context
 	ServletContext ctx;
@@ -53,6 +60,7 @@ public class UserService {
 		managerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		trainerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		sportRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		memberRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		ArrayList<Administrator> administrators = administratorRepo.getAll();
 		for (Administrator a : administrators) {
@@ -66,8 +74,28 @@ public class UserService {
 		for (Customer c : customers) {
 			if (c.getUsername().equals(user.getUsername()) && c.getPassword().equals(user.getPassword())) {
 				setLoggedInUser(c.getId());
+				c.customerType.setName(c);
+				updateCustomerPoints(c);
+				c.membership.setStatus();
+				customerRepo.update(c);
+				
+				ArrayList<Membership> memberships = memberRepo.getAll();
+				for(Membership m : memberships) {
+					if(c.customerType.name.equals("Gold")) {
+						m.setValue(m.getNotChangeValue()*0.8);
+						memberRepo.update(m);
+					}
+					if(c.customerType.name.equals("Silver")) {
+						m.setValue(m.getNotChangeValue()*0.9);
+						memberRepo.update(m);
+					}
+					if(c.customerType.name.equals("Bronze")) {
+						m.setValue(m.getNotChangeValue()*1.00);
+						memberRepo.update(m);
+					}
+				}
 				return "customer";
-			}
+			}		
 		}
 		
 		ArrayList<Manager> managers = managerRepo.getAll();
@@ -88,6 +116,30 @@ public class UserService {
 		return "none";
 	}
 	
+	public void updateCustomerPoints(Customer customer) {
+		
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Membership membership = customer.getMembership();
+		
+		LocalDate today = LocalDate.now();
+		
+		int compareValue = today.compareTo(membership.getEndValidation());
+		
+		if(membership.getSendPoints().equals("False")) {
+			if (compareValue >= 0) {
+				membership.setSendPoints("True");
+			    
+				customer.setPoints(customer.getPoints() + (membership.getValue()/1000 * membership.getUsedTerms()));
+			}
+			
+			if(membership.getUsedTerms() <= membership.getMaxTerms() * 1 / 3) {
+				membership.setSendPoints("True");
+			    customer.setPoints(customer.getPoints() - (membership.getValue()/1000 * 133 * 4 ));
+			}	
+		}	
+		customerRepo.update(customer);
+	}
 	
 	
 	@GET
