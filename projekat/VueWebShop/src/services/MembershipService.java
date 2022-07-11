@@ -44,6 +44,28 @@ MembershipRepository repo = new MembershipRepository();
 	}
 	
 	@GET
+	@Path("updateMembership")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void updateCustomerMembership() {
+		
+		membershipRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Membership membership1 = membershipRepo.read("NS99H0GJ05");
+		Membership membership2 = membershipRepo.read("M24GO2GSPJ");
+		Membership membership3 = membershipRepo.read("0N12HUKAO0");
+			
+		membership1.setNotChangeValue(24000.00);
+		membership2.setNotChangeValue(2000.00);
+		membership3.setNotChangeValue(500.00);
+		
+		membershipRepo.update(membership1);
+		membershipRepo.update(membership2);
+		membershipRepo.update(membership3);
+		
+	}
+	
+	@GET
 	@Path("getAll")	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)

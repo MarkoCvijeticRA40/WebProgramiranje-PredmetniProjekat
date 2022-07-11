@@ -9,13 +9,13 @@ Vue.component("customerActive-page", {
 <ul>
   <li><a class="active" href="#/csp">Profile</a></li>
   <li><a class="active" href="#/ctvp">Trainings</a></li>
+  <li><a class="active" href="#/cst">Schedule training</a></li>
   <li><a class="active" href="#/ccm">Buy Membership</a></li>
   <li><a class="active" href="#/cam">Active Membership</a></li>
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>
 <br>
-	<div>
 	<table style="width:100%" border="1px">
 		<tr>
 			<th>Start validation:</th>

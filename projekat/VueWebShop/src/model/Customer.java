@@ -5,14 +5,13 @@ import java.util.Date;
 
 public class Customer extends User {
 
-	private Membership membership;
+	public Membership membership;
 	private ArrayList<SportObject> visitedObjects;
-	private int points;
-	private CustomerType customerType;
-	
+	public double points;
+	public CustomerType customerType;
 	
 	public Customer(String username, String password, String name, String lastName, Gender gender, Date dateOfBirth,
-			Membership membership, ArrayList<SportObject> visitedObjects, int points, CustomerType customerType) {
+			Membership membership, ArrayList<SportObject> visitedObjects, double points, CustomerType customerType) {
 		super(username, password, name, lastName, gender, dateOfBirth);
 		this.membership = membership;
 		this.visitedObjects = visitedObjects;
@@ -61,9 +60,7 @@ public class Customer extends User {
 		this.points = 0;
 		//this.customerType = null;
 	}
-
-
-
+	
 	public Membership getMembership() {
 		return membership;
 	}
@@ -80,24 +77,21 @@ public class Customer extends User {
 		this.visitedObjects = visitedObjects;
 	}
 
-	public int getPoints() {
+	public double getPoints() {
 		return points;
 	}
 
-	public void setPoints(int points) {
+	public void setPoints(double points) {
 		this.points = points;
 	}
+
 
 	public CustomerType getCustomerType() {
 		return customerType;
 	}
 
+
 	public void setCustomerType(CustomerType customerType) {
 		this.customerType = customerType;
 	}
-	
-	
-	
-	
-	
 }

@@ -16,15 +16,19 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import comparators.CustomerComparePoints;
 import comparators.CustomerLastNameComparator;
 import comparators.CustomerNameComparator;
 import comparators.CustomerUserNameComparator;
+import comparators.SportObjectGradeComparator;
 import dto.BuyMembership;
 import dto.CustomerDTO;
 import dto.MembershipDTO;
 import dto.SearchDTO;
+import dto.SportObjectDTO;
 import model.Administrator;
 import model.Customer;
+import model.CustomerType;
 import model.Manager;
 import model.Membership;
 import model.MembershipStatus;
@@ -88,10 +92,39 @@ public class CustomerService {
 		
 		customer.setMembership(membership);
 		
+		membership.setSendPoints("False");
+		
 		customerRepo.update(customer);
 	}
 	
-	
+	@POST
+	@Path("updateCustomerPoints")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public void updateCustomerPoints(CustomerDTO dto) {
+		
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Customer customer = customerRepo.read(dto.getId());
+		Membership membership = customer.getMembership();
+		
+		LocalDate today = LocalDate.now();
+		int compareValue = today.compareTo(membership.getEndValidation());
+		
+		if(membership.getSendPoints().equals("False")) {
+			if (compareValue >= 0) {
+				membership.setSendPoints("True");
+			    customer.setPoints(customer.getPoints() + (membership.getValue()/1000 * membership.getUsedTerms()));
+			}
+			
+			if(membership.getUsedTerms() <= membership.getMaxTerms() * 1 / 3) {
+				membership.setSendPoints("True");
+			    customer.setPoints(customer.getPoints() - (membership.getValue()/1000 * 133 * 4 ));
+			}	
+		}	
+		customerRepo.update(customer);
+	}
+
 	@GET
 	@Path("getAll")	
 	@Produces(MediaType.APPLICATION_JSON)
@@ -101,7 +134,7 @@ public class CustomerService {
 		ArrayList<Customer> customers = customerRepo.getAll();
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
 		for (Customer s : customers) {			
-			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 		}
 		return retVal;
 	}
@@ -172,9 +205,15 @@ public class CustomerService {
 	@Path("update")	
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Customer updateCustomer(Customer customer) {
+	public Customer updateCustomer(CustomerDTO dto) {
 		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		Customer customer = customerRepo.read(dto.getId());
+		
+		CustomerType customerType = new CustomerType("Bronze");
+	
 		customerRepo.update(customer);
+		
 		return customer;
 	}
 	
@@ -193,7 +232,7 @@ public class CustomerService {
 		
 		for (Customer s : customers) {
 			if (s.getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
-					retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+					retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 			}
 		}
 	    
@@ -205,7 +244,7 @@ public class CustomerService {
 							cnt++;
 					}
 					if (cnt == 0)
-						retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+						retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 			}
 		}
 
@@ -217,9 +256,20 @@ public class CustomerService {
 							cnt++;
 					}
 					if (cnt == 0)
-						retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+						retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 			}
-		}	
+		}
+		for (Customer s : customers) {
+			if (s.getCustomerType().getName().toLowerCase().trim().contains(search.getSearchText().toLowerCase().trim())) {	
+					int cnt = 0;
+					for (CustomerDTO so : retVal) {
+						if (so.getUsername().equals(s.getUsername()))
+							cnt++;
+					}
+					if (cnt == 0)
+						retVal.add(new CustomerDTO(s.getUsername(),s.getName(),s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
+			}
+		}
 		return retVal;
 	}
 	
@@ -265,7 +315,7 @@ public class CustomerService {
 		ArrayList<Customer> customers = customerRepo.getAll();
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
 		for (Customer s : customers) {			
-			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 		}
 		retVal = nameACS(retVal);
 		return retVal;
@@ -279,7 +329,7 @@ public class CustomerService {
 		ArrayList<Customer> customers = customerRepo.getAll();
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
 		for (Customer s : customers) {			
-			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 		}
 		retVal = nameDESC(retVal);
 		return retVal;
@@ -293,7 +343,7 @@ public class CustomerService {
 		ArrayList<Customer> customers = customerRepo.getAll();
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
 		for (Customer s : customers) {			
-			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 		}
 		retVal = lastNameACS(retVal);
 		return retVal;
@@ -307,7 +357,7 @@ public class CustomerService {
 		ArrayList<Customer> customers = customerRepo.getAll();
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
 		for (Customer s : customers) {			
-			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 		}
 		retVal = lastNameDESC(retVal);
 		return retVal;
@@ -321,7 +371,7 @@ public class CustomerService {
 		ArrayList<Customer> customers = customerRepo.getAll();
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
 		for (Customer s : customers) {			
-			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 		}
 		retVal = userNameACS(retVal);
 		return retVal;
@@ -335,9 +385,50 @@ public class CustomerService {
 		ArrayList<Customer> customers = customerRepo.getAll();
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
 		for (Customer s : customers) {			
-			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth()));	
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
 		}
 		retVal = userNameDESC(retVal);
+		return retVal;
+	}
+	
+	public ArrayList<CustomerDTO> gradeACS(ArrayList<CustomerDTO> retVal) {
+		Collections.sort(retVal, new CustomerComparePoints());
+		return retVal;
+	}
+	
+	public ArrayList<CustomerDTO> gradeDESC(ArrayList<CustomerDTO> retVal) {
+		Collections.sort(retVal,new CustomerComparePoints());
+		Collections.reverse(retVal);
+		return retVal;
+	}
+	
+	@GET
+	@Path("getAll7")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getAll7() {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Customer> customers = customerRepo.getAll();
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer s : customers) {			
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
+		}
+		retVal = gradeACS(retVal);
+		return retVal;
+	}
+	
+	@GET
+	@Path("getAll8")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<CustomerDTO> getAll8() {
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		ArrayList<Customer> customers = customerRepo.getAll();
+		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
+		for (Customer s : customers) {			
+			retVal.add(new CustomerDTO(s.getUsername(),s.getName(), s.getLastName(),s.getGender(),s.getDateOfBirth(),s.getPoints(),s.getCustomerType()));	
+		}
+		retVal = gradeDESC(retVal);
 		return retVal;
 	}
 }

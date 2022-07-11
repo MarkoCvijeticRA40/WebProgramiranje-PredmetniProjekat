@@ -125,7 +125,7 @@ Vue.component("register-page", {
     	},
 	CreateAuto:function(){
 		axios
-		.get("rest/history/createAuto")
+		.get("rest/memberships/updateMembership")
 		.then(response => toast("Uspesno kreirano!"));
 		}
 	},

@@ -51,8 +51,14 @@ Vue.component("customerStart-page", {
 	
 		editCustomer : function() {
 			router.push("/ecp");
+		},
+		CreateAuto:function(){
+		axios
+		.post("rest/customers/update",{
+			id : this.customer.id
+		})
+		.then(response => toast("Uspesno dodat Type!"));
 		}
-		
 	},
 	mounted () {
          axios
