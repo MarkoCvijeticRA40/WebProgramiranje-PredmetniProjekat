@@ -129,6 +129,7 @@ public class HistoryOfAllTrainingsService {
 		int numOfAvailableTrainings = customer.getMembership().getNumberOfTerms();
 		numOfAvailableTrainings -= 1;
 		customer.getMembership().setNumberOfTerms(numOfAvailableTrainings);
+		customer.getMembership().setUsedTerms(customer.getMembership().getUsedTerms() + 1.00);
 		customerRepo.update(customer);
 		
 		if (training.getTrainer() != null) {
