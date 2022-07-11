@@ -129,7 +129,7 @@ public class CustomerService {
 		ArrayList<Customer> customers = customerRepo.getAll();
 		ArrayList<CustomerDTO> retVal = new ArrayList<CustomerDTO>();
 		for (Customer c : customers) {			
-			retVal.add(new CustomerDTO(c.getUsername(),c.getName(), c.getLastName(),c.getGender(),c.getDateOfBirth()));	
+			retVal.add(new CustomerDTO(c.getUsername(),c.getName(), c.getLastName(),c.getGender(),c.getDateOfBirth(),c.getPoints(),c.getCustomerType()));	
 		}
 		return retVal;
 	}
