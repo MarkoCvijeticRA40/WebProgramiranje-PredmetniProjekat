@@ -2,7 +2,8 @@ Vue.component("customerTrainingView-page", {
 	data: function () {
 		    return {
 		      customer: null,
-		      trainings: null
+		      trainings: null, 
+			  searchText : "",
 		    }
 	},
 	template: ` 
@@ -17,6 +18,10 @@ Vue.component("customerTrainingView-page", {
   <li><a href="#/lu">Log out</a></li>
 </ul>
 <br>
+<table>
+<td><button v-on:click="SportObjectNameASC()">SortSportObjectByACS</button></td>
+<td><button v-on:click="SportObjectNameDESC()">SortSportObjectByACS</button></td>
+</table>
 <br>
 <table style="width:100%" border="1px">
  	<tr>
@@ -35,7 +40,16 @@ Vue.component("customerTrainingView-page", {
 `
 	, 
 	methods : {
-		
+		SportObjectNameASC : function() { 
+		axios
+			.post('rest/history/getTrainingsACS', { id: this.customer.id })
+			.then(response => this.trainings = response.data); 
+		},
+		SportObjectNameDESC : function() { 
+		axios
+			.post('rest/history/getTrainingsDESC', { id: this.customer.id })
+			.then(response => this.trainings = response.data); 
+		},
 	},
 	mounted () {
          axios

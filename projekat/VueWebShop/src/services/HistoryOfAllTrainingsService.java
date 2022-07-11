@@ -2,6 +2,7 @@ package services;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +17,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import comparators.CustomerNameComparator;
+import comparators.TrainingSportObjectComparator;
+import dto.CustomerDTO;
 import dto.IdDTO;
+import dto.TrainingDTO;
 import dto.WelcomeCustomerDTO;
 import model.Customer;
 import model.HistoryOfAllTrainings;
@@ -59,17 +64,70 @@ public class HistoryOfAllTrainingsService {
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
+		
 		for (HistoryOfAllTrainings h : repo.getAll()) {
 			if (h.getCustomer().getId().equals(customerId.getId())) {
 				if (LocalDateTime.now().minusDays(30).compareTo(h.getApplicationDate()) <= 0) {
+					
 					retVal.add(h);
 				}
 			}
 		}
+		return retVal;
+	}	
+	
+	@POST
+	@Path("getTrainingsACS")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<HistoryOfAllTrainings> getTrainingsACS(IdDTO customerId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
+		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
+		
+		for (HistoryOfAllTrainings h : repo.getAll()) {
+			if (h.getCustomer().getId().equals(customerId.getId())) {
+				if (LocalDateTime.now().minusDays(30).compareTo(h.getApplicationDate()) <= 0) {
+					
+					retVal.add(h);
+				}
+			}
+		}
+		retVal = nameACS(retVal);
+		return retVal;
+	}	
+	
+	@POST
+	@Path("getTrainingsDESC")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<HistoryOfAllTrainings> getTrainingsDESC(IdDTO customerId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
+		
+		for (HistoryOfAllTrainings h : repo.getAll()) {
+			if (h.getCustomer().getId().equals(customerId.getId())) {
+				if (LocalDateTime.now().minusDays(30).compareTo(h.getApplicationDate()) <= 0) {
+					
+					retVal.add(h);
+				}
+			}
+		}
+		retVal = nameDESC(retVal);
 		return retVal;
 	}
 	
+	public ArrayList<HistoryOfAllTrainings> nameACS(ArrayList<HistoryOfAllTrainings> retVal) {
+		Collections.sort(retVal, new TrainingSportObjectComparator());
+		return retVal;
+	}
+	
+	public ArrayList<HistoryOfAllTrainings> nameDESC(ArrayList<HistoryOfAllTrainings> retVal) {
+		Collections.sort(retVal, new TrainingSportObjectComparator());
+		Collections.reverse(retVal);
+		return retVal;
+	}
 	
 	@POST
 	@Path("welcomeCustomer")	
@@ -149,6 +207,25 @@ public class HistoryOfAllTrainingsService {
 		
 		return history;
 		
+	}
+	
+	@POST
+	@Path("getTrainingsDECS")	
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public ArrayList<HistoryOfAllTrainings> getTrainingsADECS(IdDTO customerId) {
+		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		
+		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
+		for (HistoryOfAllTrainings h : repo.getAll()) {
+			if (h.getCustomer().getId().equals(customerId.getId())) {
+				if (LocalDateTime.now().minusDays(30).compareTo(h.getApplicationDate()) <= 0) {
+					retVal.add(h);
+				}
+			}
+		}
+		
+		return retVal;
 	}
 	
 	

@@ -38,7 +38,6 @@ Vue.component("trainerTrainingView-page", {
 `
 	, 
 	methods : {
-		 
 	},
 	filters: {
     	dateFormat: function (value, format) {

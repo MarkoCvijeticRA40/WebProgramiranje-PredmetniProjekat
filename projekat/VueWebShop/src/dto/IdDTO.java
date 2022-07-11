@@ -1,5 +1,7 @@
 package dto;
 
+import model.SportObject;
+
 public class IdDTO {
 
 	private String id;
@@ -10,6 +12,8 @@ public class IdDTO {
 		super();
 		this.id = id;
 	}
+	
+	
 
 	public String getId() {
 		return id;

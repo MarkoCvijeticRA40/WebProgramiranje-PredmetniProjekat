@@ -1,6 +1,7 @@
 package services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -11,7 +12,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import comparators.CustomerNameComparator;
+import comparators.TrainingSportObjectComparator;
 import dto.CreateTrainingDTO;
+import dto.CustomerDTO;
 import dto.IdDTO;
 import dto.TrainingDTO;
 import model.IdGenerator;
@@ -128,8 +132,7 @@ public class TrainingService {
 		
 		repo.update(training);
 	}
-	
-	
+
 	@POST
 	@Path("deleteTraining")	
 	@Produces(MediaType.APPLICATION_JSON)
@@ -138,10 +141,6 @@ public class TrainingService {
 		repo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		repo.delete(trainingId.getId());
 	}
-	
-	
-	
-	
 //	@GET
 //	@Path("createAuto")	
 //	@Produces(MediaType.TEXT_PLAIN)
