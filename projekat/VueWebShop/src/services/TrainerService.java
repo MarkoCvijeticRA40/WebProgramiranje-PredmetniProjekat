@@ -348,6 +348,7 @@ public class TrainerService {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public ArrayList<HistoryOfAllTrainings> getGroupTrainings(IdDTO trainerId) {
 		scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+		customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 		
 		ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
 		
@@ -366,6 +367,7 @@ public class TrainerService {
     @Consumes(MediaType.APPLICATION_JSON)
     public ArrayList<HistoryOfAllTrainings> getGroupTrainings3(IdDTO trainerId) {
         scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+        customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 
         ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
 
@@ -385,6 +387,7 @@ public class TrainerService {
     @Consumes(MediaType.APPLICATION_JSON)
     public ArrayList<HistoryOfAllTrainings> getGroupTrainings4(IdDTO trainerId) {
         scheduleRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
+        customerRepo.setBasePath("WebProgramiranje-PredmetniProjekat\\projekat\\VueWebShop\\src\\data\\");
 
         ArrayList<HistoryOfAllTrainings> retVal = new ArrayList<HistoryOfAllTrainings>();
 

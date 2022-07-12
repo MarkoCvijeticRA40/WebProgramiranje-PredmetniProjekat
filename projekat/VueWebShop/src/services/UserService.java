@@ -74,10 +74,12 @@ public class UserService {
 		for (Customer c : customers) {
 			if (c.getUsername().equals(user.getUsername()) && c.getPassword().equals(user.getPassword())) {
 				setLoggedInUser(c.getId());
-				c.customerType.setName(c);
-				updateCustomerPoints(c);
-				c.membership.setStatus();
-				customerRepo.update(c);
+				if (c.getMembership() != null) {
+					c.customerType.setName(c);
+					updateCustomerPoints(c);
+					c.getMembership().setStatus();
+					customerRepo.update(c);
+				}
 				
 				ArrayList<Membership> memberships = memberRepo.getAll();
 				for(Membership m : memberships) {

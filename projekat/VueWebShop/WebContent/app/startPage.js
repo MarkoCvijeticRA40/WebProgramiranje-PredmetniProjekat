@@ -19,7 +19,6 @@ Vue.component("start-page", {
   <li><a class="active" href="#/">Home</a></li>
   <li><a href="#/lu">Log in</a></li>
   <li><a href="#/ru">Register</a></li>
-  <li><a href="#about">About</a></li>
 </ul>
 
 <br>
@@ -33,8 +32,8 @@ Vue.component("start-page", {
   			<td><button v-on:click="searchDESC()">SortNameByDESC</button></td>
   			<td><button v-on:click="searchASCLocation()">SortLocationByACS</button></td>
   			<td><button v-on:click="searchDESCLocation()">SortLocationByDESC</button></td>
-			<td><button v-on:click="searchDESCGrade()">SortGradeByASC</button></td>
-			<td><button v-on:click="searchASCGrade()">SortGradeByDESC</button></td>
+			<td><button v-on:click="searchASCGrade()">SortGradeByASC</button></td>
+			<td><button v-on:click="searchDESCGrade()">SortGradeByDESC</button></td>
 	
 		</tr>
 	</table>

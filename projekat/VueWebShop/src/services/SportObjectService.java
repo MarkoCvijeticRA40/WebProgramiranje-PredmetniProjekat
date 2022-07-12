@@ -10,6 +10,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 
 import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -267,7 +270,7 @@ CommentRepository commentRepo = new CommentRepository();
 		}
 		
 		for (SportObject s : sportObjects) {
-			if (s.getAverageGrade() == Double.parseDouble(search.getSearchText().trim())) {	
+			if (s.getAverageGrade().toString().contains(search.getSearchText().trim())) {	
 				s.setStatus();
 				if(s.getStatus() == SportObjectStatus.Open) {
 					int cnt = 0;
@@ -303,6 +306,7 @@ CommentRepository commentRepo = new CommentRepository();
 				}
 			}
 		}
+	
 		
 		for (SportObject s : sportObjects) {
 			s.setStatus();
@@ -1642,5 +1646,30 @@ CommentRepository commentRepo = new CommentRepository();
 		SportObject sportObject = repo.read(sportObjectId.getId());
 		return sportObject.getLocation().getLatitude();
 	}
+	
+	
+	public static boolean onlyDigits(String str) {
+        // Regex to check string
+        // contains only digits
+        String regex = "[0-9]+";
+ 
+        // Compile the ReGex
+        Pattern p = Pattern.compile(regex);
+ 
+        // If the string is empty
+        // return false
+        if (str == null) {
+            return false;
+        }
+ 
+        // Find match between given string
+        // and regular expression
+        // using Pattern.matcher()
+        Matcher m = p.matcher(str);
+ 
+        // Return if the string
+        // matched the ReGex
+        return m.matches();
+    }
 
 }

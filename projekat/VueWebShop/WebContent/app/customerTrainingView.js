@@ -20,7 +20,7 @@ Vue.component("customerTrainingView-page", {
 <br>
 <table>
 <td><button v-on:click="SportObjectNameASC()">SortSportObjectByACS</button></td>
-<td><button v-on:click="SportObjectNameDESC()">SortSportObjectByACS</button></td>
+<td><button v-on:click="SportObjectNameDESC()">SortSportObjectByDESC</button></td>
 </table>
 <br>
 <table style="width:100%" border="1px">

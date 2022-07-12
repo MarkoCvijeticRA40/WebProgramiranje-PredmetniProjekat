@@ -24,7 +24,7 @@ Vue.component("customerMemberShip-page", {
 <br>
 <br>
 	<div v-if="selected != true">
-	<table style="width:100%" border="1px">
+	<table class="hand" style="width:100%" border="1px">
 		<tr>
 			<th>Type membership</th>
 			<th>Value</th>
